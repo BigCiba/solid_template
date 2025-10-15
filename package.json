@@ -8,6 +8,7 @@
 		"Hud": [
 			"hud_main"
 		],
+		"CustomLoadingScreen": "custom_loading_screen",
 		"FlyoutScoreboard": [],
 		"Tooltip": [],
 		"ContextMenu": [],
@@ -16,6 +17,7 @@
 		"kv": []
 	},
 	"scripts": {
+		"build:polyfill": "ts-node rollup/build-polyfill.ts",
 		"build:solid": "ts-node -r ./rollup/build-write-file.ts ./rollup/build.ts",
 		"dev:solid": "ts-node -r ./rollup/build-write-file.ts ./rollup/build.ts --watch",
 		"build:vscripts": "tstl --project content/tui12/scripts/vscripts/tsconfig.json",
@@ -32,6 +34,7 @@
 		"@bigciba/babel-preset-solid-panorama": "^0.1.5",
 		"@bigciba/solid-panorama-runtime": "^0.6.1",
 		"@moddota/dota-lua-types": "^4.36.0",
+		"@moddota/panorama-types": "^1.38.1",
 		"@rollup/plugin-alias": "^4.0.4",
 		"@rollup/plugin-babel": "^6.0.4",
 		"@rollup/plugin-commonjs": "^23.0.7",

@@ -5,7 +5,7 @@ var libs = require('./libs.js');
 function HudMain() {
   return (() => {
     const _el$ = libs.createElement("Label", {
-      text: "aaaaaaaaaaaaaaaaaaaaaaaa",
+      text: "aaaaa222aaaaabbsaaaaaaa",
       align: "center center"
     }, null);
     libs.setProp(_el$, "align", "center center");

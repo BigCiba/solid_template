@@ -35,6 +35,9 @@ importers:
       '@moddota/dota-lua-types':
         specifier: ^4.36.0
         version: 4.37.0(@typescript-to-lua/language-extensions@1.19.0)(typescript@5.9.3)
+      '@moddota/panorama-types':
+        specifier: ^1.38.1
+        version: 1.38.1(typescript@5.9.3)
       '@rollup/plugin-alias':
         specifier: ^4.0.4
         version: 4.0.4(rollup@3.29.5)
@@ -125,10 +128,6 @@ importers:
       typescript-to-lua:
         specifier: ^1.31.0
         version: 1.32.0(typescript@5.9.3)
-    devDependencies:
-      '@moddota/panorama-types':
-        specifier: ^1.37.0
-        version: 1.38.1(typescript@5.9.3)
 
 packages:
 

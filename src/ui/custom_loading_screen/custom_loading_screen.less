@@ -1,0 +1,78 @@
+.LoadingRoot
+{
+	background-image: url("file://{images}/custom_game/hud/l_bg.png");
+	background-size: 2520px 1200px;
+	background-position: center center;
+}
+
+.Logo
+{
+	background-image: url("file://{images}/custom_game/hud/logo.png");
+	background-size: 100%;
+	width: 590px;
+	height: 310px;
+	margin-top: 31px;
+	margin-left: -40px;
+	z-index: 100;
+}
+
+#CompanyLogo
+{
+	background-image: url("file://{images}/custom_game/hud/loading_company_english.png");
+	/* background-image: url("file://{images}/custom_game/hud/loading_company.png"); */
+	background-size: 100%;
+	width: 277px;
+	height: 50px;
+	align: center bottom;
+	margin-bottom: 28px;
+}
+
+.schinese #CompanyLogo,
+.Schinese #CompanyLogo
+{
+	width: 228px;
+	height: 53px;
+	background-image: url("file://{images}/custom_game/hud/loading_company.png");
+}
+
+/* #CompanyLogo .english,
+#CompanyLogo .English {
+  background-image: url("file://{images}/custom_game/hud/loading_company_english.png");
+} */
+
+#WorldVignetteLeft
+{
+	width: 546px;
+	height: 100%;
+	background-image: url("file://{images}/custom_game/hud/s_mask.png");
+	background-size: 100%;
+	opacity: 0.9;
+	animation-name: FadeIn;
+	animation-duration: 0.5s;
+}
+
+#WorldVignetteRight
+{
+	width: 546px;
+	height: 100%;
+	background-image: url("file://{images}/custom_game/hud/s_mask.png");
+	transform: rotateY(180deg);
+	background-size: 100%;
+	opacity: 0.9;
+	animation-name: FadeIn;
+	animation-duration: 0.5s;
+	horizontal-align: right;
+}
+
+@keyframes FadeIn
+{
+	0%
+	{
+		opacity: 0;
+	}
+
+	100%
+	{
+		opacity: 1;
+	}
+}

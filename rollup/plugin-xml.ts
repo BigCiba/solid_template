@@ -46,6 +46,8 @@ export function GenerateXML(options: {
 				if (!sourceContent.includes(`<include src="file://{resources}/styles/custom_game/${outFilename}`) && existsSync(path.replace(/\.tsx?$/, '.less'))) {
 					sourceContent = sourceContent.replace('</styles>', `\t<include src="file://{resources}/styles/custom_game/${outFilename}.css" />\n\t</styles>`);
 				}
+
+
 				// js无法处理为对应路径的，只能直接储存在同一个目录下
 				// js
 				if (!sourceContent.includes(`<include src="file://{resources}/scripts/custom_game/${basename(outFilename)}`)) {
@@ -63,9 +65,17 @@ export function GenerateXML(options: {
 				if (!sourceContent.includes('<include src="file://{resources}/scripts/custom_game/panorama-polyfill.js" />')) {
 					sourceContent = sourceContent.replace('<scripts>', '<scripts>\n\t\t<include src="file://{resources}/scripts/custom_game/panorama-polyfill.js" />');
 				}
-				if (!sourceContent.includes('<include src="file://{resources}/scripts/custom_game/common.js" />')) {
-					sourceContent = sourceContent.replace('<scripts>', '<scripts>\n\t\t<include src="file://{resources}/scripts/custom_game/common.js" />');
+
+				// loading screen 特例加入
+				if (outFilename == "custom_loading_screen") {
+					// 自动加入common.js和polyfill.js
+					if (!sourceContent.includes('<include src="file://{resources}/scripts/custom_game/solid-core.js" />')) {
+						sourceContent = sourceContent.replace('<scripts>', '<scripts>\n\t\t<include src="file://{resources}/scripts/custom_game/solid-core.js" />');
+					}
 				}
+				// if (!sourceContent.includes('<include src="file://{resources}/scripts/custom_game/common.js" />')) {
+				// 	sourceContent = sourceContent.replace('<scripts>', '<scripts>\n\t\t<include src="file://{resources}/scripts/custom_game/common.js" />');
+				// }
 				writeFileCache(outPath, sourceContent);
 			}
 		}

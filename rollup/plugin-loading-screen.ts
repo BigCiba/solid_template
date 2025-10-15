@@ -13,12 +13,12 @@ export function GenerateLoadingScreen(options: {
 	return {
 		name: 'plugin-loading-screen',
 		async buildStart() {
-			const sourcePath = path.join(options.rootPath, `${options.loadingScreen}/${options.loadingScreen}.xml`);
+			const sourcePath = path.join(options.rootPath, `${options.loadingScreen}.xml`);
 			this.addWatchFile(sourcePath);
 		},
 		writeBundle() {
 			if (options.loadingScreen) {
-				const sourcePath = path.join(options.rootPath, `${options.loadingScreen}/${options.loadingScreen}.xml`);
+				const sourcePath = path.join(options.rootPath, `${options.loadingScreen}.xml`);
 				if (existsSync(sourcePath)) {
 					const manifestPath = path.join(
 						options.dir,

@@ -2,6 +2,7 @@ import color from 'cli-color';
 import path, { join } from 'path';
 import * as rollup from 'rollup';
 import { bundlePanoramaPolyfill } from 'solid-panorama-polyfill';
+import { buildPolyfill } from './build-polyfill';
 import GetRollupWatchOptions from './build-rollup-config';
 import { dirExists, fileColor, normalizedPath, Panorama, ReadAddonName, ReadPackage, Tooltip } from './utils';
 
@@ -61,10 +62,19 @@ export default async function TaskPUI() {
     const addonName = await ReadAddonName();
     if (addonName) {
         if (await dirExists(`./content/${addonName}`)) {
+            // 首先编译 polyfill TypeScript 文件
+            console.log('🔨 Building polyfill...');
+            await buildPolyfill();
+
             await bundlePanoramaPolyfill({
                 output: `./content/${addonName}/panorama/scripts/custom_game/panorama-polyfill.js`,
                 using: { console: true, timers: true },
                 merges: [join(__dirname, 'custom-polyfill.js')]
+            });
+            await bundlePanoramaPolyfill({
+                output: `./content/${addonName}/panorama/scripts/custom_game/solid-core.js`,
+                using: {},
+                merges: [join(__dirname, 'solid-core.js')]
             });
 
             StartRollup();

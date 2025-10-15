@@ -13,7 +13,7 @@ function scanPolyfillFiles(polyfillDir: string): string[] {
 
 	for (const entry of entries) {
 		const fullPath = path.join(polyfillDir, entry.name);
-		if (entry.isFile() && entry.name.endsWith('.ts') && entry.name !== 'README.md') {
+		if (entry.isFile() && (entry.name.endsWith('.ts') || entry.name.endsWith('.js')) && entry.name !== 'README.md') {
 			files.push(fullPath);
 		}
 	}
@@ -70,7 +70,9 @@ export async function buildPolyfill(): Promise<void> {
 
 			// 添加文件分隔注释
 			combinedCode += `\n// ========== 来自 ${fileName} ==========\n`;
+			combinedCode += '{\n';
 			combinedCode += compiledCode;
+			combinedCode += '}\n';
 
 			fileList.push(fileName);
 		}

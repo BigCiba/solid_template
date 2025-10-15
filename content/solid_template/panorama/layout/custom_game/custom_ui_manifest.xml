@@ -4,6 +4,7 @@
 
 
 
+		<include src="file://{resources}/scripts/custom_game/panorama-polyfill.js"/>
 	</scripts>
 	<Panel>
 		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/hud_main.xml"/>

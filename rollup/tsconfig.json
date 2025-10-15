@@ -1,0 +1,21 @@
+{
+    "include": [
+        "*.ts"
+    ],
+    "compilerOptions": {
+        "rootDir": ".",
+        "noImplicitAny": true,
+        "experimentalDecorators": true,
+        "allowJs": true,
+        "moduleResolution": "Node",
+        "esModuleInterop": true,
+        "strict": true,
+        "target": "ESNext",
+        "lib": [
+            "ESNext"
+        ],
+        "types": [
+            "node"
+        ]
+    }
+}

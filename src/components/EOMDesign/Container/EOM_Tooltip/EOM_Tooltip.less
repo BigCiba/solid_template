@@ -1,0 +1,189 @@
+.EOM_Tooltip.C4
+{
+	// min-width: 380px;
+	// min-height: 300px;
+	border: 0px solid white;
+	border-radius: 2px;
+	box-shadow: 0px 0px 10px 0px #000000cc;
+	// box-shadow: fill #1e1c24 0px 0px 6px 1px;
+	border-brush: gradient(linear, 0% 0%, 0% 100%, from(#a09a72), to(#755417));
+	background-color: gradient(linear, 0% 0%, 100% 100%, from(#273163), to(#3c5a90));
+	padding: 4px;
+	margin: 6px;
+}
+
+.EOM_Tooltip.Tui12
+{}
+
+.EOM_TooltipHeader.C4
+{
+	width: 100%;
+	background-color: #1c294c;
+	border-radius: 2px;
+	// background-image: url("file://{images}/custom_game/tooltip/bg_tip_title.png");
+	background-size: 100%;
+}
+
+.EOM_TooltipHeader.Tui12
+{
+	width: 100%;
+	// background-color: #1c294c;
+	border-radius: 2px;
+	// background-image: url("file://{images}/custom_game/tooltip/bg_tip_title.png");
+	background-size: 100%;
+}
+
+.EOM_TooltipDivder
+{
+	background-size: 100%;
+
+	&.Horizontal
+	{
+		background-image: url("file://{images}/custom_game/tooltip/divider_horizontal.png");
+		width: 100%;
+		height: 6px;
+	}
+
+	&.Vertical
+	{
+		background-image: url("file://{images}/custom_game/tooltip/divider_vertical.png.png");
+		width: 6px;
+		height: 100%;
+	}
+}
+
+
+.EOM_TooltipBG.Tui12
+{
+	width: 100%;
+	height: 100%;
+	border-radius: 0px;
+	padding: 0px;
+	margin: 0px; // box-shadow: 0px 0px 4px black;
+	box-shadow: 0px 0px 4px black;
+	background-color: gradient(linear, 0% 0%, 100% 100%, from(#312b44), to(#2c283a));
+
+	@blockPixels: 32px;
+
+	background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/right_bottom.png"),
+	url("file://{images}/custom_game/eom_design/popup/Tui12/left_bottom.png"),
+	url("file://{images}/custom_game/eom_design/popup/Tui12/right_top.png"),
+	url("file://{images}/custom_game/eom_design/popup/Tui12/left_top.png"),
+	url("file://{images}/custom_game/eom_design/popup/Tui12/right_center.png"),
+	url("file://{images}/custom_game/eom_design/popup/Tui12/left_center.png"),
+	url("file://{images}/custom_game/eom_design/popup/Tui12/center_bottom.png"),
+	url("file://{images}/custom_game/eom_design/popup/Tui12/center_top.png"),
+	url("file://{images}/custom_game/eom_design/popup/Tui12/material.png");
+	background-size: @blockPixels, @blockPixels, @blockPixels, @blockPixels, @blockPixels, @blockPixels, @blockPixels, @blockPixels, auto;
+	background-position: right bottom, left bottom, right top, left top, right center, left center, center bottom, center top, center center;
+	background-repeat: no-repeat no-repeat, no-repeat no-repeat, no-repeat no-repeat, no-repeat no-repeat, no-repeat round, no-repeat round, round no-repeat, round no-repeat, round;
+
+	// .EOM_LeftTopBG
+	// {
+	// 	align: left top;
+	// 	width: 26px;
+	// 	height: 26px;
+	// 	background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/left_top.png");
+	// 	background-size: 100%;
+	// 	background-repeat: no-repeat;
+
+	// 	z-index: 2;
+	// }
+
+	// .EOM_CenterTopBG
+	// {
+	// 	align: center top;
+	// 	width: 100%;
+	// 	height: 26px;
+	// 	margin-left: 26px;
+	// 	margin-right: 26px;
+	// 	background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/center_top.png");
+	// 	background-size: 100%;
+	// 	background-repeat: repeat-x;
+	// }
+
+	// .EOM_RightTopBG
+	// {
+	// 	align: right top;
+	// 	width: 26px;
+	// 	height: 26px;
+	// 	background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/right_top.png");
+	// 	background-size: 100%;
+	// 	background-repeat: no-repeat;
+
+	// 	z-index: 2;
+	// }
+
+	// .EOM_CenterCenterBG
+	// {
+	// 	align: center center;
+	// 	width: 100%;
+	// 	height: 100%;
+	// 	margin: 26px;
+	// 	margin-top: 26px;
+	// 	background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/center.png");
+	// 	background-size: 100%;
+	// 	background-repeat: no-repeat;
+	// 	z-index: -1;
+	// }
+
+	// .EOM_LeftCenterBG
+	// {
+	// 	align: left center;
+	// 	width: 26px;
+	// 	height: 100%;
+	// 	margin-top: 26px;
+	// 	margin-bottom: 26px;
+	// 	background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/left_center.png");
+	// 	background-size: 100%;
+	// 	background-repeat: repeat-y;
+	// }
+
+	// .EOM_RightCenterBG
+	// {
+	// 	align: right center;
+	// 	width: 26px;
+	// 	height: 100%;
+	// 	margin-top: 26px;
+	// 	margin-bottom: 26px;
+	// 	background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/right_center.png");
+	// 	background-size: 100%;
+	// 	background-repeat: repeat-y;
+	// }
+
+	// .EOM_LeftBottomBG
+	// {
+	// 	align: left bottom;
+	// 	width: 26px;
+	// 	height: 26px;
+	// 	background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/left_bottom.png");
+	// 	background-size: 100%;
+	// 	background-repeat: no-repeat;
+
+	// 	z-index: 2;
+	// }
+
+	// .EOM_CenterBottomBG
+	// {
+	// 	align: center bottom;
+	// 	width: 100%;
+	// 	height: 26px;
+	// 	margin-left: 26px;
+	// 	margin-right: 26px;
+	// 	background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/center_bottom.png");
+	// 	background-size: 100%;
+	// 	background-repeat: repeat-x;
+	// }
+
+	// .EOM_RightBottomBG
+	// {
+	// 	align: right bottom;
+	// 	width: 26px;
+	// 	height: 26px;
+	// 	background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/right_bottom.png");
+	// 	background-size: 100%;
+	// 	background-repeat: no-repeat;
+
+	// 	z-index: 2;
+	// }
+}

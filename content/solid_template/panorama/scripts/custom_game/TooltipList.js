@@ -1,0 +1,1 @@
+GameUI.CustomUIConfig().TooltipList = [];

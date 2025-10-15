@@ -1,0 +1,75 @@
+{
+	"name": "solid_template",
+	"encryption": {
+		"debug": true,
+		"key": "BBCE42566A421B37F356712D90E5E142"
+	},
+	"panorama": {
+		"Hud": [
+			"hud_main"
+		],
+		"FlyoutScoreboard": [],
+		"Tooltip": [],
+		"ContextMenu": [],
+		"Common": [],
+		"scripts": [],
+		"kv": []
+	},
+	"scripts": {
+		"build:solid": "ts-node -r ./rollup/build-write-file.ts ./rollup/build.ts",
+		"dev:solid": "ts-node -r ./rollup/build-write-file.ts ./rollup/build.ts --watch",
+		"build:vscripts": "tstl --project content/tui12/scripts/vscripts/tsconfig.json",
+		"dev:vscripts": "tstl --project content/tui12/scripts/vscripts/tsconfig.json --watch",
+		"encrypt:vscripts": "node ./node_scripts/encrypt-custom-game.js"
+	},
+	"dependencies": {
+		"@babel/core": "^7.27.1",
+		"@babel/plugin-transform-typescript": "^7.27.1",
+		"@babel/preset-env": "^7.27.2",
+		"@babel/preset-typescript": "^7.27.1",
+		"@babel/types": "^7.27.1",
+		"@bigciba/babel-plugin-jsx-panorama-expressions": "^0.3.1",
+		"@bigciba/babel-preset-solid-panorama": "^0.1.5",
+		"@bigciba/solid-panorama-runtime": "^0.6.1",
+		"@moddota/dota-lua-types": "^4.36.0",
+		"@rollup/plugin-alias": "^4.0.4",
+		"@rollup/plugin-babel": "^6.0.4",
+		"@rollup/plugin-commonjs": "^23.0.7",
+		"@rollup/plugin-node-resolve": "^15.3.1",
+		"@rollup/plugin-replace": "^5.0.7",
+		"@rollup/plugin-typescript": "^10.0.1",
+		"@rollup/plugin-url": "^8.0.2",
+		"@types/babel__core": "^7.20.5",
+		"@types/cli-color": "^2.0.6",
+		"@types/fs-extra": "^9.0.13",
+		"@types/less": "^3.0.8",
+		"@types/node": "^18.19.100",
+		"babel-plugin-macros": "^3.1.0",
+		"chokidar": "^3.6.0",
+		"cli-color": "^2.0.4",
+		"fs-extra": "^11.3.0",
+		"glob": "^11.0.3",
+		"less": "^4.3.0",
+		"luamin": "1.0.4",
+		"luaparse": "0.3.1",
+		"micromatch": "^4.0.8",
+		"npm-run-all": "^4.1.5",
+		"picomatch": "^2.3.1",
+		"rollup": "^3.29.5",
+		"solid-js": "^1.9.6",
+		"solid-panorama-all-in-jsx": "^0.3.9",
+		"solid-panorama-polyfill": "^0.1.9",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.8.3",
+		"typescript-to-lua": "^1.31.0"
+	},
+	"prettier": {
+		"printWidth": 200,
+		"tabWidth": 4,
+		"useTabs": true,
+		"semi": true,
+		"singleQuote": true,
+		"arrowParens": "always",
+		"proseWrap": "never"
+	}
+}

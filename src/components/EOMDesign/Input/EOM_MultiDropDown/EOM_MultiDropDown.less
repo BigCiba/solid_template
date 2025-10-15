@@ -1,0 +1,111 @@
+.EOM_MultiDropDown
+{
+    background-color: #22213A;
+    border: 2px solid #554A3E;
+    width: 200px;
+    height: 38px;
+}
+
+#EOM_MultiDropDown_placeholder
+{
+    font-size: 20px;
+    color: #D6BB93;
+    vertical-align: center;
+    margin-left: 8px;
+    margin-right: 30px;
+    text-overflow: shrink;
+}
+
+#EOM_MultiDropDown_arrow
+{
+    margin-right: 8px;
+    align: right center;
+    background-image: url("file://{images}/custom_game/eom_design/icon/Tui12/drop_down_arrow.png");
+    width: 20px;
+    height: 22px;
+    transition-property: pre-transform-rotate2d;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-in-out;
+
+    &.reverse
+    {
+        pre-transform-rotate2d: 180deg;
+    }
+}
+
+.DropDownPanelList
+{
+    overflow: squish scroll;
+    max-height: 1000px;
+    flow-children: down;
+    border: 2px solid #554A3E;
+
+    VerticalScrollBar
+    {
+        margin-right: 0px;
+        width: 6px;
+        height: 95%;
+        vertical-align: center;
+        background-color: #1C2A3A;
+        border-radius: 5px;
+        border: 2px solid #54392B;
+        opacity: 0.5;
+
+        .ScrollThumb
+        {
+            background-color: #D48D49;
+            border-width: 0px;
+            border-radius: 3px;
+            border: 1px solid #D79D65;
+        }
+    }
+}
+
+.EOM_MultiDropDownMenuItem
+{
+    width: 252px;
+    height: 44px;
+    background-color: #22213A;
+
+    #OptionIcon
+    {
+        width: 32px;
+        height: 32px;
+        vertical-align: center;
+        background-image: url("file://{images}/custom_game/new_equip/z3_btn_filter_rhombus02.png");
+        background-size: 100%;
+        margin-left: 16px;
+    }
+
+    #OptionText
+    {
+        text-overflow: shrink;
+    }
+
+    Label
+    {
+        vertical-align: center;
+        font-size: 20px;
+        color: #D6BB93;
+        margin-left: 53px;
+    }
+
+    &.Selected,
+    &:hover
+    {
+        background-color: #39375E;
+
+        Label
+        {
+            color: #84D2C2;
+        }
+    }
+
+    &.Selected
+    {
+        #OptionIcon
+        {
+            background-image: url("file://{images}/custom_game/new_equip/z3_btn_filter_rhombus01.png");
+        }
+    }
+}

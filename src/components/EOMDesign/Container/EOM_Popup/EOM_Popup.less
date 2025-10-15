@@ -1,0 +1,761 @@
+.AspectRatio4x3
+{
+	.EOM_PopupMain
+	{
+		&.C4
+		{
+			&.large
+			{
+				ui-scale: 90%;
+			}
+		}
+	}
+}
+
+.EOM_PopupMain
+{
+	align: center center;
+	width: 981px;
+	height: 620px;
+	// background-image: url("file://{images}/custom_game/eom_design/popup/popup_bg.png");
+	// background-size: 100%;
+	opacity: 0;
+	// y: -100px;
+	transition-property: opacity, transform, pre-transform-scale2d, wash-color;
+
+	&.Custom
+	{
+		width: fit-children;
+		height: fit-children;
+	}
+
+	&.C4
+	{
+		&.normal
+		{
+			width: 1036px;
+			height: 720px;
+		}
+
+		&.small
+		{
+			width: 1036px;
+			height: 720px;
+		}
+
+		&.large
+		{
+			width: 1520px;
+			height: 910px;
+		}
+	}
+
+	&.Tui12
+	{
+		&.normal
+		{
+			width: 1080px;
+			height: 702px;
+		}
+
+		&.small
+		{
+			width: 856px;
+			height: 412px;
+		}
+
+		&.large
+		{
+			width: 1472px;
+			height: 848px;
+		}
+	}
+
+	&.PopupType_LeftTop
+	{
+		transition-duration: 0.4s;
+		transform: translateX(-120px) translateY(-60px);
+		pre-transform-scale2d: 0.95;
+		// wash-color: #33cccc;
+
+		perspective-origin: 62% 5% invert;
+		perspective: 1000;
+
+		&.EOM_PopupMainShow
+		{
+			opacity: 1;
+			// y: 0px;
+			pre-transform-scale2d: 1;
+			transform: none;
+
+		}
+
+	}
+
+	&.PopupType_PopOut
+	{
+		transition-duration: 0.2s;
+		animation-name: PopOut;
+		animation-duration: 0.2s;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: 1;
+
+		&.EOM_PopupMainShow
+		{
+			opacity: 1;
+		}
+
+		&.EOM_PopupMainClose
+		{
+			opacity: 0;
+			animation-name: PopOutClose;
+			animation-duration: 0.2s;
+			animation-timing-function: ease-in-out;
+			animation-iteration-count: 1;
+		}
+	}
+
+
+	.EOM_PopupTitle
+	{
+		font-size: 24px;
+		text-shadow: 0px 0px 2px 4 rgba(0, 0, 0, 0.5);
+		color: gradient(linear, 0% 0%, 0% 100%, from(#DAC59D), to(#A07D53));
+		margin-top: 15px;
+		horizontal-align: center;
+
+		&.P2
+		{
+			font-size: 24px;
+			font-weight: normal;
+			color: #3b89d1;
+			text-shadow: 0px 0px 2px 4 rgba(0, 0, 0, 0.5);
+		}
+
+		&.C4
+		{
+			font-size: 28px;
+			font-weight: normal;
+			margin-top: 21px;
+			color: #E0E0D4;
+			text-shadow: 0px 0px 3px 3 rgba(0, 0, 0, 0.5);
+		}
+
+		&.Tui10
+		{
+			horizontal-align: left;
+			margin-left: 48px;
+			margin-top: 14px;
+			font-size: 24px;
+			color: #FFFFFF;
+			text-shadow: 0px 0px 3px 1 #FFFFFFEE;
+		}
+
+		&.Tui12
+		{
+			margin-top: 46px;
+			font-size: 20px;
+			color: #D2AA68;
+			text-shadow: 0px 0px 3px 3 rgba(0, 0, 0, 0.5);
+
+			.large&
+			{
+				margin-top: 15px;
+			}
+
+			.normal&
+			{
+				margin-top: 22px;
+			}
+		}
+	}
+
+	.EOM_PopupContent
+	{
+		width: 100%;
+		height: 100%;
+		horizontal-align: center;
+		margin-top: 80px;
+		margin-bottom: 32px;
+		margin-left: 48px;
+		margin-right: 48px;
+		flow-children: down;
+
+		&.Custom
+		{
+			width: fit-children;
+			height: fit-children;
+			margin: 0px;
+		}
+
+		.EOM_PopupContentTop
+		{
+			width: 100%;
+			height: 338px;
+		}
+
+		.EOM_PopupContentBottom
+		{
+			width: 100%;
+			height: 100%;
+			padding-bottom: 14px;
+		}
+
+		&.P2
+		{
+			margin-top: 50px;
+			margin-bottom: 16px;
+			margin-left: 16px;
+			margin-right: 16px;
+		}
+
+		&.C4
+		{
+			margin-top: 100px;
+			margin-bottom: 60px;
+			margin-left: 60px;
+			margin-right: 60px;
+		}
+
+		&.Tui12
+		{
+			.large&
+			{
+				margin-top: 60px;
+				margin-left: 78px;
+				margin-right: 78px;
+			}
+
+			.normal&
+			{
+				margin-left: 78px;
+				margin-right: 78px;
+				margin-top: 66px;
+				margin-bottom: 38px;
+			}
+		}
+	}
+
+	.EOM_IconButton
+	{
+		horizontal-align: right;
+		wash-color: none;
+
+		&:active
+		{
+			sound: "ui_settings_out_multi";
+		}
+
+		&:hover
+		{
+			wash-color: none;
+		}
+
+		&.Tui7
+		{
+			margin-top: 16px;
+			margin-right: 3px;
+		}
+
+		&.Tui3
+		{}
+
+		&.P2
+		{
+			margin: 4px;
+
+			.EOM_Icon
+			{
+				width: 36px;
+				height: 36px;
+			}
+		}
+
+		&.C4
+		{
+			margin: 18px 30px;
+
+			.EOM_Icon
+			{
+				width: 68px;
+				height: 68px;
+				background-image: url("file://{images}/custom_game/eom_design/popup/C4/frame_close.png");
+			}
+		}
+
+		&.Tui10
+		{
+			horizontal-align: right;
+
+			.EOM_Icon
+			{
+				width: 54px;
+				height: 54px;
+			}
+		}
+	}
+
+	.EOM_CloseButton
+	{
+		&.Tui12
+		{
+			.large&
+			{
+				margin-top: 16px;
+				margin-right: 23px;
+			}
+
+			.normal&
+			{
+				margin-top: 22px;
+				margin-right: 25px;
+			}
+		}
+	}
+}
+
+
+@keyframes PopOut
+{
+	0%
+	{
+		pre-transform-scale2d: 0.9;
+	}
+
+	50%
+	{
+		pre-transform-scale2d: 1.05;
+	}
+
+	100%
+	{
+		pre-transform-scale2d: 1.0;
+	}
+}
+
+@keyframes PopOutClose
+{
+	0%
+	{
+		pre-transform-scale2d: 1;
+	}
+
+	50%
+	{
+		pre-transform-scale2d: 1.05;
+	}
+
+	100%
+	{
+		pre-transform-scale2d: 0.9;
+	}
+}
+
+
+// 拼接弹窗背景
+.EOM_PopupBG
+{
+	width: 100%;
+	height: 100%;
+
+	// background-color: #13151C;
+	// opacity: 0.95;
+	// margin: -15px;
+	&.Tui7
+	{
+		.EOM_TitleBG
+		{
+			horizontal-align: center;
+			width: 480px;
+			height: 54px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui7/popup_title_bg.png");
+			background-size: 100%;
+			z-index: 3;
+		}
+
+		.EOM_Texture
+		{
+			width: 100%;
+			height: 100%;
+			margin-top: 13px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui7/bg.png");
+			background-size: 100%;
+			z-index: 4;
+		}
+
+		.EOM_LeftTopBG
+		{
+			align: left top;
+			width: 120px;
+			height: 120px;
+			margin-top: 13px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui7/left_top.png");
+			background-size: 100%;
+			background-repeat: no-repeat;
+
+			z-index: 2;
+		}
+
+		.EOM_CenterTopBG
+		{
+			align: center top;
+			width: 100%;
+			height: 120px;
+			margin-top: 13px;
+			margin-left: 120px;
+			margin-right: 120px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui7/center_top.png");
+			background-size: 100%;
+			background-repeat: repeat-x;
+		}
+
+		.EOM_RightTopBG
+		{
+			align: right top;
+			width: 120px;
+			height: 120px;
+			margin-top: 13px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui7/right_top.png");
+			background-size: 100%;
+			background-repeat: no-repeat;
+
+			z-index: 2;
+		}
+
+		.EOM_CenterCenterBG
+		{
+			align: center center;
+			width: 100%;
+			height: 100%;
+			margin: 120px;
+			margin-top: 133px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui7/center.png");
+			background-size: 100%;
+			background-repeat: no-repeat;
+			z-index: -1;
+		}
+
+		.EOM_LeftCenterBG
+		{
+			align: left center;
+			width: 120px;
+			height: 100%;
+			margin-top: 133px;
+			margin-bottom: 120px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui7/left_center.png");
+			background-size: 100%;
+			background-repeat: repeat-y;
+		}
+
+		.EOM_RightCenterBG
+		{
+			align: right center;
+			width: 120px;
+			height: 100%;
+			margin-top: 133px;
+			margin-bottom: 120px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui7/right_center.png");
+			background-size: 100%;
+			background-repeat: repeat-y;
+		}
+
+		.EOM_LeftBottomBG
+		{
+			align: left bottom;
+			width: 120px;
+			height: 120px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui7/left_bottom.png");
+			background-size: 100%;
+			background-repeat: no-repeat;
+
+			z-index: 2;
+		}
+
+		.EOM_CenterBottomBG
+		{
+			align: center bottom;
+			width: 100%;
+			height: 120px;
+			margin-left: 120px;
+			margin-right: 120px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui7/center_bottom.png");
+			background-size: 100%;
+			background-repeat: repeat-x;
+		}
+
+		.EOM_RightBottomBG
+		{
+			align: right bottom;
+			width: 120px;
+			height: 120px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui7/right_bottom.png");
+			background-size: 100%;
+			background-repeat: no-repeat;
+
+			z-index: 2;
+		}
+	}
+
+	&.Tui3
+	{
+		.EOM_TitleBG
+		{
+			// horizontal-align: center;
+			// width: 480px;
+			// height: 54px;
+			// background-image: url("file://{images}/custom_game/eom_design/popup/Tui3/popup_title_bg.png");
+			// background-size: 100%;
+			// z-index: 3;
+		}
+
+		.EOM_Texture
+		{
+			// width: 100%;
+			// height: 100%;
+			// margin-top: 13px;
+			// background-image: url("file://{images}/custom_game/eom_design/popup/Tui3/bg.png");
+			// background-size: 100%;
+			// z-index: 4;
+		}
+
+		.EOM_LeftTopBG
+		{
+			align: left top;
+			width: 37px;
+			height: 37px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui3/left_top.png");
+			background-size: 100%;
+			background-repeat: no-repeat;
+
+			z-index: 2;
+		}
+
+		.EOM_CenterTopBG
+		{
+			align: center top;
+			width: 100%;
+			height: 37px;
+			margin-left: 37px;
+			margin-right: 37px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui3/center_top.png");
+			background-size: 100%;
+			background-repeat: repeat-x;
+		}
+
+		.EOM_RightTopBG
+		{
+			align: right top;
+			width: 37px;
+			height: 37px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui3/right_top.png");
+			background-size: 100%;
+			background-repeat: no-repeat;
+
+			z-index: 2;
+		}
+
+		.EOM_CenterCenterBG
+		{
+			align: center center;
+			width: 100%;
+			height: 100%;
+			margin: 37px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui3/center.png");
+			background-size: 100%;
+			background-repeat: no-repeat;
+			z-index: -1;
+		}
+
+		.EOM_LeftCenterBG
+		{
+			align: left center;
+			width: 37px;
+			height: 100%;
+			margin-top: 37px;
+			margin-bottom: 37px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui3/left_center.png");
+			background-size: 100%;
+			background-repeat: repeat-y;
+		}
+
+		.EOM_RightCenterBG
+		{
+			align: right center;
+			width: 37px;
+			height: 100%;
+			margin-top: 37px;
+			margin-bottom: 37px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui3/right_center.png");
+			background-size: 100%;
+			background-repeat: repeat-y;
+		}
+
+		.EOM_LeftBottomBG
+		{
+			align: left bottom;
+			width: 37px;
+			height: 37px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui3/left_bottom.png");
+			background-size: 100%;
+			background-repeat: no-repeat;
+
+			z-index: 2;
+		}
+
+		.EOM_CenterBottomBG
+		{
+			align: center bottom;
+			width: 100%;
+			height: 37px;
+			margin-left: 37px;
+			margin-right: 37px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui3/center_bottom.png");
+			background-size: 100%;
+			background-repeat: repeat-x;
+		}
+
+		.EOM_RightBottomBG
+		{
+			align: right bottom;
+			width: 37px;
+			height: 37px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui3/right_bottom.png");
+			background-size: 100%;
+			background-repeat: no-repeat;
+
+			z-index: 2;
+		}
+	}
+
+	&.P2
+	{
+		background-color: #1b1e28f2;
+		border: 1px solid #62758B;
+		box-shadow: #00000088 0px 0px 4px 2px;
+	}
+
+	&.C4
+	{
+		&.normal
+		{
+			background-image: url("file://{images}/custom_game/eom_design/popup/C4/frame_small.png");
+		}
+
+		&.small
+		{
+			background-image: url("file://{images}/custom_game/eom_design/popup/C4/frame_small.png");
+		}
+
+		&.large
+		{
+			background-image: url("file://{images}/custom_game/eom_design/popup/C4/frame_big.png");
+		}
+
+		.EOM_TitleBG
+		{
+			// background-image: url("file://{images}/custom_game/hud/board_title.png");
+			background-size: 100%;
+			width: 100%;
+			height: 58px;
+			z-index: 10;
+		}
+
+		.EOM_Material
+		{
+			margin-left: 8px;
+			margin-right: 8px;
+			margin-top: 40px;
+			margin-bottom: 8px;
+			width: 100%;
+			height: 100%;
+			// background-color: gradient(linear, 0% 0%, 100% 100%, from(#1a2b57), to(#3c4f85));
+			border-radius: 10px;
+			// box-shadow: #00000088 0px 0px 32px 1px;
+		}
+	}
+
+	&.Tui10
+	{
+		.EOM_HeaderBG
+		{
+			width: 100%;
+			height: 54px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui10/title.png");
+			background-size: 100%;
+		}
+
+		.EOM_Texture
+		{
+			width: 100%;
+			height: 100%;
+			margin-top: 54px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui10/content.png");
+			background-size: 100%;
+		}
+
+		.EOM_TitleRect
+		{
+			margin-left: 19px;
+			margin-top: 15px;
+			width: 25px;
+			height: 25px;
+			z-index: 1;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui10/title_rect.png");
+			background-size: 100%;
+		}
+	}
+
+	&.Tui12
+	{
+		background-size: 100%;
+
+		&.normal
+		{
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/jn_tc_middle.png");
+		}
+
+		&.small
+		{
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/jn_tc_small.png");
+		}
+
+		&.large
+		{
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/jn_tc_big.png");
+		}
+
+		.EOM_TitleBG
+		{
+			margin-top: 32px;
+			background-image: url("file://{images}/custom_game/eom_design/popup/Tui12/popup_title.png");
+			background-size: 100%;
+			width: 558px;
+			height: 50px;
+			horizontal-align: center;
+			z-index: 10;
+
+			.large &
+			{
+				opacity: 0;
+			}
+
+			.normal &
+			{
+				opacity: 0;
+			}
+		}
+
+		.EOM_Material
+		{
+			margin-left: 8px;
+			margin-right: 8px;
+			margin-top: 40px;
+			margin-bottom: 8px;
+			width: 100%;
+			height: 100%;
+			// background-color: gradient(linear, 0% 0%, 100% 100%, from(#1a2b57), to(#3c4f85));
+			border-radius: 10px;
+			// box-shadow: #00000088 0px 0px 32px 1px;
+		}
+	}
+}

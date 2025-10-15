@@ -1,0 +1,751 @@
+.EOM_MenuLayout
+{
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+
+	transform: translateY(-30px);
+	transition-property: opacity, transform;
+	transition-duration: 0.24s;
+	transition-timing-function: ease-out;
+
+	&.Show
+	{
+		sound: "UI.Menu.Open";
+		opacity: 1;
+		transform: translateY(0px);
+	}
+
+	.CurrencyGroup
+	{
+		z-index: 2;
+	}
+
+	.EOM_CloseButton
+	{
+		margin-top: 84px;
+		margin-right: 21px;
+		horizontal-align: right;
+		z-index: 2;
+	}
+
+	#TopBottomBG
+	{
+		width: 100%;
+		height: 78px;
+		background-image: url("file://{images}/custom_game/hud/top_bottom.png");
+		background-size: 100%;
+		z-index: 1;
+	}
+
+	#WindowTitle
+	{
+		align: center top;
+		margin-top: 15px;
+
+		Label
+		{
+			font-size: 24px;
+			font-weight: normal;
+			color: #3b89d1;
+			text-shadow: 0px 0px 2px 4 rgba(0, 0, 0, 0.5);
+		}
+	}
+
+}
+
+.EOM_MenuLayout_Content
+{
+	opacity: 0;
+
+	&.Show
+	{
+		opacity: 1;
+	}
+}
+
+/** C4 */
+.EOM_MenuLayout.C4
+{
+	background-image: url("file://{images}/custom_game/eom_design/layout/C4/main_background.png");
+	background-size: 100%;
+
+	.EOM_CloseButton
+	{
+		margin-top: 20px;
+		margin-right: 26px;
+		horizontal-align: right;
+	}
+}
+
+/** 左侧菜单 */
+.EOM_MenuLayout_Menu.C4
+{
+	width: 220px;
+	height: 100%;
+	background-image: url("file://{images}/custom_game/eom_design/layout/C4/menu_background.png");
+	background-size: 100%;
+	overflow: squish scroll;
+	padding-top: 140px;
+	flow-children: down;
+
+	VerticalScrollBar
+	{
+		opacity: 0;
+	}
+
+	.TabButton
+	{
+		width: 220px;
+		height: 68px;
+		z-index: 1;
+
+		transition-property: position;
+		transition-duration: 0.1s;
+		transition-timing-function: ease-in-out;
+
+		&.Selected,
+		&:selected
+		{
+			.TabBackgroundArrow
+			{
+				background-image: url("file://{images}/custom_game/eom_design/layout/C4/tag_arrow_2.png");
+			}
+		}
+
+		&.Selected,
+		&:hover,
+		&:selected
+		{
+
+			Label
+			{
+				color: #dfe0ed;
+			}
+
+			.TabBackgroundActive
+			{
+				opacity: 1;
+			}
+		}
+
+		Label
+		{
+			align: center center;
+			color: #6f6f80;
+			text-shadow: 0px 2px 2px 2 #000000;
+			font-size: 24px;
+			transition-property: color;
+			transition-timing-function: ease-in-out;
+			transition-duration: 0.4s;
+			margin-left: 40px;
+			margin-right: 35px;
+		}
+
+		.english
+		{
+			font-size: 17px;
+			text-align: center;
+		}
+
+		.russian
+		{
+			font-size: 17px;
+			text-align: center;
+		}
+
+		.TabBackgroundArrow
+		{
+			width: 50px;
+			height: 50px;
+			vertical-align: center;
+			background-image: url("file://{images}/custom_game/eom_design/layout/C4/tag_arrow_1.png");
+			background-position: center;
+			background-repeat: no-repeat;
+			opacity: 1;
+			z-index: -1;
+			// transition-property: background-image;
+			// transition-timing-function: ease-in-out;
+			// transition-duration: 0.2s;
+		}
+
+		.TabBackgroundActive
+		{
+			width: 100%;
+			height: 100%;
+			z-index: -1;
+			opacity: 0;
+
+			transition-property: opacity;
+			transition-duration: 0.2s;
+			transition-timing-function: ease-in-out;
+
+			background-image: url("file://{images}/custom_game/eom_design/layout/C4/tag_hightlight_1.png");
+		}
+
+		.MenuMarkIcon
+		{
+			align: right top;
+			margin-top: 0px;
+			margin-right: 6px;
+			z-index: 1;
+		}
+	}
+
+	.SecondaryContainer
+	{
+		width: 100%;
+		opacity: 0;
+		max-height: 0px;
+		// padding: 10px 0px;
+		background-color: gradient(linear, 0% 100%, 0% 0%, from(#333E7E), to(#1C1F3C));
+		// visibility: collapse;
+		flow-children: down;
+		transition-property: height, max-height, position;
+		transition-duration: 0.1s;
+		transition-timing-function: ease-in-out;
+		z-index: 0;
+
+		&.Selected,
+		&:selected
+		{
+			// visibility: visible;
+			max-height: 300px;
+			opacity: 1;
+
+			.SecondaryMenuButton
+			{
+				visibility: visible;
+				transform: translateY(0px);
+			}
+		}
+
+		.SecondaryMenuButton
+		{
+			visibility: collapse;
+			width: 219px;
+			height: 36px;
+			margin-left: 4px;
+			margin: 10px 1px;
+			overflow: noclip;
+			transition-property: transform;
+			transition-timing-function: cubic-bezier(.65, .1, .9, .31);
+			transition-duration: 0.3s;
+
+			Label
+			{
+				align: left center;
+				color: #dfe0ed;
+				margin-left: 59px;
+				text-shadow: 0px 2px 2px 2 #000000;
+				font-size: 20px;
+				transition-property: color, transform;
+				transition-timing-function: ease-in-out;
+				transition-duration: 0.4s;
+				width: 158px;
+			}
+
+			.english
+			{
+				font-size: 17px;
+			}
+
+			&.Selected,
+			&:selected
+			{
+				sound: "ui_find_match_change_options";
+			}
+
+			&:hover,
+			&.Selected,
+			&:selected
+			{
+				background-size: 100%;
+				background-image: url("file://{images}/custom_game/eom_design/layout/C4/tag_hightlight_2.png");
+
+				.SecondaryBackgroundActive
+				{
+					opacity: 1;
+				}
+
+				// .SecondaryBackground {
+				// 	opacity: 0;
+				// }
+				.SecondaryCheckBox
+				{
+					background-image: url("file://{images}/custom_game/eom_design/layout/C4/z_icon_tag_04.png");
+
+				}
+			}
+
+			.SecondaryCheckBox
+			{
+				vertical-align: center;
+				width: 16px;
+				margin-left: 20px;
+				height: 16px;
+				background-image: url("file://{images}/custom_game/eom_design/layout/C4/z_icon_tag_03.png");
+
+			}
+
+			// .SecondaryBackground {
+			// 	width: 206px;
+			// 	height: 40px;
+			// 	vertical-align: center;
+			// 	background-image: url("file://{images}/custom_game/store/secondary_butto.png");
+			// 	background-size: 100%;
+			// 	opacity: 1;
+			// 	z-index: -1;
+			// 	transition-property: opacity;
+			// 	transition-timing-function: ease-in-out;
+			// 	transition-duration: 0.2s;
+			// }
+
+			.SecondaryBackgroundActive
+			{
+				horizontal-align: center;
+
+				z-index: -1;
+				background-image: url("file://{images}/custom_game/eom_design/layout/C4/tag_hightlight_2.png");
+				background-repeat: no-repeat;
+				opacity: 1;
+				transition-property: opacity;
+				transition-duration: 0.2s;
+				transition-timing-function: ease-in-out;
+			}
+		}
+	}
+}
+
+/** 右侧内容 */
+.EOM_MenuLayout_Content.C4
+{
+	width: 100%;
+	height: 100%;
+	margin-left: 220px;
+	padding-top: 140px;
+}
+
+/** Tui12 */
+.EOM_MenuLayout.Tui12
+{
+	background-image: url("file://{images}/custom_game/eom_design/layout/Tui12/s_bg.png");
+	background-size: 100%;
+
+	#EOM_MenuLayoutBGScene
+	{
+		align: center center;
+		width: 100%;
+		height: width-percentage(100%);
+		z-index: -100;
+	}
+
+	.EOM_CloseButton
+	{
+		margin-top: 13px;
+		margin-right: 28px;
+		horizontal-align: right;
+	}
+
+	#TopBottomBG
+	{
+		width: 100%;
+		height: 86px;
+		background-image: url("file://{images}/custom_game/eom_design/layout/Tui12/b_bar_top.png");
+		z-index: 1;
+	}
+}
+
+// .AspectRatio4x3
+// {
+// 	.EOM_MenuLayout_Menu.Tui12
+// 	{
+// 		ui-scale: 80%;
+// 		margin-top: 160px;
+// 	}
+// }
+
+// .AspectRatio16x10
+// {
+// 	.EOM_MenuLayout_Menu.Tui12
+// 	{
+// 		ui-scale: 90%;
+// 		margin-top: 120px;
+// 	}
+// }
+
+/** 左侧菜单 */
+.EOM_MenuLayout_Menu.Tui12
+{
+	width: 273px;
+	height: 895px;
+	margin-top: 108px;
+	margin-left: 13px;
+	background-image: url("file://{images}/custom_game/eom_design/layout/Tui12/cvt_bar_liebiao.png");
+	background-size: 8px 888px;
+	background-position: left 32px top 0px;
+	background-repeat: no-repeat;
+	overflow: squish scroll;
+	flow-children: down;
+	padding-top: 41px;
+	z-index: 1;
+
+	VerticalScrollBar
+	{
+		opacity: 0;
+	}
+
+	.TabButton
+	{
+		horizontal-align: center;
+		width: 254px;
+		height: 48px;
+		margin-top: 10px;
+		margin-bottom: 20px;
+		// padding-top: 10px;
+		// padding-right: 54px;
+		z-index: 1;
+		flow-children: right;
+		overflow: noclip;
+		background-size: 100%;
+
+		transition-property: position, background-image;
+		transition-duration: 0.1s;
+		transition-timing-function: ease-in-out;
+
+		#SelectedParticle
+		{
+			ignore-parent-flow: true;
+			width: 200px;
+			height: 200px;
+			align: center center;
+			opacity: 0;
+		}
+
+		&:hover
+		{
+			.TabLabel
+			{
+				brightness: 2;
+			}
+		}
+
+		&.Selected,
+		&:selected
+		{
+			sound: "UI.TabButton";
+			background-image: url("file://{images}/custom_game/eom_design/layout/Tui12/cvt_button_liebiao1.png");
+
+			.TabBackgroundArrow
+			{
+				background-image: url("file://{images}/custom_game/eom_design/layout/Tui12/cvt_tag_jiantou.png");
+				// wash-color: #825C37;
+			}
+
+			.TabIcon
+			{
+				opacity: 0;
+				background-image: url("file://{images}/custom_game/eom_design/layout/Tui12/sidebar_icon.png");
+			}
+
+			.TabLabel
+			{
+				// color: #41260C;
+				// text-shadow: 0px 1px 4px 0 #71541B;
+				color: #FFF0BA;
+				text-shadow: 0px 1px 4px 4 #71541B;
+			}
+
+			#SelectedParticle
+			{
+				opacity: 1;
+			}
+		}
+
+		&.Selected,
+		&:hover,
+		&:selected
+		{
+			.TabBackgroundActive
+			{
+				opacity: 1;
+			}
+		}
+
+		.TabLabel
+		{
+			vertical-align: center;
+			margin: 0px 4px 0px 9px;
+			font-size: 22px;
+			color: #A69F87;
+			// text-shadow: 0px 1px 4px 2 #71541B;
+			transition-property: color, brightness;
+			transition-timing-function: ease-in-out;
+			transition-duration: 0.1s;
+		}
+
+		.english
+		{
+			font-size: 17px;
+			// text-align: center;
+		}
+
+		.russian
+		{
+			font-size: 17px;
+			// text-align: center;
+		}
+
+		.TabIcon
+		{
+			width: 26px;
+			height: 26px;
+			vertical-align: center;
+			margin-left: 13px;
+			// background-image: url("file://{images}/custom_game/eom_design/layout/Tui12/cvt_tag_dian2.png");
+			background-image: url("file://{images}/custom_game/eom_design/layout/Tui12/cvt_tag_dian3.png");
+
+			// background-size: 16px 16px;
+			background-size: 100%;
+
+			background-repeat: no-repeat;
+			background-position: center center;
+		}
+
+		&.HasSecondaryMenu .TabIcon
+		{
+			background-image: url("file://{images}/custom_game/eom_design/layout/Tui12/cvt_tag_dian3.png");
+			background-size: 100%;
+		}
+
+		.TabBackgroundArrow
+		{
+			width: 36px;
+			height: 28px;
+			vertical-align: center;
+			background-image: url("file://{images}/custom_game/eom_design/layout/Tui12/cvt_tag_jiantou2.png");
+			background-position: center;
+			background-repeat: no-repeat;
+			opacity: 1;
+			z-index: -1;
+			// wash-color: #FFE1A0;
+			// transition-property: background-image;
+			// transition-timing-function: ease-in-out;
+			// transition-duration: 0.2s;
+		}
+
+		#RedMark
+		{
+			width: 30px;
+			height: 30px;
+			background-image: url("file://{images}/custom_game/icon/dot_small.png");
+			background-size: 100%;
+			align: right center;
+			margin-right: 30px;
+		}
+
+		.TabBackgroundActive
+		{
+			width: 100%;
+			height: 100%;
+			z-index: -1;
+			opacity: 0;
+
+			transition-property: opacity;
+			transition-duration: 0.2s;
+			transition-timing-function: ease-in-out;
+
+			background-image: url("file://{images}/custom_game/eom_design/layout/Tui12/tag_hightlight_1.png");
+		}
+
+		.MenuMarkIcon
+		{
+			align: right top;
+			margin-top: 0px;
+			margin-right: 6px;
+			z-index: 1;
+		}
+	}
+
+	.SecondaryContainer
+	{
+		width: 100%;
+		max-height: 0px;
+		margin-left: 19px;
+		opacity: 0;
+		// padding: 10px 0px;
+		// background-color: gradient(linear, 0% 100%, 0% 0%, from(#333E7E), to(#1C1F3C));
+		// visibility: collapse;
+		flow-children: down;
+		transition-property: height, max-height, position;
+		transition-duration: 0.1s;
+		transition-timing-function: ease-in-out;
+		z-index: 0;
+
+		&.Selected,
+		&:selected
+		{
+			// visibility: visible;
+			max-height: 600px;
+			opacity: 1;
+
+			.SecondaryMenuButton
+			{
+				visibility: visible;
+				transform: translateY(0px);
+			}
+		}
+
+		.SecondaryMenuButton
+		{
+			visibility: collapse;
+			width: 220px;
+			height: 32px;
+			margin: 10px 1px;
+			padding-left: 12px;
+			transition-property: transform;
+			transition-timing-function: cubic-bezier(.65, .1, .9, .31);
+			transition-duration: 0.3s;
+
+			Label
+			{
+				// align: left center;
+				margin-top: 8px;
+				margin-left: 26px;
+				font-size: 18px;
+				color: #A69F87;
+				text-shadow: 0px 1px 2px 2 #000000;
+				transition-property: color, transform;
+				transition-timing-function: ease-in-out;
+				transition-duration: 0.1s;
+				width: 100%;
+				margin-right: 40px;
+				text-overflow: shrink;
+			}
+
+			.english
+			{
+				font-size: 17px;
+			}
+
+			&.Selected,
+			&:selected
+			{
+				sound: "ui_find_match_change_options";
+				background-image: url("file://{images}/custom_game/eom_design/layout/Tui12/cvt_button_liebiao2.png");
+				background-size: 100%;
+
+				.SecondaryCheckBox
+				{
+					background-img-opacity: 0;
+
+				}
+			}
+
+			&:hover,
+			&.Selected,
+			&:selected
+			{
+				.SecondaryBackgroundActive
+				{
+					opacity: 1;
+				}
+
+				// .SecondaryBackground {
+				// 	opacity: 0;
+				// }
+
+				Label
+				{
+					// color: #FEF9D0;
+					// text-shadow: 0px 1px 2px 2 #000000;
+					color: #FFF0BA;
+					text-shadow: 0px 1px 4px 4 #71541B;
+				}
+			}
+
+			.SecondaryCheckBox
+			{
+				vertical-align: center;
+				width: 8px;
+				height: 8px;
+				background-size: 100%;
+				background-image: url("file://{images}/custom_game/eom_design/layout/Tui12/cvt_tag_dian1.png");
+				// background-img-opacity: 0;
+				transition-property: background-img-opacity;
+				transition-duration: 0.1s;
+				transition-timing-function: linear;
+
+			}
+
+			// .SecondaryBackground {
+			// 	width: 206px;
+			// 	height: 40px;
+			// 	vertical-align: center;
+			// 	background-image: url("file://{images}/custom_game/store/secondary_butto.png");
+			// 	background-size: 100%;
+			// 	opacity: 1;
+			// 	z-index: -1;
+			// 	transition-property: opacity;
+			// 	transition-timing-function: ease-in-out;
+			// 	transition-duration: 0.2s;
+			// }
+
+			.SecondaryBackgroundActive
+			{
+				horizontal-align: center;
+
+				z-index: -1;
+				background-image: url("file://{images}/custom_game/eom_design/layout/C4/tag_hightlight_2.png");
+				background-repeat: no-repeat;
+				opacity: 1;
+				transition-property: opacity;
+				transition-duration: 0.2s;
+				transition-timing-function: ease-in-out;
+			}
+
+			#RedMark
+			{
+				width: 30px;
+				height: 30px;
+				background-image: url("file://{images}/custom_game/icon/dot_small.png");
+				background-size: 100%;
+				align: right center;
+				margin-right: 10px;
+			}
+		}
+	}
+}
+
+// .AspectRatio4x3
+// {
+// 	.EOM_MenuLayout_Content.Tui12
+// 	{
+// 		ui-scale: 80%;
+// 		vertical-align: center;
+// 		padding-left: 280px;
+// 		padding-top: 188px;
+// 		padding-bottom: 180px;
+// 	}
+// }
+
+// .AspectRatio16x10
+// {
+// 	.EOM_MenuLayout_Content.Tui12
+// 	{
+// 		ui-scale: 90%;
+// 		vertical-align: center;
+// 		padding-left: 280px;
+// 		padding-top: 148px;
+// 		padding-bottom: 80px;
+// 	}
+// }
+
+.EOM_MenuLayout_Content.Tui12
+{
+	width: 100%;
+	height: 100%;
+	padding-left: 310px;
+	padding-right: 20px;
+	padding-top: 80px;
+}

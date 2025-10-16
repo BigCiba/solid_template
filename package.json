@@ -12,8 +12,17 @@
 		"FlyoutScoreboard": [],
 		"Tooltip": [],
 		"ContextMenu": [],
-		"Common": [],
-		"scripts": [],
+		"Polyfill": [
+			"index.ts"
+		],
+		"ManifestScripts": [
+			"request.js",
+			"click.js",
+			"init.js",
+			"red_point.js",
+			"netdata.js",
+			"test.ts"
+		],
 		"kv": []
 	},
 	"scripts": {

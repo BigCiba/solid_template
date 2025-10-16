@@ -3,7 +3,12 @@
 		<include src="file://{resources}/scripts/custom_game/TooltipList.js"/>
 
 
-
+		<include src="file://{resources}/scripts/custom_game/manifest_scripts/request.js"/>
+		<include src="file://{resources}/scripts/custom_game/manifest_scripts/click.js"/>
+		<include src="file://{resources}/scripts/custom_game/manifest_scripts/init.js"/>
+		<include src="file://{resources}/scripts/custom_game/manifest_scripts/red_point.js"/>
+		<include src="file://{resources}/scripts/custom_game/manifest_scripts/netdata.js"/>
+		<include src="file://{resources}/scripts/custom_game/manifest_scripts/test.js"/>
 		<include src="file://{resources}/scripts/custom_game/panorama-polyfill.js"/>
 	</scripts>
 	<Panel>

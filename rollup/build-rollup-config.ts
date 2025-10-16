@@ -8,12 +8,13 @@ import path, { join } from 'node:path';
 import { RollupWatchOptions } from 'rollup';
 import { fixLibs } from "./plugin-libs-inject";
 import { GenerateCustomUIManifest } from './plugin-manifest';
+import { GeneratePolyfill } from './plugin-polyfill';
 import { SaveFresh } from "./plugin-save-fresh";
 import { GenerateXML } from './plugin-xml';
 import { rollupPluginLess } from './rollup-plugin-less';
 import compatiblePanorama from './rollup-plugin-panorama';
 import { rollupPluginXML } from './rollup-plugin-xml';
-import { Common, ContextMenu, Panorama, Tooltip } from './utils';
+import { ContextMenu, Panorama, Tooltip } from './utils';
 
 interface PackageInfo {
 	name: string,
@@ -23,8 +24,7 @@ interface PackageInfo {
 		FlyoutScoreboard?: string[],
 		Tooltip?: string[],
 		ContextMenu?: string[],
-		Common?: string[],
-		scripts?: string[],
+		ManifestScripts?: string[],
 		kv?: string[],
 		ServiceConfig?: Record<string, any>,
 	};
@@ -38,7 +38,7 @@ export default function GetRollupWatchOptions(rootPath: string, packageInfo: Pac
 		name: string;
 		type: 'Hud' | 'FlyoutScoreboard';
 	}[] = [];
-	let Scripts: string[] = [];
+	let ManifestScripts: string[] = [];
 	let KVList: string[] = [];
 	let ConfigureList: string[] = [];
 	let TooltipList: string[] = [];
@@ -63,9 +63,9 @@ export default function GetRollupWatchOptions(rootPath: string, packageInfo: Pac
 			ConfigureList.push(panorama.ServiceConfig[configure].output_name ?? configure);
 		}
 	}
-	if (panorama.scripts) {
-		for (const script of panorama.scripts) {
-			Scripts.push(script);
+	if (panorama.ManifestScripts) {
+		for (const script of panorama.ManifestScripts) {
+			ManifestScripts.push(script);
 		}
 	}
 	// 入口文件夹
@@ -96,16 +96,6 @@ export default function GetRollupWatchOptions(rootPath: string, packageInfo: Pac
 			return false;
 		});
 	}
-	if (panorama.Common) {
-		panorama.Common.filter(v => {
-			let p = path.join(pagesUrl, `${v}/${v}.tsx`);
-			if (existsSync(p)) {
-				inputFiles.push(p);
-				return true;
-			}
-			return false;
-		});
-	}
 	if (panorama.CustomLoadingScreen) {
 		inputFiles.push(path.join(pagesUrl, `${panorama.CustomLoadingScreen}/${panorama.CustomLoadingScreen}.tsx`));
 	}
@@ -116,9 +106,6 @@ export default function GetRollupWatchOptions(rootPath: string, packageInfo: Pac
 	if (panorama.ContextMenu) {
 		console.log(panorama.ContextMenu.map(v => ContextMenu + ' 👁️  ' + v).join('\n'));
 	}
-	if (panorama.Common) {
-		console.log(panorama.Common.map(v => Common + ' 👁️  ' + v).join('\n'));
-	}
 
 	const layoutDir = join(
 		__dirname,
@@ -128,6 +115,13 @@ export default function GetRollupWatchOptions(rootPath: string, packageInfo: Pac
 	const scriptsDir = join(
 		__dirname,
 		'../content/' + addonName + '/panorama/scripts/custom_game'
+	);
+
+	const polyfillRoot = join(__dirname, '../src/polyfill');
+	const packageFile = join(__dirname, '../package.json');
+	const polyfillOutput = join(
+		__dirname,
+		'../content/' + addonName + '/panorama/scripts/custom_game/panorama-polyfill.js'
 	);
 
 	const stylesDir = join(
@@ -238,9 +232,14 @@ export default function GetRollupWatchOptions(rootPath: string, packageInfo: Pac
 					return filename;
 				}
 			}),
+			GeneratePolyfill({
+				packageFile,
+				rootDir: polyfillRoot,
+				outputFile: polyfillOutput
+			}),
 			GenerateCustomUIManifest({
 				PanelList,
-				Scripts,
+				ManifestScripts: ManifestScripts,
 				KVList,
 				TooltipList,
 				ConfigureList,
@@ -248,14 +247,6 @@ export default function GetRollupWatchOptions(rootPath: string, packageInfo: Pac
 				dir: layoutDir,
 				scriptsDir: scriptsDir,
 			}),
-			// GenerateLoadingScreen({
-			// 	loadingScreen: panorama.CustomLoadingScreen,
-			// 	rootPath: pagesUrl,
-			// 	dir: join(
-			// 		__dirname,
-			// 		'../content/' + addonName + '/panorama/layout/custom_game'
-			// 	)
-			// }),
 			fixLibs(),
 			SaveFresh(),
 		]

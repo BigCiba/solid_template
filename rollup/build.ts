@@ -1,8 +1,7 @@
 import color from 'cli-color';
-import path, { join } from 'path';
+import { copyFileSync, existsSync, mkdirSync } from 'fs';
+import path from 'path';
 import * as rollup from 'rollup';
-import { bundlePanoramaPolyfill } from 'solid-panorama-polyfill';
-import { buildPolyfill } from './build-polyfill';
 import GetRollupWatchOptions from './build-rollup-config';
 import { dirExists, fileColor, normalizedPath, Panorama, ReadAddonName, ReadPackage, Tooltip } from './utils';
 
@@ -55,6 +54,17 @@ async function StartRollup(): Promise<void> {
     });
 }
 
+function copySolidCore(addonName: string) {
+    const source = path.join(__dirname, 'solid-core.js');
+    const target = path.join(__dirname, `../content/${addonName}/panorama/scripts/custom_game/solid-core.js`);
+    const dir = path.dirname(target);
+    if (!existsSync(dir)) {
+        mkdirSync(dir, { recursive: true });
+    }
+    copyFileSync(source, target);
+    console.log('📁 solid-core.js 已复制到自定义游戏目录');
+}
+
 /**
  * 任务入口
  */
@@ -62,21 +72,7 @@ export default async function TaskPUI() {
     const addonName = await ReadAddonName();
     if (addonName) {
         if (await dirExists(`./content/${addonName}`)) {
-            // 首先编译 polyfill TypeScript 文件
-            console.log('🔨 Building polyfill...');
-            await buildPolyfill();
-
-            await bundlePanoramaPolyfill({
-                output: `./content/${addonName}/panorama/scripts/custom_game/panorama-polyfill.js`,
-                using: { console: true, timers: true },
-                merges: [join(__dirname, 'custom-polyfill.js')]
-            });
-            await bundlePanoramaPolyfill({
-                output: `./content/${addonName}/panorama/scripts/custom_game/solid-core.js`,
-                using: {},
-                merges: [join(__dirname, 'solid-core.js')]
-            });
-
+            copySolidCore(addonName);
             StartRollup();
         } else {
             console.error(`./content/${addonName} 目录不存在，检查package.json的name属性`);

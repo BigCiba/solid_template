@@ -1,0 +1,100 @@
+{
+	"title": "Solid Panorama Package.json",
+	"allOf": [
+		{
+			"type": "object",
+			"properties": {
+				"panorama": {
+					"type": "object",
+					"description": "Solid Panorama 构建配置。",
+					"properties": {
+						"Hud": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"description": "HUD 面板入口名称列表。"
+						},
+						"CustomLoadingScreen": {
+							"type": [
+								"string",
+								"null"
+							],
+							"description": "自定义加载界面面板名称，未使用时设为 null。"
+						},
+						"FlyoutScoreboard": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"description": "记分板面板名称列表。"
+						},
+						"Tooltip": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"description": "Tooltip面板名称列表。"
+						},
+						"ContextMenu": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"description": "右键菜单面板名称列表。"
+						},
+						"Polyfill": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"description": "需要合并到 panorama-polyfill.js 的 polyfill 文件列表，路径相对于 src/polyfill。"
+						},
+						"ManifestScripts": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"description": "位于 src/manifest_scripts 目录下的初始化脚本脚本文件名。支持 .js 和 .ts 文件。"
+						},
+						"kv": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"description": "需要加载的kv文件名列表。"
+						}
+					},
+					"required": [
+						"Hud",
+						"FlyoutScoreboard",
+						"Tooltip",
+						"ContextMenu",
+						"ManifestScripts",
+						"kv"
+					],
+					"additionalProperties": false
+				},
+				"encryption": {
+					"type": "object",
+					"description": "vscripts的加密配置。",
+					"properties": {
+						"debug": {
+							"type": "boolean",
+							"description": "启用或禁用加密调试模式。"
+						},
+						"key": {
+							"type": "string",
+							"description": "对脚本进行加密时使用的加密密钥。"
+						}
+					},
+					"required": [
+						"debug",
+						"key"
+					],
+					"additionalProperties": false
+				}
+			}
+		}
+	]
+}

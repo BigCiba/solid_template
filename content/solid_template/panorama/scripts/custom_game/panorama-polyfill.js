@@ -1,4 +1,4 @@
-// Auto-generated from package.json Polyfill (index.ts)
+// Auto-generated from package.json Polyfill (index.ts, enums.ts)
 
 // ========== index.ts ==========
 /**
@@ -17,3 +17,14 @@ function SymbolSpliter(content, symbol1, symbol2) {
 !function () {
     // polyfill 初始化逻辑
 }();
+
+// ========== enums.ts ==========
+// 支付类型
+var PayType;
+(function (PayType) {
+    PayType[PayType["MONEY"] = 0] = "MONEY";
+    PayType[PayType["MOON"] = 100001] = "MOON";
+    PayType[PayType["STAR"] = 100002] = "STAR";
+    PayType[PayType["SHARD"] = 100003] = "SHARD";
+    PayType[PayType["COIN"] = 110001] = "COIN";
+})(PayType || (PayType = {}));

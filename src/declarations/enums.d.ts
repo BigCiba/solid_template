@@ -28,14 +28,6 @@ declare enum AbilityUpgradeKeyType {
 	UPGRADES_KEY_DATA = 0,
 	UPGRADES_KEY_CACHED_RESULT,
 }
-// 支付类型
-declare enum PayType {
-	MONEY = 0,
-	MOON = 100001,
-	STAR = 100002,
-	SHARD = 100003,
-	COIN = 110001,
-}
 
 // 单位
 declare enum Digit {

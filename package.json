@@ -13,7 +13,8 @@
 		"Tooltip": [],
 		"ContextMenu": [],
 		"Polyfill": [
-			"index.ts"
+			"index.ts",
+			"enums.ts"
 		],
 		"ManifestScripts": [
 			"request.js",

@@ -1,0 +1,11 @@
+"lang"
+{
+	"Language"		"Schinese"
+	"Tokens"
+	{
+		//schinese/hud/menu_bar.vdf
+"MenuButton_Return"		"返回"
+
+
+	}
+}

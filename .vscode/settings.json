@@ -6,5 +6,6 @@
 			],
 			"url": ".vscode/package.schema.json"
 		}
-	]
+	],
+	"dota2-tools.A5.localization_path": "${content}/localization"
 }

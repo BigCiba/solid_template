@@ -4,6 +4,7 @@ const IS_DEV = false;
 const equalFn = (a, b) => a === b;
 const $PROXY = Symbol("solid-proxy");
 const SUPPORTS_PROXY = typeof Proxy === "function";
+const $TRACK = Symbol("solid-track");
 const signalOptions = {
   equals: equalFn
 };
@@ -44,9 +45,31 @@ function createRoot(fn, detachedOwner) {
     Owner = owner;
   }
 }
+function createSignal(value, options) {
+  options = options ? Object.assign({}, signalOptions, options) : signalOptions;
+  const s = {
+    value,
+    observers: null,
+    observerSlots: null,
+    comparator: options.equals || undefined
+  };
+  const setter = value => {
+    if (typeof value === "function") {
+      value = value(s.value);
+    }
+    return writeSignal(s, value);
+  };
+  return [readSignal.bind(s), setter];
+}
 function createRenderEffect(fn, value, options) {
   const c = createComputation(fn, value, false, STALE);
   updateComputation(c);
+}
+function createEffect(fn, value, options) {
+  runEffects = runUserEffects;
+  const c = createComputation(fn, value, false, STALE);
+  if (!options || !options.render) c.user = true;
+  Effects ? Effects.push(c) : updateComputation(c);
 }
 function createMemo(fn, value, options) {
   options = options ? Object.assign({}, signalOptions, options) : signalOptions;
@@ -67,6 +90,13 @@ function untrack(fn) {
   } finally {
     Listener = listener;
   }
+}
+function onMount(fn) {
+  createEffect(() => untrack(fn));
+}
+function onCleanup(fn) {
+  if (Owner === null) ;else if (Owner.cleanups === null) Owner.cleanups = [fn];else Owner.cleanups.push(fn);
+  return fn;
 }
 function createContext(defaultValue, options) {
   const id = Symbol("context");
@@ -247,6 +277,15 @@ function completeUpdates(wait) {
 function runQueue(queue) {
   for (let i = 0; i < queue.length; i++) runTop(queue[i]);
 }
+function runUserEffects(queue) {
+  let i,
+    userLength = 0;
+  for (i = 0; i < queue.length; i++) {
+    const e = queue[i];
+    if (!e.user) runTop(e);else queue[userLength++] = e;
+  }
+  for (i = 0; i < userLength; i++) runTop(queue[i]);
+}
 function lookUpstream(node, ignore) {
   node.state = 0;
   for (let i = 0; i < node.sources.length; i += 1) {
@@ -334,6 +373,106 @@ function createProvider(id, options) {
       return children(() => props.children);
     }), undefined);
     return res;
+  };
+}
+
+const FALLBACK = Symbol("fallback");
+function dispose(d) {
+  for (let i = 0; i < d.length; i++) d[i]();
+}
+function mapArray(list, mapFn, options = {}) {
+  let items = [],
+    mapped = [],
+    disposers = [],
+    len = 0,
+    indexes = mapFn.length > 1 ? [] : null;
+  onCleanup(() => dispose(disposers));
+  return () => {
+    let newItems = list() || [],
+      newLen = newItems.length,
+      i,
+      j;
+    newItems[$TRACK];
+    return untrack(() => {
+      let newIndices, newIndicesNext, temp, tempdisposers, tempIndexes, start, end, newEnd, item;
+      if (newLen === 0) {
+        if (len !== 0) {
+          dispose(disposers);
+          disposers = [];
+          items = [];
+          mapped = [];
+          len = 0;
+          indexes && (indexes = []);
+        }
+        if (options.fallback) {
+          items = [FALLBACK];
+          mapped[0] = createRoot(disposer => {
+            disposers[0] = disposer;
+            return options.fallback();
+          });
+          len = 1;
+        }
+      }
+      else if (len === 0) {
+        mapped = new Array(newLen);
+        for (j = 0; j < newLen; j++) {
+          items[j] = newItems[j];
+          mapped[j] = createRoot(mapper);
+        }
+        len = newLen;
+      } else {
+        temp = new Array(newLen);
+        tempdisposers = new Array(newLen);
+        indexes && (tempIndexes = new Array(newLen));
+        for (start = 0, end = Math.min(len, newLen); start < end && items[start] === newItems[start]; start++);
+        for (end = len - 1, newEnd = newLen - 1; end >= start && newEnd >= start && items[end] === newItems[newEnd]; end--, newEnd--) {
+          temp[newEnd] = mapped[end];
+          tempdisposers[newEnd] = disposers[end];
+          indexes && (tempIndexes[newEnd] = indexes[end]);
+        }
+        newIndices = new Map();
+        newIndicesNext = new Array(newEnd + 1);
+        for (j = newEnd; j >= start; j--) {
+          item = newItems[j];
+          i = newIndices.get(item);
+          newIndicesNext[j] = i === undefined ? -1 : i;
+          newIndices.set(item, j);
+        }
+        for (i = start; i <= end; i++) {
+          item = items[i];
+          j = newIndices.get(item);
+          if (j !== undefined && j !== -1) {
+            temp[j] = mapped[i];
+            tempdisposers[j] = disposers[i];
+            indexes && (tempIndexes[j] = indexes[i]);
+            j = newIndicesNext[j];
+            newIndices.set(item, j);
+          } else disposers[i]();
+        }
+        for (j = start; j < newLen; j++) {
+          if (j in temp) {
+            mapped[j] = temp[j];
+            disposers[j] = tempdisposers[j];
+            if (indexes) {
+              indexes[j] = tempIndexes[j];
+              indexes[j](j);
+            }
+          } else mapped[j] = createRoot(mapper);
+        }
+        mapped = mapped.slice(0, len = newLen);
+        items = newItems.slice(0);
+      }
+      return mapped;
+    });
+    function mapper(disposer) {
+      disposers[j] = disposer;
+      if (indexes) {
+        const [s, set] = createSignal(j);
+        indexes[j] = set;
+        return mapFn(newItems[j], s);
+      }
+      return mapFn(newItems[j]);
+    }
   };
 }
 function createComponent$1(Comp, props) {
@@ -437,6 +576,82 @@ function mergeProps$1(...sources) {
     if (desc && desc.get) Object.defineProperty(target, key, desc);else target[key] = desc ? desc.value : undefined;
   }
   return target;
+}
+function splitProps(props, ...keys) {
+  if (SUPPORTS_PROXY && $PROXY in props) {
+    const blocked = new Set(keys.length > 1 ? keys.flat() : keys[0]);
+    const res = keys.map(k => {
+      return new Proxy({
+        get(property) {
+          return k.includes(property) ? props[property] : undefined;
+        },
+        has(property) {
+          return k.includes(property) && property in props;
+        },
+        keys() {
+          return k.filter(property => property in props);
+        }
+      }, propTraps);
+    });
+    res.push(new Proxy({
+      get(property) {
+        return blocked.has(property) ? undefined : props[property];
+      },
+      has(property) {
+        return blocked.has(property) ? false : property in props;
+      },
+      keys() {
+        return Object.keys(props).filter(k => !blocked.has(k));
+      }
+    }, propTraps));
+    return res;
+  }
+  const otherObject = {};
+  const objects = keys.map(() => ({}));
+  for (const propName of Object.getOwnPropertyNames(props)) {
+    const desc = Object.getOwnPropertyDescriptor(props, propName);
+    const isDefaultDesc = !desc.get && !desc.set && desc.enumerable && desc.writable && desc.configurable;
+    let blocked = false;
+    let objectIndex = 0;
+    for (const k of keys) {
+      if (k.includes(propName)) {
+        blocked = true;
+        isDefaultDesc ? objects[objectIndex][propName] = desc.value : Object.defineProperty(objects[objectIndex], propName, desc);
+      }
+      ++objectIndex;
+    }
+    if (!blocked) {
+      isDefaultDesc ? otherObject[propName] = desc.value : Object.defineProperty(otherObject, propName, desc);
+    }
+  }
+  return [...objects, otherObject];
+}
+
+const narrowedError = name => `Stale read from <${name}>.`;
+function For(props) {
+  const fallback = "fallback" in props && {
+    fallback: () => props.fallback
+  };
+  return createMemo(mapArray(() => props.each, props.children, fallback || undefined));
+}
+function Show(props) {
+  const keyed = props.keyed;
+  const conditionValue = createMemo(() => props.when, undefined, undefined);
+  const condition = keyed ? conditionValue : createMemo(conditionValue, undefined, {
+    equals: (a, b) => !a === !b
+  });
+  return createMemo(() => {
+    const c = condition();
+    if (c) {
+      const child = props.children;
+      const fn = typeof child === "function" && child.length > 0;
+      return fn ? untrack(() => child(keyed ? c : () => {
+        if (!untrack(condition)) throw narrowedError("Show");
+        return conditionValue();
+      })) : child;
+    }
+    return props.fallback;
+  }, undefined, undefined);
 }
 
 function createRenderer({
@@ -1325,9 +1540,106 @@ function setData(node, key, v) {
     node.Data()[key] = v;
 }
 
+var classnamesExports = {};
+var classnames = {
+  get exports(){ return classnamesExports; },
+  set exports(v){ classnamesExports = v; },
+};
+
+/*!
+	Copyright (c) 2018 Jed Watson.
+	Licensed under the MIT License (MIT), see
+	http://jedwatson.github.io/classnames
+*/
+
+(function (module) {
+	/* global define */
+
+	(function () {
+
+		var hasOwn = {}.hasOwnProperty;
+
+		function classNames () {
+			var classes = '';
+
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (arg) {
+					classes = appendClass(classes, parseValue(arg));
+				}
+			}
+
+			return classes;
+		}
+
+		function parseValue (arg) {
+			if (typeof arg === 'string' || typeof arg === 'number') {
+				return arg;
+			}
+
+			if (typeof arg !== 'object') {
+				return '';
+			}
+
+			if (Array.isArray(arg)) {
+				return classNames.apply(null, arg);
+			}
+
+			if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) {
+				return arg.toString();
+			}
+
+			var classes = '';
+
+			for (var key in arg) {
+				if (hasOwn.call(arg, key) && arg[key]) {
+					classes = appendClass(classes, key);
+				}
+			}
+
+			return classes;
+		}
+
+		function appendClass (value, newClass) {
+			if (!newClass) {
+				return value;
+			}
+		
+			if (value) {
+				return value + ' ' + newClass;
+			}
+		
+			return value + newClass;
+		}
+
+		if (module.exports) {
+			classNames.default = classNames;
+			module.exports = classNames;
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+} (classnames));
+
+var classNames = classnamesExports;
+
+exports.For = For;
+exports.Show = Show;
+exports.classNames = classNames;
+exports.createComponent = createComponent;
 exports.createElement = createElement;
+exports.createSignal = createSignal;
+exports.effect = effect;
+exports.insert = insert;
+exports.mergeProps = mergeProps;
+exports.onCleanup = onCleanup;
+exports.onMount = onMount;
 exports.render = render;
 exports.setProp = setProp;
+exports.splitProps = splitProps;
+exports.spread = spread;
+exports.untrack = untrack;
+exports.use = use;
 
 function handleError(err, owner = Owner) {
   let msg = err.stack ?? err;

@@ -13,6 +13,13 @@ function SymbolSpliter(content: string, symbol1: string, symbol2: string): Recor
 	);
 }
 
+function SaveData(panel: Panel, key: string, value: any) {
+	(panel.Data() as any)[key] = value;
+};
+function LoadData(panel: Panel, key: string) {
+	return (panel.Data() as any)[key];
+};
+
 // 自定义 polyfill 初始化
 !(function () {
 	// polyfill 初始化逻辑

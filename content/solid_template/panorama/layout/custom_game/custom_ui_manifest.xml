@@ -13,5 +13,6 @@
 	</scripts>
 	<Panel>
 		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/hud_main.xml"/>
+		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/hud_menu_bar.xml"/>
 	</Panel>
 </root>

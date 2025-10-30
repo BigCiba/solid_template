@@ -13,6 +13,14 @@ function SymbolSpliter(content, symbol1, symbol2) {
         return str.split(symbol2);
     }));
 }
+function SaveData(panel, key, value) {
+    panel.Data()[key] = value;
+}
+;
+function LoadData(panel, key) {
+    return panel.Data()[key];
+}
+;
 // 自定义 polyfill 初始化
 !function () {
     // polyfill 初始化逻辑

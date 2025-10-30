@@ -62,9 +62,9 @@ export function GenerateXML(options: {
 					sourceContent = sourceContent.replace('<scripts>', '<scripts>\n\t\t<include src="s2r://panorama/scripts/sequence_actions.vts_c" />');
 				}
 				// 自动加入common.js和polyfill.js
-				// if (!sourceContent.includes('<include src="file://{resources}/scripts/custom_game/panorama-polyfill.js" />')) {
-				// 	sourceContent = sourceContent.replace('<scripts>', '<scripts>\n\t\t<include src="file://{resources}/scripts/custom_game/panorama-polyfill.js" />');
-				// }
+				if (!sourceContent.includes('<include src="file://{resources}/scripts/custom_game/panorama-polyfill.js" />')) {
+					sourceContent = sourceContent.replace('<scripts>', '<scripts>\n\t\t<include src="file://{resources}/scripts/custom_game/panorama-polyfill.js" />');
+				}
 
 				// loading screen 特例加入
 				if (outFilename == "custom_loading_screen") {

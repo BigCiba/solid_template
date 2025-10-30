@@ -5,6 +5,7 @@
 	</styles>
 	<scripts>
 		<include src="file://{resources}/scripts/custom_game/solid-core.js" />
+		<include src="file://{resources}/scripts/custom_game/panorama-polyfill.js" />
 		<include src="s2r://panorama/scripts/sequence_actions.vts_c" />
 		<include src="file://{resources}/scripts/custom_game/custom_loading_screen.js" />
 	</scripts>

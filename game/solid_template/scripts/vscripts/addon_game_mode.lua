@@ -1,36 +1,39 @@
--- Generated from template
-
-if CAddonTemplateGameMode == nil then
-	CAddonTemplateGameMode = class({})
-end
-
-function Precache( context )
-	--[[
-		Precache things we know we'll use.  Possible file types include (but not limited to):
-			PrecacheResource( "model", "*.vmdl", context )
-			PrecacheResource( "soundfile", "*.vsndevts", context )
-			PrecacheResource( "particle", "*.vpcf", context )
-			PrecacheResource( "particle_folder", "particles/folder", context )
-	]]
-end
-
--- Create the game mode when we activate
+local ____lualib = require("lualib_bundle")
+local __TS__ArrayForEach = ____lualib.__TS__ArrayForEach
+local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 3,["6"] = 4,["7"] = 5,["8"] = 7,["9"] = 9,["10"] = 10,["11"] = 11,["12"] = 9,["13"] = 14,["14"] = 15,["15"] = 16,["16"] = 17,["17"] = 18,["18"] = 19,["19"] = 20,["22"] = 23,["23"] = 23,["24"] = 23,["25"] = 24,["26"] = 23,["27"] = 23,["30"] = 29,["31"] = 30,["32"] = 31,["33"] = 32,["36"] = 14,["37"] = 49,["38"] = 49,["39"] = 52});
+SendToServerConsole("dota_combine_models 0")
+Convars:SetBool("dota_combine_models", false)
+SendToServerConsole("dota_max_physical_items_purchase_limit 99999")
+require("requires")
 function Activate()
-	GameRules.AddonTemplate = CAddonTemplateGameMode()
-	GameRules.AddonTemplate:InitGameMode()
+    print("=== Activate ===")
+    CModule:initialize()
 end
-
-function CAddonTemplateGameMode:InitGameMode()
-	print( "Template addon is loaded." )
-	GameRules:GetGameModeEntity():SetThink( "OnThink", self, "GlobalThink", 2 )
+function Precache(context)
+    local precacheAutoList = require("precache_auto")
+    for sPrecacheMode in pairs(precacheAutoList) do
+        local aList = precacheAutoList[sPrecacheMode]
+        if sPrecacheMode == "particle_tool" and IsInToolsMode() then
+            for _, sResource in ipairs(aList) do
+                PrecacheResource("particle", sResource, context)
+            end
+        else
+            __TS__ArrayForEach(
+                aList,
+                function(____, sResource)
+                    PrecacheResource(sPrecacheMode, sResource, context)
+                end
+            )
+        end
+    end
+    local precacheList = require("precache")
+    for sPrecacheMode, list in pairs(precacheList) do
+        for _, sResource in ipairs(list) do
+            PrecacheResource(sPrecacheMode, sResource, context)
+        end
+    end
 end
-
--- Evaluate the state of the game
-function CAddonTemplateGameMode:OnThink()
-	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
-		--print( "Template addon script is running." )
-	elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
-		return nil
-	end
-	return 1
+function SpawnGroupPrecache(hSpawnGroup, context)
 end
+require("reload")

@@ -5,7 +5,6 @@ import { Plugin } from 'rollup';
 const xmlFile = `<root>
     <scripts>
         <include src="file://{resources}/scripts/custom_game/panorama-polyfill.js" />
-        <include src="file://{resources}/scripts/custom_game/common.js" />
         <include src="file://{resources}/scripts/custom_game/#name#" />
     </scripts>
     <Panel hittest="false" >

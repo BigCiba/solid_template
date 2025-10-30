@@ -1,0 +1,22 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	custom_net_tables =
+	[
+		"common",
+		"player_service_data",
+		// "ability_upgrades_selection",
+		"ability_values",
+		"unit",
+		"service",
+		"dialog_event",
+		"player_data_0",
+		"player_data_1",
+		"player_data_2",
+		"player_data_3",
+		"dropped_item",
+		"request_0",
+		"request_1",
+		"request_2",
+		"request_3",
+	]
+}

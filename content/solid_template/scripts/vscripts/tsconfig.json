@@ -1,0 +1,28 @@
+{
+	"compilerOptions": {
+		"rootDir": ".",
+		"outDir": "../../../../game/solid_template/scripts/vscripts",
+		"target": "esnext",
+		"lib": [
+			"esnext"
+		],
+		"types": [
+			"@moddota/dota-lua-types"
+		],
+		"moduleResolution": "node",
+		"experimentalDecorators": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": false,
+		"incremental": true,
+		"skipLibCheck": true,
+		"strict": true,
+	},
+	"tstl": {
+		"luaTarget": "JIT",
+		"sourceMapTraceback": true,
+	},
+	"include": [
+		".",
+		"../../declarations"
+	]
+}

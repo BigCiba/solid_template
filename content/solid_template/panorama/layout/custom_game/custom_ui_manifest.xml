@@ -1,17 +1,19 @@
 <root>
 	<scripts>
 		<include src="file://{resources}/scripts/custom_game/TooltipList.js"/>
-
+		<include src="file://{resources}/scripts/custom_game/kv/UnitsKv.js"/>
+		<include src="file://{resources}/scripts/custom_game/kv/ItemsKv.js"/>
+		<include src="file://{resources}/scripts/custom_game/kv/HeroesKv.js"/>
+		<include src="file://{resources}/scripts/custom_game/kv/AbilitiesKv.js"/>
 
 		<include src="file://{resources}/scripts/custom_game/manifest_scripts/request.js"/>
 		<include src="file://{resources}/scripts/custom_game/manifest_scripts/click.js"/>
 		<include src="file://{resources}/scripts/custom_game/manifest_scripts/init.js"/>
 		<include src="file://{resources}/scripts/custom_game/manifest_scripts/red_point.js"/>
 		<include src="file://{resources}/scripts/custom_game/manifest_scripts/netdata.js"/>
-		<include src="file://{resources}/scripts/custom_game/manifest_scripts/test.js"/>
-		<include src="file://{resources}/scripts/custom_game/panorama-polyfill.js"/>
 	</scripts>
 	<Panel>
+		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/hud_demo.xml"/>
 		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/hud_main.xml"/>
 		<CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/hud_menu_bar.xml"/>
 	</Panel>

@@ -1,0 +1,2 @@
+GameUI.CustomUIConfig().AbilitiesKv = {
+};

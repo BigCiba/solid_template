@@ -1,6 +1,5 @@
 const root = $.GetContextPanel();
 const modules = GameUI.__modules = {};
-$.Msg("=== solid-core.js loaded ===");
 GameUI.__loadModule = function (name, exports) {
     if (modules[name]) {
         $.Msg(`Reload module: ${name} `, exports ? '👏' : '☠️');

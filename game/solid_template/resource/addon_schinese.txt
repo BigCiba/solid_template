@@ -5,6 +5,14 @@
 	{
 		//schinese/hud/menu_bar.vdf
 "MenuButton_Return"		"返回"
+		"MenuButton_setting"	"设置"
+		"MenuDropDown_Dota2Setting"	"Dota2设置"
+		"MenuButton_mail"		"邮件"
+		"MenuButton_store"		"商城"
+		"MenuButton_draw"	"抽奖"
+		"MenuButton_activity"	"活动"
+		"MenuButton_rank"	"排行"
+		"MenuButton_handbook"	"图鉴"
 
 
 	}

@@ -1,53 +1,12 @@
 'use strict'; const require = GameUI.__require;
 
 var libs = require('./libs.js');
+var EOM_Button = require('./EOM_Button.js');
 
-const EOM_BaseButton = props => {
-  const [local, others] = libs.splitProps(props, ["children", "text", "html"]);
-  return (() => {
-    const _el$4 = libs.createElement("Button", libs.mergeProps({
-      get ["class"]() {
-        return libs.classNames("EOM_Button", "EOM_BaseButton", props.class);
-      }
-    }, others), null);
-    libs.spread(_el$4, libs.mergeProps({
-      get ["class"]() {
-        return libs.classNames("EOM_Button", "EOM_BaseButton", props.class);
-      }
-    }, others), true);
-    libs.insert(_el$4, () => libs.untrack(() => local.children), null);
-    libs.insert(_el$4, libs.createComponent(libs.Show, {
-      get when() {
-        return local.text;
-      },
-      get children() {
-        const _el$5 = libs.createElement("Label", {
-          get text() {
-            return local.text;
-          },
-          get html() {
-            return local.html;
-          }
-        }, null);
-        libs.effect(_p$ => {
-          const _v$6 = local.text,
-            _v$7 = local.html;
-          _v$6 !== _p$._v$6 && (_p$._v$6 = libs.setProp(_el$5, "text", _v$6, _p$._v$6));
-          _v$7 !== _p$._v$7 && (_p$._v$7 = libs.setProp(_el$5, "html", _v$7, _p$._v$7));
-          return _p$;
-        }, {
-          _v$6: undefined,
-          _v$7: undefined
-        });
-        return _el$5;
-      }
-    }), null);
-    return _el$4;
-  })();
+const menus = ["setting", "mail", "store", "activity", "handbook", "draw", "rank"];
+const dropdownMenus = {
+  setting: ["MenuButton_setting", "MenuDropDown_Dota2Setting"]
 };
-
-const menus = [];
-const dropdownMenus = {};
 const dropdownCallback = {
   MenuDropDown_Dota2Setting: () => $.DispatchEvent("DOTAShowSettingsRebornPopup", $.GetContextPanel())
 };
@@ -59,8 +18,14 @@ const showDropDown = (panel, name) => {
   if (panel != undefined) {
     if (name != undefined && dropdownMenus[name] != undefined) {
       let position = panel.GetPositionWithinWindow();
-      DropContainer.SetPositionInPixels(position.x / DropContainer.actualuiscale_x - 100 + 29, 0, 0);
+      let dropX = position.x / DropContainer.actualuiscale_x - 100 + 23;
       if (DropContent != undefined) {
+        DropContainer.SetPositionInPixels(Math.max(0, dropX), 0, 0);
+        if (dropX < 0) {
+          DropContainer.FindChild("MarginTop").style.transform = `translateX(${dropX}px)`;
+        } else {
+          DropContainer.FindChild("MarginTop").style.transform = `translateX(0px)`;
+        }
         DropContent.RemoveAndDeleteChildren();
         for (const dropName of dropdownMenus[name]) {
           libs.insert(DropContent, libs.createComponent(DropdownItem, {
@@ -86,9 +51,6 @@ const hideDropDown = () => {
 };
 const [redData, SetRed] = libs.createSignal((() => {
   let res = {};
-  menus.forEach(menu => {
-    res[menu] = CustomUIConfig.GetRedPoint(menu);
-  });
   return res;
 })());
 const MenuBar = () => {
@@ -135,36 +97,6 @@ const MenuBar = () => {
       _el$5 = libs.createElement("Panel", {
         id: "DropMain"
       }, _el$3);
-      libs.createElement("Panel", {
-        id: "right_bottom"
-      }, _el$5);
-      libs.createElement("Panel", {
-        id: "left_bottom"
-      }, _el$5);
-      libs.createElement("Panel", {
-        id: "right_top"
-      }, _el$5);
-      libs.createElement("Panel", {
-        id: "left_top"
-      }, _el$5);
-      libs.createElement("Panel", {
-        id: "right_center"
-      }, _el$5);
-      libs.createElement("Panel", {
-        id: "left_center"
-      }, _el$5);
-      libs.createElement("Panel", {
-        id: "center_bottom"
-      }, _el$5);
-      libs.createElement("Panel", {
-        id: "center_top"
-      }, _el$5);
-      libs.createElement("Panel", {
-        id: "center_center"
-      }, _el$5);
-      const _el$13 = libs.createElement("Panel", {
-        id: "DropContent"
-      }, _el$5);
     libs.insert(_el$2, libs.createComponent(MenuButton, {
       name: "Return",
       onactivate: self => $.DispatchEvent("DOTAHUDShowDashboard", self)
@@ -184,40 +116,67 @@ const MenuBar = () => {
     typeof _ref$ === "function" ? libs.use(_ref$, _el$3) : DropContainer = _el$3;
     libs.setProp(_el$4, "onmouseover", self => showDropDown());
     libs.setProp(_el$4, "onmouseout", self => hideDropDown());
+    const _ref$2 = DropContent;
+    typeof _ref$2 === "function" ? libs.use(_ref$2, _el$5) : DropContent = _el$5;
     libs.setProp(_el$5, "onmouseover", self => showDropDown());
     libs.setProp(_el$5, "onmouseout", self => hideDropDown());
-    const _ref$2 = DropContent;
-    typeof _ref$2 === "function" ? libs.use(_ref$2, _el$13) : DropContent = _el$13;
     return _el$;
   })();
 };
 const MenuButton = props => {
   const [local, other] = libs.splitProps(props, ["name", "hittest", "onactivate"]);
   const selected = () => selectName() == local.name;
-  return libs.createComponent(EOM_BaseButton, libs.mergeProps({
+  return libs.createComponent(EOM_Button.EOM_BaseButton, {
     get id() {
       return props.name;
     },
-    get className() {
-      return $.Language().toLowerCase();
-    }
-  }, other, {
-    hittest: false,
+    "class": "MenuButton",
+    get onactivate() {
+      return local.onactivate ?? (self => {
+        GameEvents.SendEventClientSide("custom_ui_toggle_windows", {
+          window_name: "MenuButton_" + local.name,
+          state: selected() ? 0 : 1
+        });
+      });
+    },
+    onmouseover: self => {
+      showDropDown(self, local.name);
+    },
+    onmouseout: self => {
+      hideDropDown();
+    },
     get children() {
       return [(() => {
-        const _el$14 = libs.createElement("Panel", {}, null);
-        libs.effect(_$p => libs.setProp(_el$14, "className", libs.classNames("BGImage", "FrontImage", local.name, {
+        const _el$6 = libs.createElement("Panel", {
+          get ["class"]() {
+            return libs.classNames("BGImage", "FrontImage", local.name, {
+              Selected: selected()
+            });
+          }
+        }, null);
+        libs.effect(_$p => libs.setProp(_el$6, "class", libs.classNames("BGImage", "FrontImage", local.name, {
           Selected: selected()
         }), _$p));
-        return _el$14;
+        return _el$6;
       })(), (() => {
-        const _el$15 = libs.createElement("Panel", {}, null);
-        libs.effect(_$p => libs.setProp(_el$15, "className", libs.classNames("BGImage", "HoverImage", local.name, {
+        const _el$7 = libs.createElement("Panel", {
+          get ["class"]() {
+            return libs.classNames("BGImage", "HoverImage", local.name, {
+              Selected: selected()
+            });
+          }
+        }, null);
+        libs.effect(_$p => libs.setProp(_el$7, "class", libs.classNames("BGImage", "HoverImage", local.name, {
           Selected: selected()
         }), _$p));
-        return _el$15;
+        return _el$7;
       })(), (() => {
-        const _el$16 = libs.createElement("Label", {
+        const _el$8 = libs.createElement("Label", {
+          get ["class"]() {
+            return libs.classNames("MenuLabel", local.name, {
+              Selected: selected()
+            });
+          },
           get text() {
             return "#MenuButton_" + local.name;
           }
@@ -227,14 +186,14 @@ const MenuButton = props => {
               Selected: selected()
             }),
             _v$2 = "#MenuButton_" + local.name;
-          _v$ !== _p$._v$ && (_p$._v$ = libs.setProp(_el$16, "className", _v$, _p$._v$));
-          _v$2 !== _p$._v$2 && (_p$._v$2 = libs.setProp(_el$16, "text", _v$2, _p$._v$2));
+          _v$ !== _p$._v$ && (_p$._v$ = libs.setProp(_el$8, "class", _v$, _p$._v$));
+          _v$2 !== _p$._v$2 && (_p$._v$2 = libs.setProp(_el$8, "text", _v$2, _p$._v$2));
           return _p$;
         }, {
           _v$: undefined,
           _v$2: undefined
         });
-        return _el$16;
+        return _el$8;
       })(), libs.createComponent(libs.Show, {
         get when() {
           return props.red;
@@ -244,41 +203,12 @@ const MenuButton = props => {
             id: "RedPoint"
           }, null);
         }
-      }), (() => {
-        const _el$18 = libs.createElement("Panel", {
-          get onactivate() {
-            return local.onactivate ?? (self => {
-              GameEvents.SendEventClientSide("custom_ui_toggle_windows", {
-                window_name: "MenuButton_" + local.name,
-                state: selected() ? 0 : 1
-              });
-            });
-          }
-        }, null);
-        libs.setProp(_el$18, "className", "Hitbox");
-        libs.setProp(_el$18, "onmouseover", self => {
-          let target = self.GetParent();
-          target.AddClass("Hover");
-          showDropDown(target, local.name);
-        });
-        libs.setProp(_el$18, "onmouseout", self => {
-          let target = self.GetParent();
-          target.RemoveClass("Hover");
-          hideDropDown();
-        });
-        libs.effect(_$p => libs.setProp(_el$18, "onactivate", local.onactivate ?? (self => {
-          GameEvents.SendEventClientSide("custom_ui_toggle_windows", {
-            window_name: "MenuButton_" + local.name,
-            state: selected() ? 0 : 1
-          });
-        }), _$p));
-        return _el$18;
-      })()];
+      })];
     }
-  }));
+  });
 };
 const DropdownItem = props => {
-  return libs.createComponent(EOM_BaseButton, {
+  return libs.createComponent(EOM_Button.EOM_BaseButton, {
     "class": "DropdownItem",
     onactivate: self => {
       if (dropdownCallback[props.dropName] != undefined) {
@@ -296,25 +226,13 @@ const DropdownItem = props => {
       hideDropDown();
     },
     get children() {
-      return [(() => {
-        const _el$19 = libs.createElement("Label", {
-          get text() {
-            return "#" + props.dropName;
-          }
-        }, null);
-        libs.effect(_$p => libs.setProp(_el$19, "text", "#" + props.dropName, _$p));
-        return _el$19;
-      })(), libs.createComponent(libs.Show, {
-        get when() {
-          return CustomUIConfig.GetRedPoint(props.menuName, props.dropName);
-        },
-        get children() {
-          return libs.createElement("Panel", {
-            id: "DropdownRedPoint",
-            hittest: false
-          }, null);
+      const _el$0 = libs.createElement("Label", {
+        get text() {
+          return "#" + props.dropName;
         }
-      })];
+      }, null);
+      libs.effect(_$p => libs.setProp(_el$0, "text", "#" + props.dropName, _$p));
+      return _el$0;
     }
   });
 };

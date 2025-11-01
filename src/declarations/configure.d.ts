@@ -1,5 +1,3 @@
-declare interface CustomUIConfig {
-}
 declare interface StoreItemData {
 	pay_type: number;
 	origin_price: number;

@@ -6,6 +6,7 @@
 	},
 	"panorama": {
 		"Hud": [
+			"hud_demo",
 			"hud_main",
 			"hud_menu_bar"
 		],
@@ -15,7 +16,8 @@
 		"ContextMenu": [],
 		"Polyfill": [
 			"index.ts",
-			"enums.ts"
+			"enums.ts",
+			"localization.ts"
 		],
 		"ManifestScripts": [
 			"request.js",
@@ -25,7 +27,12 @@
 			"netdata.js",
 			"test.ts"
 		],
-		"kv": []
+		"kv": [
+			"UnitsKv",
+			"ItemsKv",
+			"HeroesKv",
+			"AbilitiesKv"
+		]
 	},
 	"scripts": {
 		"build:polyfill": "ts-node rollup/build-polyfill.ts",
@@ -43,9 +50,9 @@
 		"@babel/preset-env": "^7.27.2",
 		"@babel/preset-typescript": "^7.27.1",
 		"@babel/types": "^7.27.1",
-		"@bigciba/babel-plugin-jsx-panorama-expressions": "^0.3.1",
+		"@bigciba/babel-plugin-jsx-panorama-expressions": "^0.3.2",
 		"@bigciba/babel-preset-solid-panorama": "^0.1.5",
-		"@bigciba/solid-panorama-runtime": "^0.6.1",
+		"@bigciba/solid-panorama-runtime": "^0.6.5",
 		"@moddota/dota-lua-types": "^4.36.0",
 		"@moddota/panorama-types": "^1.38.1",
 		"@rollup/plugin-alias": "^4.0.4",

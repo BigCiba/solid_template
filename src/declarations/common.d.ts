@@ -1,11 +1,9 @@
-/// <reference path="../../../node_modules/solid-panorama-polyfill/console.d.ts" />
-/// <reference path="../../../node_modules/solid-panorama-polyfill/timers.d.ts" />
+/// <reference path="../../node_modules/solid-panorama-polyfill/console.d.ts" />
+/// <reference path="../../node_modules/solid-panorama-polyfill/timers.d.ts" />
 
 declare interface VCSSStyleDeclaration {
 	imgShadow: string | null;
 }
-
-declare const CustomUIConfig: CustomUIConfig;
 
 declare type ValueOf<T> = T[keyof T];
 
@@ -215,7 +213,6 @@ declare interface AbilityTalentTooltip {
 declare interface AbilityUpgradeTooltip {
 	upgrade_id: string;
 }
-declare var KeyValues: CustomUIConfig;
 declare interface CustomUIConfig {
 	__LocalISOCode?: string;
 	CommandUniqueSuffix: string,

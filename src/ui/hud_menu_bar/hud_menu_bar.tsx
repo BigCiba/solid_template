@@ -4,11 +4,19 @@ import { createSignal, For, onCleanup, onMount, Show, splitProps } from "solid-j
 import { EOM_BaseButton } from "../../components/EOMDesign/Input/EOM_Button/EOM_Button";
 
 const menus: string[] = [
+	"setting",
+	"mail",
+	"store",
+	"activity",
+	"handbook",
+	"draw",
+	"rank",
 ];
 
 
 /** 下拉快捷 */
 const dropdownMenus: Record<string, string[]> = {
+	setting: ["MenuButton_setting", "MenuDropDown_Dota2Setting"],
 };
 
 const dropdownCallback: Record<string, () => void> = {
@@ -23,8 +31,14 @@ const showDropDown = (panel?: Panel, name?: string) => {
 	if (panel != undefined) {
 		if (name != undefined && dropdownMenus[name] != undefined) {
 			let position = panel.GetPositionWithinWindow();
-			DropContainer.SetPositionInPixels(position.x / DropContainer.actualuiscale_x - 100 + 29, 0, 0);
+			let dropX = position.x / DropContainer.actualuiscale_x - 100 + 23;
 			if (DropContent != undefined) {
+				DropContainer.SetPositionInPixels(Math.max(0, dropX), 0, 0);
+				if (dropX < 0) {
+					DropContainer.FindChild("MarginTop")!.style.transform = `translateX(${dropX}px)`;
+				} else {
+					DropContainer.FindChild("MarginTop")!.style.transform = `translateX(0px)`;
+				}
 				DropContent.RemoveAndDeleteChildren();
 				for (const dropName of dropdownMenus[name]) {
 					insert(DropContent, <DropdownItem menuName={name} dropName={dropName} />);
@@ -48,9 +62,9 @@ const hideDropDown = () => {
 
 const [redData, SetRed] = createSignal<Record<string, boolean>>((() => {
 	let res: Record<string, boolean> = {};
-	menus.forEach(menu => {
-		res[menu] = CustomUIConfig.GetRedPoint(menu);
-	});
+	// menus.forEach(menu => {
+	// 	res[menu] = CustomUIConfig.GetRedPoint(menu);
+	// });
 	return res;
 })());
 
@@ -95,7 +109,6 @@ const MenuBar = () => {
 		<Panel id="MenuMain" hittest={false}>
 			<Panel id="MenuBar" hittest={false}>
 				<MenuButton name="Return" onactivate={self => $.DispatchEvent("DOTAHUDShowDashboard", self)} />
-				{/* <MenuButton name="Option" onactivate={self => $.DispatchEvent("DOTAShowSettingsPopup", self)} /> */}
 				<For each={menus}>
 					{menu => {
 						return <MenuButton name={menu}
@@ -106,18 +119,7 @@ const MenuBar = () => {
 			</Panel>
 			<Panel id="DropContainer" ref={DropContainer} hittest={false}>
 				<Panel id="MarginTop" onmouseover={self => showDropDown()} onmouseout={self => hideDropDown()} />
-				<Panel id="DropMain" onmouseover={self => showDropDown()} onmouseout={self => hideDropDown()}>
-					<Panel id="right_bottom" />
-					<Panel id="left_bottom" />
-					<Panel id="right_top" />
-					<Panel id="left_top" />
-					<Panel id="right_center" />
-					<Panel id="left_center" />
-					<Panel id="center_bottom" />
-					<Panel id="center_top" />
-					<Panel id="center_center" />
-					<Panel id="DropContent" ref={DropContent} />
-				</Panel>
+				<Panel id="DropMain" onmouseover={self => showDropDown()} onmouseout={self => hideDropDown()} ref={DropContent} />
 			</Panel>
 		</Panel>
 	);
@@ -131,24 +133,19 @@ const MenuButton = (props: {
 	const selected = () => selectName() == local.name;
 
 	return (
-		<EOM_BaseButton id={props.name} className={$.Language().toLowerCase()} {...other} hittest={false} >
-			<Panel className={classNames("BGImage", "FrontImage", local.name, { Selected: selected() })} />
-			<Panel className={classNames("BGImage", "HoverImage", local.name, { Selected: selected() })} />
-			<Label className={classNames("MenuLabel", local.name, { Selected: selected() })} text={"#MenuButton_" + local.name} />
+		<EOM_BaseButton id={props.name} class="MenuButton" onactivate={local.onactivate ?? (self => {
+			GameEvents.SendEventClientSide("custom_ui_toggle_windows", { window_name: "MenuButton_" + local.name, state: selected() ? 0 : 1 });
+		})} onmouseover={self => {
+			showDropDown(self, local.name);
+		}} onmouseout={self => {
+			hideDropDown();
+		}}>
+			<Panel class={classNames("BGImage", "FrontImage", local.name, { Selected: selected() })} />
+			<Panel class={classNames("BGImage", "HoverImage", local.name, { Selected: selected() })} />
+			<Label class={classNames("MenuLabel", local.name, { Selected: selected() })} text={"#MenuButton_" + local.name} />
 			<Show when={props.red}>
 				<Panel id="RedPoint" />
 			</Show>
-			<Panel className="Hitbox" onactivate={local.onactivate ?? (self => {
-				GameEvents.SendEventClientSide("custom_ui_toggle_windows", { window_name: "MenuButton_" + local.name, state: selected() ? 0 : 1 });
-			})} onmouseover={self => {
-				let target = self.GetParent()!;
-				target.AddClass("Hover");
-				showDropDown(target, local.name);
-			}} onmouseout={self => {
-				let target = self.GetParent()!;
-				target.RemoveClass("Hover");
-				hideDropDown();
-			}} />
 		</EOM_BaseButton>
 	);
 };
@@ -164,9 +161,9 @@ const DropdownItem = (props: { menuName: string, dropName: string; }) => {
 		hideDropDown();
 	}}>
 		<Label text={"#" + props.dropName} />
-		<Show when={CustomUIConfig.GetRedPoint(props.menuName, props.dropName)}>
+		{/* <Show when={CustomUIConfig.GetRedPoint(props.menuName, props.dropName)}>
 			<Panel id="DropdownRedPoint" hittest={false} />
-		</Show>
+		</Show> */}
 	</EOM_BaseButton>;
 };
 

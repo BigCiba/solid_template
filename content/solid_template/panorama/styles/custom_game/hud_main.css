@@ -3,3 +3,142 @@
   height: 100%;
   z-index: 41;
 }
+.EOM_BaseButton {
+  background-size: 100%;
+  background-repeat: no-repeat;
+  transition-property: brightness, color;
+  transition-duration: 0.05s;
+  transition-timing-function: ease-in-out;
+}
+.EOM_BaseButton:not(:disabled):hover {
+  brightness: 2;
+}
+.EOM_BaseButton:not(:disabled):active {
+  brightness: 0.5;
+  sound: "ui_generic_button_click";
+}
+.EOM_BaseButton:disabled {
+  saturation: 0;
+  brightness: 0.5;
+}
+.EOM_Button {
+  width: 234px;
+  height: 68px;
+  padding: 10px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  transition-property: brightness, color;
+  transition-duration: 0.05s;
+  transition-timing-function: ease-in-out;
+}
+.EOM_Button Label {
+  color: #FFFFFF;
+  font-size: 22px;
+  line-height: 24px;
+  letter-spacing: 2px;
+  align: center center;
+  text-align: center;
+  text-shadow: 0px 0px 5px 2 #000000;
+  transition-property: color, opacity;
+  transition-duration: 0.35s;
+  transition-timing-function: ease-in-out;
+}
+.EOM_Button:disabled {
+  saturation: 1;
+  brightness: 1;
+  cursor: not-allowed;
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_gray.png");
+}
+.EOM_Button:disabled Image {
+  wash-color: #919191;
+}
+.EOM_Button:disabled Label {
+  color: #ffffff40;
+}
+.EOM_Button.color-Red {
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_red.png");
+}
+.EOM_Button.color-Green {
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_green.png");
+}
+.EOM_Button.color-Purple {
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_purple.png");
+}
+.EOM_Button.color-Gray {
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_gray.png");
+}
+.EOM_Button.color-Gold {
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_gold.png");
+}
+.EOM_Button.color-Blue {
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_blue.png");
+}
+.EOM_Button.size-Small {
+  ui-scale: 80%;
+}
+.EOM_Button.size-Normal {
+  width: 234px;
+  height: 68px;
+}
+.EOM_Button.size-Large {
+  ui-scale: 120%;
+}
+.EOM_Button .EOM_Button_Content {
+  align: center center;
+  flow-children: right;
+}
+.EOM_Button .EOM_Button_Content > Image {
+  margin: 0px 4px;
+  background-size: 100%;
+  vertical-align: center;
+}
+.EOM_Button.Loading .EOM_Button_LoadingIcon {
+  width: 24px;
+  height: 24px;
+  background-image: url("s2r://panorama/images/control_icons/party_finder_icon_03_png.vtex");
+  background-size: 100%;
+  animation-name: SpinnerRotate;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: reverse;
+}
+.EOM_Button.Loading_Refresh .EOM_Button_LoadingIcon {
+  background-image: url("s2r://panorama/images/control_icons/refresh_psd.vtex");
+}
+.EOM_CloseButton {
+  width: 34px;
+  height: 36px;
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_close.png");
+  background-size: 100%;
+}
+.EOM_Breadcrumb {
+  flow-children: right;
+}
+.EOM_Breadcrumb .EOM_BreadcrumbSeparator {
+  font-size: 20px;
+  color: #939da022;
+  vertical-align: center;
+  margin: 0px 12px;
+}
+.EOM_Breadcrumb > TabButton {
+  vertical-align: center;
+}
+.EOM_Breadcrumb > TabButton Label {
+  color: #939da044;
+  transition-property: color;
+  transition-duration: 0.2s;
+}
+.EOM_Breadcrumb > TabButton:selected Label {
+  color: white;
+  sound: "ui_rollover_micro";
+}
+.EOM_Breadcrumb > TabButton:hover Label {
+  color: #CCCCCC;
+}
+.EOM_Breadcrumb > TabButton:active {
+  transform: translateY(2px);
+}
+.EOM_Breadcrumb > TabButton:active:selected {
+  transform: translateY(0px);
+}

@@ -1,66 +1,86 @@
-import classNames from "classnames";
-import { ParentComponent, Show, mergeProps, splitProps, untrack } from "solid-js";
+import { createMemo, Match, ParentComponent, Switch } from "solid-js";
+import { useSimpleProps } from "../../EOMDesign";
 import "./EOM_Button.less";
 
-interface EOM_ButtonAttribute extends PanelAttributes {
+interface EOM_ButtonAttribute extends TextButtonAttributes {
 	/** 图标 */
 	icon?: JSX.Element;
-	/** 设置按钮载入状态 */
-	loading?: boolean;
 	/** 设置按钮颜色 */
 	color?: "Green" | "Blue" | "Red" | "Purple" | "Gold" | "Gray";
-	// Tui12预设大小
+	/** 预设大小 */
 	size?: "Small" | "Normal" | "Large";
+	/** loading */
+	loading?: boolean;
+	/** loading样式 */
+	loadingStyle?: "Spinner" | "Refresh";
 }
-export const EOM_Button: ParentComponent<EOM_ButtonAttribute & TextButtonAttributes> = (props) => {
-	const merged = mergeProps({ loading: false, color: "Purple", size: "Normal" }, props);
-	const [local, others] = splitProps(props, ["loading", "icon", "color", "size", "children", "text", "html"]);
+
+export const EOM_Button: ParentComponent<EOM_ButtonAttribute> = (props) => {
+	const { local, others } = useSimpleProps(props, {
+		localKeys: ["icon", "color", "size", "loading", "loadingStyle", "children", "enabled", "text", "html", "vars"] as const,
+		componentClass: [
+			"EOM_Button",
+			props.loading ? "Loading" : "",
+			props.loadingStyle == "Refresh" ? "Loading_Refresh" : "Loading_Spinner",
+			`color-${props.enabled == false ? "Gray" : (props.color || "Gold")}`,
+			`size-${props.size || "Normal"}`
+		]
+	});
+	const enabled = createMemo(() => local.loading ? false : local.enabled);
 	return (
-		<Button class={classNames("EOM_Button", props.class)} {...others}>
-			<Panel class="EOM_Button_Text">
-				{local.icon}
-				<Label visible={local.text != undefined} text={local.text} html={local.html} vars={merged.vars} dialogVariables={merged.dialogVariables} />
+		<EOM_BaseButton {...others} enabled={enabled()}>
+			<Panel class="EOM_Button_Content">
+				<Switch fallback={local.icon}>
+					<Match when={local.loading == true}>
+						<Image class="EOM_Button_LoadingIcon" />
+					</Match>
+				</Switch>
+				<Label
+					visible={local.text != undefined}
+					text={local.text}
+					html={local.html}
+					vars={local.vars}
+				/>
 			</Panel>
+			{local.children}
+		</EOM_BaseButton>
+	);
+};
+
+export const EOM_BaseButton: ParentComponent<PanelAttributes> = (props) => {
+	const { local, others } = useSimpleProps(props, {
+		localKeys: ["children"] as const,
+		componentClass: ["EOM_BaseButton"]
+	});
+	return (
+		<Button {...others}>
 			{local.children}
 		</Button>
 	);
 };
 
-
-export const EOM_BaseButton: ParentComponent<PanelAttributes & LabelLikeAttributes<Button>> = (props) => {
-	const [local, others] = splitProps(props, ["children", "text", "html"]);
-	return (
-		<Button class={classNames("EOM_Button", "EOM_BaseButton", props.class)} {...others}>
-			{untrack(() => local.children)}
-			<Show when={local.text}>
-				<Label text={local.text} html={local.html} />
-			</Show>
-		</Button>
-	);
+export const EOM_CloseButton: ParentComponent<PanelAttributes> = (props) => {
+	const { local, others } = useSimpleProps(props, {
+		localKeys: ["children"] as const,
+		componentClass: ["EOM_CloseButton"]
+	});
+	return <EOM_BaseButton {...others}>
+		{local.children}
+	</EOM_BaseButton>;
 };
 
-interface EOM_IconAttribute extends PanelAttributes {
+interface EOM_IconAttribute extends PanelAttributes<Button> {
 	icon: JSX.Element;
 }
-export const EOM_IconButton: ParentComponent<EOM_IconAttribute & PanelAttributes<Button>> = (props) => {
-	const [local, others] = splitProps(props, ["icon", "children"]);
-
+export const EOM_IconButton: ParentComponent<EOM_IconAttribute> = (props) => {
+	const { local, others } = useSimpleProps(props, {
+		localKeys: ["icon", "children"] as const,
+		componentClass: ["EOM_IconButton"]
+	});
 	return (
-		<Button class={classNames("EOM_IconButton", "EOM_BaseButton", props.class)} {...others}>
+		<Button {...others}>
 			{local.icon}
 			{local.children}
 		</Button>
 	);
-};
-
-interface EOM_CloseButtonAttribute extends PanelAttributes {
-	type?: "Default" | "Gradient" | "Quit" | "P2" | "Tui9" | "Tui7" | "Tui3" | "C4" | "Tui12";
-}
-export const EOM_CloseButton: ParentComponent<EOM_CloseButtonAttribute & PanelAttributes<Button>> = (props) => {
-	const [local, others] = splitProps(props, ["type", "children"]);
-
-	return <Button class={classNames("EOM_CloseButton", props.class)} {...others}>
-		{/* {<EOM_Icon type="XClose" extraType={local.type} />} */}
-		{local.children}
-	</Button>;
 };

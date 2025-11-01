@@ -9,18 +9,21 @@ This is a Dota 2 custom game addon using Solid-JS for Panorama UI development wi
 2. **VScripts**: TypeScript → TypeScript-to-Lua (TSTL) → Lua files → Optional AES encryption
 
 **Critical Build Flow:**
-- `rollup/build.ts` orchestrates the entire Panorama build process
-- `rollup/build-rollup-config.ts` configures Rollup with 8+ custom plugins
+- `rollup/build.ts` orchestrates the entire Panorama build process and copies `solid-core.js` to output
+- `rollup/build-rollup-config.ts` configures Rollup with 10+ custom plugins
 - Custom Babel preset `@bigciba/babel-preset-solid-panorama` transforms JSX for Panorama compatibility
-- Plugin chain: Babel → XML generation → LESS compilation → Polyfill merging → Manifest generation
+- Plugin chain: Babel → XML generation → LESS compilation → Polyfill merging → Manifest generation → Libs injection → Save fresh
 
 **Key Directories:**
-- `src/ui/`: TSX components organized by type (hud_main, tooltips, context_menus, custom_loading_screen)
+- `src/ui/`: TSX components organized by type (hud_main, hud_menu_bar, custom_loading_screen, context_menus)
+- `src/components/`: Reusable UI components (e.g., `EOMDesign/Input/EOM_Button/`)
 - `src/polyfill/`: Custom polyfills merged by `plugin-polyfill.ts` (index.ts, enums.ts)
 - `src/manifest_scripts/`: Scripts injected into manifest (compiled TS/JS copied to output)
-- `src/declarations/`: TypeScript definitions for Panorama/Dota 2 APIs (panel.d.ts, elements.d.ts, etc.)
+- `src/declarations/`: TypeScript definitions for Panorama/Dota 2 APIs (panel.d.ts, common.d.ts, etc.)
 - `content/{addon_name}/panorama/`: Build output (layout/, scripts/, styles/ subdirs)
-- `game/{addon_name}/scripts/vscripts/`: Compiled Lua scripts
+- `content/{addon_name}/scripts/vscripts/`: TypeScript source for VScripts (tsconfig.json here)
+- `game/{addon_name}/scripts/vscripts/`: Compiled Lua scripts output
+- `rollup/inject_modules/`: Runtime and universal modules injected by plugin-libs-inject
 
 ## Essential Development Workflows
 
@@ -28,9 +31,11 @@ This is a Dota 2 custom game addon using Solid-JS for Panorama UI development wi
 ```bash
 npm run dev:solid        # Watch & rebuild Panorama UI on changes
 npm run build:solid      # One-time Panorama UI build
-npm run dev:vscripts     # Watch & compile TypeScript to Lua
+npm run dev:vscripts     # Watch & compile TypeScript to Lua (with auto-cleanup)
 npm run build:vscripts   # One-time VScripts build
+npm run dev:vscripts:basic # TSTL watch only (no cleanup)
 npm run encrypt:vscripts # Encrypt Lua files using AES (key from package.json encryption.key)
+npm run clean:images     # Clean unused images
 ```
 
 **Adding New UI Components:**
@@ -41,7 +46,14 @@ npm run encrypt:vscripts # Encrypt Lua files using AES (key from package.json en
 5. Build system detects files by checking `existsSync(path.join(pagesUrl, ${v.name}/${v.name}.tsx))`
 
 **Manifest Scripts:**
-Files listed in `panorama.ManifestScripts` array are compiled (TS→JS) and injected into `custom_ui_manifest.xml`. Used for early initialization code before main components load.
+Files listed in `panorama.ManifestScripts` array are compiled (TS→JS) and injected into `custom_ui_manifest.xml`. Used for early initialization code before main components load. Examples: `request.js`, `click.js`, `init.js`, `red_point.js`, `netdata.js`, `test.ts`
+
+**VScripts Watch System:**
+`dev:vscripts` uses `node_scripts/watch-vscripts.js` which:
+- Spawns TSTL compiler in watch mode
+- Uses chokidar to monitor source file deletions
+- Auto-deletes corresponding `.lua` files when `.ts` files are removed
+- Converts paths from `content/solid_template/scripts/vscripts/*.ts` → `game/solid_template/scripts/vscripts/*.lua`
 
 ## Project-Specific Patterns
 
@@ -61,10 +73,11 @@ Each UI component produces three files in output:
 - Files listed in `panorama.Polyfill` array are merged into single `panorama-polyfill.js`
 - TS files transpiled using TypeScript compiler (not Babel) to ES5
 - Output included FIRST in manifest before all other scripts
-- Custom `SymbolSpliter` utility function in `src/polyfill/index.ts`
+- Helper functions like `SymbolSpliter(content, symbol1, symbol2)` available in `src/polyfill/index.ts`
+- SaveData/LoadData helpers for panel data management
 
 **XML/CSS Macro System:**
-- Imports from `solid-panorama-all-in-jsx/xml.macro` and `/css.macro`
+- Imports from `solid-panorama-all-in-jsx/xml.macro` and `/css.macro` (currently not used in codebase but available)
 - `getAllCacheXML()` and `getAllCacheCSS()` gather styles/markup from TSX files
 - Plugins merge cached content across entire module graph via `ctx.getModuleInfo(id).importedIds`
 - This enables writing styles/markup inline in TSX that get extracted to separate files
@@ -85,7 +98,44 @@ declare global {
 }
 CustomUIConfig.showContextMenu = (panel, menus, offset) => { /* impl */ };
 ```
-Used in `context_menus.tsx` for popup positioning system.
+Used in `context_menus.tsx` for popup positioning system with smart viewport collision detection.
+
+**Reusable Component Pattern:**
+Components in `src/components/` (e.g., `EOMDesign/Input/EOM_Button/`) follow standard Solid.js patterns:
+- Use `useSimpleProps()` helper from `src/utils/component-helpers.ts` to simplify props handling
+- Pattern combines: default values (mergeProps) + property splitting (splitProps) + class merging (classNames)
+- Example usage:
+```typescript
+const { local, others } = useSimpleProps(props, {
+  defaultValues: { color: "Purple", size: "Normal" },
+  localKeys: ["color", "size", "icon", "children"] as const,
+  componentClass: "EOM_Button"  // Auto-merges with props.class
+});
+return <Button {...others}>{local.icon}{local.children}</Button>;
+```
+- Use `ParentComponent<T>` for components with children
+- LESS files co-located with components
+- Component default class is automatically merged with passed-in class prop
+- See `src/utils/component-helpers-examples.tsx` for comprehensive usage patterns
+
+**Panorama CSS/LESS Restrictions:**
+Dota 2 Panorama engine has specific CSS limitations that differ from standard web CSS:
+- ⚠️ **NO shorthand properties**: Must use longhand versions
+  - ❌ `transition: all 0.3s ease` → ✅ `transition-property: all; transition-duration: 0.3s; transition-timing-function: ease;`
+  - ❌ `animation: spin 1s linear infinite` → ✅ `animation-name: spin; animation-duration: 1s; animation-timing-function: linear; animation-iteration-count: infinite;`
+  - ❌ `background: url(...) no-repeat center` → ✅ `background-image: url(...); background-repeat: no-repeat; background-position: center;`
+- 🎯 **Always separate CSS properties** in LESS files for Panorama compatibility
+- 📝 Example from `EOM_Button.less`:
+```less
+// ✅ Correct - Longhand properties
+transition-property: brightness, color;
+transition-duration: 0.05s;
+transition-timing-function: ease-in-out;
+
+// ❌ Wrong - Shorthand (won't work in Panorama)
+transition: brightness 0.05s ease-in-out, color 0.05s ease-in-out;
+```
+- Common properties requiring expansion: `transition`, `animation`, `background`, `border`, `margin`, `padding`, `font`
 
 ## Integration Points
 
@@ -93,13 +143,19 @@ Used in `context_menus.tsx` for popup positioning system.
 - Custom augmented types in `src/declarations/panel.d.ts` extend base Panorama types
 - Example: `PanelBase.SetPanelEvent(event: CustomPanelEvent, handler)` adds 'onblur' event
 - `Panel.Data<T>()` typed accessor for panel data
+- `Panel.FindChild<T>()` returns typed panel references
+- `TooltipPanel.GetTooltipTarget<T>()` for tooltip target access
 - Use `@moddota/panorama-types` as base, extended locally
 
 **VScripts Encryption:**
 - AES encryption via `node_scripts/encrypt-custom-game.js`
 - Requires 32-char hex key in `package.json` → `encryption.key`
-- `SERVER_MODULE_PATTERNS` excludes init files and specific modules from encryption
+- `SERVER_MODULE_PATTERNS` excludes init files and specific modules from encryption:
+  - `init`, `addon_game_mode_client`, `addon_game_mode`
+  - `triggers/*`, `entities/*`, `units/*`
+  - `lualib_bundle`, `requires`, `lib/tstl-utils`
 - Optional minification via `luamin` (controlled by `MINIFY_PATTERNS`)
+- Injects AES decryption script from `node_scripts/aes.lua`
 
 **Babel Configuration:**
 Preset order matters in `build-rollup-config.ts`:
@@ -110,12 +166,13 @@ presets: [
   ['@bigciba/babel-preset-solid-panorama', { moduleName: '@bigciba/solid-panorama-runtime', generate: 'universal' }]
 ]
 ```
-Plugin: `babel-plugin-macros` enables XML/CSS macro extraction
+Plugins: `@babel/plugin-transform-typescript`, `babel-plugin-macros`
 
 **Solid Runtime:**
 - Custom fork: `@bigciba/solid-panorama-runtime` (not standard solid-js)
 - Precompiled runtime in `rollup/solid-core.js` copied to output by `build.ts`
 - Generate mode set to 'universal' for Panorama compatibility
+- Standard Solid.js features available: signals, effects, Show, For, batch, etc.
 
 **Watch System:**
 Rollup plugins use `this.addWatchFile()` to track:
@@ -124,18 +181,51 @@ Rollup plugins use `this.addWatchFile()` to track:
 - Polyfill source files
 - Imported LESS dependencies resolved via custom `resolveImport()`
 
+**Plugin Execution Order:**
+1. `babel()` - Transform JSX/TypeScript
+2. `alias()` - Resolve @common/ imports
+3. `replace()` - Environment variables (NODE_ENV)
+4. `commonjs()` - CommonJS to ES modules
+5. `nodeResolve()` - Resolve node_modules
+6. `compatiblePanorama()` - Panorama-specific transformations
+7. `rollupPluginXML()` - Generate XML from cached macro data
+8. `GenerateXML()` - Generate XML layouts with filename resolution
+9. `rollupPluginLess()` - Compile LESS to CSS with imports
+10. `GeneratePolyfill()` - Merge polyfill files
+11. `GenerateCustomUIManifest()` - Create custom_ui_manifest.xml
+12. `fixLibs()` - Inject runtime/universal modules
+13. `SaveFresh()` - Final cleanup/save operations
+
 ## Common Debugging Patterns
 
 **Build Failures:**
 - Check `content/{addon_name}/` directory exists (build.ts validates this first)
 - Verify `package.json` name matches folder structure
-- Color-coded console output: Panorama (magenta), Tooltips (cyan), ContextMenus (yellow)
+- Color-coded console output: Panorama (magenta), Tooltips (cyan), ContextMenus (yellow), Commons (green)
+- Watch for "📁 solid-core.js 已复制到自定义游戏目录" message on startup
 
 **Type Errors:**
 - Panorama globals defined in `src/declarations/*.d.ts`
 - `$.GetContextPanel()` returns `Panel` type
-- Game-specific types in `content/solid_template/declarations/` (custom_net_tables.d.ts, netdata.d.ts)
+- Game-specific types in `content/solid_template/declarations/` if they exist
+- Custom attributes like `EOM_ButtonAttribute` extend `PanelAttributes`
 
 **Path Resolution:**
-All paths normalized with `normalizedPath()` utility (converts backslashes to forward slashes)
-Build outputs are relative to addon name: `content/${addonName}/panorama/`
+- All paths normalized with `normalizedPath()` utility (converts backslashes to forward slashes)
+- Build outputs are relative to addon name: `content/${addonName}/panorama/`
+- VScripts output: `game/${addonName}/scripts/vscripts/`
+- Use forward slashes in all configuration paths
+
+**VScripts Issues:**
+- Source files in `content/solid_template/scripts/vscripts/`
+- Compiled output in `game/solid_template/scripts/vscripts/`
+- Check tsconfig.json in vscripts directory for TSTL configuration
+- Watch mode (`dev:vscripts`) includes automatic cleanup of orphaned Lua files
+- Encryption excludes init files and specific modules (see SERVER_MODULE_PATTERNS)
+
+**Component Not Rendering:**
+- Ensure component is added to `package.json` panorama section
+- Check that `.tsx`, `.less`, and `.xml` files exist (XML can be auto-generated)
+- Verify `render()` is called at top level with correct panel target
+- Look for build errors in color-coded console output
+- Confirm output files exist in `content/{addon_name}/panorama/`

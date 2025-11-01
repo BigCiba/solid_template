@@ -59,7 +59,6 @@ function GetManifestContent(script: string, panel: string) {
 	return `<root>
 	<scripts>
 ${script}
-		<include src="file://{resources}/scripts/custom_game/panorama-polyfill.js"/>
 	</scripts>
 	<Panel>
 ${panel}

@@ -3,193 +3,92 @@
   height: 100%;
   z-index: 61;
 }
-.AspectRatio16x10 .CustomHudRoot {
-  width: 100%;
-  height: width-percentage(900/16%);
-  ui-scale: 90%;
-}
-.AspectRatio4x3 .CustomHudRoot {
-  width: 100%;
-  height: width-percentage(900/16%);
-  ui-scale: 75%;
-}
-#first_celebration,
-#battlepass,
-#store,
-#draw {
-  visibility: collapse;
-}
-.ShowStoreContent #first_celebration,
-.ShowStoreContent #battlepass,
-.ShowStoreContent #store,
-.ShowStoreContent #draw {
-  visibility: visible;
-}
 #MenuMain {
-  margin: 5px;
   width: 100%;
 }
-#MenuBar {
+#MenuMain #MenuBar {
   width: 100%;
   flow-children: right;
 }
-#MenuBar.Hidden {
-  opacity: 0;
-}
-#DropContainer {
+#MenuMain #DropContainer {
   width: 200px;
   opacity: 0;
   transition-property: opacity, transform;
   transition-duration: 0.1s;
   transform: translateY(-20px);
   flow-children: down;
+  overflow: noclip;
   padding: 6px;
 }
-#DropContainer.Show {
+#MenuMain #DropContainer.Show {
   opacity: 1;
   transform: translateY(0px);
 }
-#DropContainer #MarginTop {
-  height: 74px;
-  width: 58px;
+#MenuMain #DropContainer #MarginTop {
+  height: 61px;
+  width: 46px;
   horizontal-align: center;
 }
-#DropContainer #DropMain {
+#MenuMain #DropContainer #DropMain {
   width: 100%;
-  box-shadow: fill #000000aa 0px 0px 6px 0px;
-}
-#DropContainer #DropContent {
   flow-children: down;
-  width: 100%;
-  padding: 10px 0px;
+  padding: 4px;
+  border-radius: 2px;
+  border: 1px solid white;
+  box-shadow: 0px 0px 10px 0px #000000cc;
+  border-brush: gradient(linear, 0% 0%, 0% 100%, from(#a09a72), to(#755417));
+  background-color: gradient(linear, 0% 0%, 100% 100%, from(#273163), to(#3c5a90));
 }
-#DropContainer .DropdownItem {
+#MenuMain #DropContainer .DropdownItem {
   width: 100%;
   height: 38px;
 }
-#DropContainer .DropdownItem Label {
+#MenuMain #DropContainer .DropdownItem Label {
   margin-left: 30px;
   margin-right: 30px;
   horizontal-align: center;
   vertical-align: center;
-  color: #B6A391;
   text-align: center;
   text-overflow: shrink;
 }
-#DropContainer #right_bottom {
-  align: right bottom;
-  width: 38px;
-  height: 38px;
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/right_bottom.png");
-  background-size: 38px;
-}
-#DropContainer #left_bottom {
-  align: left bottom;
-  width: 38px;
-  height: 38px;
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/left_bottom.png");
-  background-size: 38px;
-}
-#DropContainer #right_top {
-  align: right top;
-  width: 38px;
-  height: 38px;
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/right_top.png");
-  background-size: 38px;
-}
-#DropContainer #left_top {
-  align: left top;
-  width: 38px;
-  height: 38px;
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/left_top.png");
-  background-size: 38px;
-}
-#DropContainer #right_center {
-  align: right center;
-  width: 38px;
-  height: 100%;
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/right_center.png");
-  background-size: 38px 100%;
-  margin: 37px 0px;
-}
-#DropContainer #left_center {
-  align: left center;
-  width: 38px;
-  height: 100%;
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/left_center.png");
-  background-size: 38px 100%;
-  margin: 37px 0px;
-}
-#DropContainer #center_bottom {
-  align: center bottom;
-  width: 100%;
-  height: 38px;
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/center_bottom.png");
-  background-size: 100% 38px;
-  margin: 0px 37px;
-}
-#DropContainer #center_top {
-  align: center top;
-  width: 100%;
-  height: 38px;
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/center_top.png");
-  background-size: 100% 38px;
-  margin: 0px 37px;
-}
-#DropContainer #center_center {
-  align: center center;
-  margin: 37px;
-  width: 100%;
-  height: 100%;
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/center_center.png");
-  background-size: 38px;
-}
-.EOM_Button:disabled:hover {
-  brightness: 1;
-}
-.EOM_BaseButton {
-  width: 58px;
+#MenuMain .MenuButton {
+  width: 46px;
   overflow: noclip;
 }
-.EOM_BaseButton.russian {
-  width: fit-children;
+#MenuMain .MenuButton:disabled:hover {
+  brightness: 1;
 }
-.EOM_BaseButton .BGImage {
-  width: 58px;
-  height: 58px;
+#MenuMain .MenuButton .BGImage {
+  width: 46px;
+  height: 46px;
 }
-.EOM_BaseButton .FrontImage {
+#MenuMain .MenuButton .FrontImage {
   opacity: 1;
 }
-.EOM_BaseButton .Hitbox {
-  align: center top;
-  width: 58px;
-  height: 58px;
-}
-.EOM_BaseButton .HoverImage {
+#MenuMain .MenuButton .HoverImage {
   opacity: 0;
-  width: 54px;
-  height: 68px;
-  horizontal-align: center;
-  margin-top: 8px;
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/selected.png");
-  z-index: -1;
 }
-.EOM_BaseButton .HoverImage.Selected {
+#MenuMain .MenuButton.Selected,
+#MenuMain .MenuButton.ShowDropDown {
+  brightness: 1;
+}
+#MenuMain .MenuButton.Selected .FrontImage,
+#MenuMain .MenuButton.ShowDropDown .FrontImage {
+  opacity: 0;
+}
+#MenuMain .MenuButton.Selected .HoverImage,
+#MenuMain .MenuButton.ShowDropDown .HoverImage {
   opacity: 1;
 }
-.EOM_BaseButton.Hover,
-.EOM_BaseButton.ShowDropDown {
-  brightness: 2;
+#MenuMain .MenuButton.Selected .MenuLabel,
+#MenuMain .MenuButton.ShowDropDown .MenuLabel {
+  color: #DFF1FE;
 }
-.EOM_BaseButton.Selected {
-  brightness: 2;
-}
-.EOM_BaseButton .MenuMarkIcon {
+#MenuMain .MenuButton .MenuMarkIcon {
   align: right top;
   transform: translateX(10px) translateY(-6px);
 }
-.EOM_BaseButton .Mark {
+#MenuMain .MenuButton .Mark {
   background-image: url("file://{images}/custom_game/icon/s_dot.png");
   background-size: 100%;
   width: 42px;
@@ -197,81 +96,93 @@
   align: right top;
   transform: translateX(10px) translateY(-6px);
 }
-.FrontImage.Return {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/back.png");
-}
-.FrontImage.Option {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_set.png");
-}
-.FrontImage.setting {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_set.png");
-}
-.FrontImage.mail {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_email.png");
-}
-.FrontImage.store {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_shop.png");
-}
-.FrontImage.ladderpass {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/card.png");
-}
-.FrontImage.battlepass {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_draw.png");
-}
-.FrontImage.draw {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_draw.png");
-}
-.FrontImage.activity {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_activity.png");
-}
-.FrontImage.hero {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_hero.png");
-}
-.FrontImage.decoration,
-.FrontImage.inventory {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_ranking.png");
-}
-.FrontImage.profile {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_science.png");
-}
-.FrontImage.backpack,
-.FrontImage.equipment {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_equipment.png");
-}
-.FrontImage.handbook {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_files.png");
-}
-.FrontImage.scoreboard {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/count_gold.png");
-}
-.FrontImage.rank {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_ranking.png");
-}
-.FrontImage.recharge {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/s4_icon.png");
-}
-.FrontImage.endscreen {
-  background-image: url("file://{images}/custom_game/eom_design/menu_icon/Tui12/b_button_settlement.png");
-}
-.HoverImage.setting {
-  visibility: collapse;
-}
-.EOM_BaseButton.russian .MenuLabel {
-  text-overflow: shrink;
-}
-.EOM_BaseButton .MenuLabel {
-  margin-top: 43px;
+#MenuMain .MenuLabel {
+  margin-top: 46px;
   text-align: center;
-  width: 100%;
-  font-size: 16px;
-  line-height: 16px;
-  color: #C5B78D;
+  width: 46px;
+  font-size: 13px;
+  color: #9CC0E8;
   text-shadow: 0px 0px 2px 3 #000000;
 }
-#scoreboardLabel {
+#MenuMain .FrontImage.Return {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/return.png");
+}
+#MenuMain .FrontImage.setting {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/set.png");
+}
+#MenuMain .FrontImage.mail {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/mail.png");
+}
+#MenuMain .FrontImage.store {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/shop.png");
+}
+#MenuMain .FrontImage.battlepass {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/card.png");
+}
+#MenuMain .FrontImage.draw {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/treasure.png");
+}
+#MenuMain .FrontImage.activity {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/act.png");
+}
+#MenuMain .FrontImage.hero {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/hero.png");
+}
+#MenuMain .FrontImage.inventory {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/inventory.png");
+}
+#MenuMain .FrontImage.profile {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/files.png");
+}
+#MenuMain .FrontImage.handbook {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/book.png");
+}
+#MenuMain .FrontImage.rank {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/rank.png");
+}
+#MenuMain .HoverImage.Return {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/return_01.png");
+}
+#MenuMain .HoverImage.setting {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/set_01.png");
+}
+#MenuMain .HoverImage.mail {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/mail_01.png");
+}
+#MenuMain .HoverImage.store {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/shop_01.png");
+}
+#MenuMain .HoverImage.battlepass {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/card_01.png");
+}
+#MenuMain .HoverImage.draw {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/treasure_01.png");
+}
+#MenuMain .HoverImage.activity {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/act_01.png");
+}
+#MenuMain .HoverImage.hero {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/hero_01.png");
+}
+#MenuMain .HoverImage.inventory {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/inventory_01.png");
+}
+#MenuMain .HoverImage.profile {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/files_01.png");
+}
+#MenuMain .HoverImage.handbook {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/book_01.png");
+}
+#MenuMain .HoverImage.rank {
+  background-image: url("file://{images}/custom_game/eom_design/menu_icon/rank_01.png");
+}
+#MenuMain .EOM_BaseButton.russian .MenuLabel {
+  text-overflow: shrink;
+}
+#MenuMain #scoreboardLabel {
   color: #cbb98c;
 }
-#RedPoint {
+#MenuMain #RedPoint {
   width: 30px;
   height: 30px;
   align: right top;
@@ -279,7 +190,7 @@
   background-image: url("file://{images}/custom_game/icon/dot_small.png");
   background-size: 100%;
 }
-#DropdownRedPoint {
+#MenuMain #DropdownRedPoint {
   ignore-parent-flow: true;
   layout-position: fixed;
   align: right center;
@@ -289,1314 +200,112 @@
   background-image: url("file://{images}/custom_game/icon/dot_small.png");
   background-size: 100%;
 }
-.EOM_Button {
+.EOM_BaseButton {
   background-size: 100%;
   background-repeat: no-repeat;
-  transition-property: brightness;
+  transition-property: brightness, color;
   transition-duration: 0.05s;
+  transition-timing-function: ease-in-out;
 }
-.EOM_Button:disabled {
-  saturation: 0;
-  brightness: 0.5;
-}
-.EOM_Button:not(:disabled):hover {
+.EOM_BaseButton:not(:disabled):hover {
   brightness: 2;
 }
-.EOM_Button:not(:disabled):active {
+.EOM_BaseButton:not(:disabled):active {
   brightness: 0.5;
   sound: "ui_generic_button_click";
 }
-.EOM_Button_Text {
+.EOM_BaseButton:disabled {
+  saturation: 0;
+  brightness: 0.5;
+}
+.EOM_Button {
+  width: 234px;
+  height: 68px;
+  padding: 10px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  transition-property: brightness, color;
+  transition-duration: 0.05s;
+  transition-timing-function: ease-in-out;
+}
+.EOM_Button Label {
+  color: #FFFFFF;
+  font-size: 22px;
+  line-height: 24px;
+  letter-spacing: 2px;
+  align: center center;
+  text-align: center;
+  text-shadow: 0px 0px 5px 2 #000000;
+  transition-property: color, opacity;
+  transition-duration: 0.35s;
+  transition-timing-function: ease-in-out;
+}
+.EOM_Button:disabled {
+  saturation: 1;
+  brightness: 1;
+  cursor: not-allowed;
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_gray.png");
+}
+.EOM_Button:disabled Image {
+  wash-color: #919191;
+}
+.EOM_Button:disabled Label {
+  color: #ffffff40;
+}
+.EOM_Button.color-Red {
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_red.png");
+}
+.EOM_Button.color-Green {
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_green.png");
+}
+.EOM_Button.color-Purple {
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_purple.png");
+}
+.EOM_Button.color-Gray {
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_gray.png");
+}
+.EOM_Button.color-Gold {
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_gold.png");
+}
+.EOM_Button.color-Blue {
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_blue.png");
+}
+.EOM_Button.size-Small {
+  ui-scale: 80%;
+}
+.EOM_Button.size-Normal {
+  width: 234px;
+  height: 68px;
+}
+.EOM_Button.size-Large {
+  ui-scale: 120%;
+}
+.EOM_Button .EOM_Button_Content {
   align: center center;
   flow-children: right;
 }
-.EOM_IconButton {
+.EOM_Button .EOM_Button_Content > Image {
+  margin: 0px 4px;
   background-size: 100%;
-  background-repeat: no-repeat;
-  transition-property: brightness;
-  transition-duration: 0.05s;
-  height: width-percentage(100%);
-  z-index: 1;
-  transition-property: wash-color;
-  transition-duration: 0.15s;
+  vertical-align: center;
 }
-.EOM_IconButton:disabled:hover {
-  brightness: 1;
-}
-.EOM_IconButton:disabled {
-  saturation: 0;
-  brightness: 0.5;
-}
-.EOM_IconButton:not(:disabled):hover {
-  brightness: 2;
-}
-.EOM_IconButton:not(:disabled):active {
-  brightness: 0.5;
-  sound: "ui_generic_button_click";
-}
-.Loading Label {
-  opacity: 0;
-}
-/** Tui12 */
-.EOM_Button.Tui12 {
-  width: 152px;
-  height: 42px;
-  margin: 8px;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  transition-property: brightness, color;
-  transition-duration: 0.05s;
-  transition-timing-function: ease-in-out;
-  width: 276px;
-  height: 62px;
-}
-.EOM_Button.Tui12.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_red.png");
-}
-.EOM_Button.Tui12.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_green.png");
-}
-.EOM_Button.Tui12.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_purple.png");
-}
-.EOM_Button.Tui12.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gray.png");
-}
-.EOM_Button.Tui12.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gold.png");
-}
-.EOM_Button.Tui12.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_blue.png");
-}
-.EOM_Button.Tui12:enabled:hover {
-  brightness: 1.5;
-}
-.EOM_Button.Tui12:active {
-  brightness: 0.5;
-}
-.EOM_Button.Tui12:disabled {
-  wash-color: #AAAAAA;
-  saturation: 0;
-}
-.EOM_Button.Tui12 Label {
-  letter-spacing: 2px;
-  color: #FFFFFF;
-  horizontal-align: center;
-  text-align: center;
-  vertical-align: middle;
-  text-shadow: 0px 0px 5px 2 #000000;
-  text-overflow: shrink;
-  transition-property: color, opacity;
-  transition-duration: 0.35s;
-  transition-timing-function: ease-in-out;
-}
-.EOM_Button.Tui12 Label {
-  color: #fef3ab;
-  font-size: 24px;
-  text-shadow: 0px 0px 3px 3 #1c1c1c;
-}
-.EOM_Button.Tui12.Small {
-  width: 206px;
-  height: 52px;
-  padding: 6px;
-}
-.EOM_Button.Tui12.Large {
-  width: 394px;
-  height: 88px;
-}
-.EOM_Button.Tui12.Large Label {
-  font-size: 32px;
-}
-.EOM_Button.Tui12.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui12/button_red.png");
-}
-.EOM_Button.Tui12.Red.Small {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui12/button_red_s.png");
-}
-.EOM_Button.Tui12.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui12/button_green.png");
-}
-.EOM_Button.Tui12.Green.Small {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui12/button_green_s.png");
-}
-.EOM_Button.Tui12.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui12/button_purple.png");
-}
-.EOM_Button.Tui12.Purple.Small {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui12/button_purple_s.png");
-}
-.EOM_Button.Tui12.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui12/button_grey.png");
-}
-.EOM_Button.Tui12.Gray Label {
-  color: #d0d0d0;
-}
-.EOM_Button.Tui12.Gray.Small {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui12/button_grey_s.png");
-}
-.EOM_Button.Tui12.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui12/button_golden.png");
-}
-.EOM_Button.Tui12.Gold.Small {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui12/button_golden_s.png");
-}
-.EOM_Button.Tui12.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui12/btn_blue.png");
-}
-.EOM_Button.Tui12.Blue.Small {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui12/btn_blue_s.png");
-}
-.EOM_Button.Tui12:disabled {
-  wash-color: white;
-  saturation: 0;
-  brightness: 1;
-}
-.EOM_Button.Tui12:disabled Label {
-  color: #d0d0d0;
-  text-shadow: 0px 0px 3px 3 #606061;
-}
-/** Tui6 */
-.EOM_Button.Tui6 {
-  width: 152px;
-  height: 42px;
-  margin: 8px;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  transition-property: brightness, color;
-  transition-duration: 0.05s;
-  transition-timing-function: ease-in-out;
-}
-.EOM_Button.Tui6.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_red.png");
-}
-.EOM_Button.Tui6.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_green.png");
-}
-.EOM_Button.Tui6.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_purple.png");
-}
-.EOM_Button.Tui6.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gray.png");
-}
-.EOM_Button.Tui6.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gold.png");
-}
-.EOM_Button.Tui6.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_blue.png");
-}
-.EOM_Button.Tui6:enabled:hover {
-  brightness: 1.5;
-}
-.EOM_Button.Tui6:active {
-  brightness: 0.5;
-}
-.EOM_Button.Tui6:disabled {
-  wash-color: #AAAAAA;
-  saturation: 0;
-}
-.EOM_Button.Tui6 Label {
-  letter-spacing: 2px;
-  color: #FFFFFF;
-  horizontal-align: center;
-  text-align: center;
-  vertical-align: middle;
-  text-shadow: 0px 0px 5px 2 #000000;
-  text-overflow: shrink;
-  transition-property: color, opacity;
-  transition-duration: 0.35s;
-  transition-timing-function: ease-in-out;
-}
-/** Tui7 */
-.EOM_Button.Tui7 {
-  width: 152px;
-  height: 42px;
-  margin: 8px;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  transition-property: brightness, color;
-  transition-duration: 0.05s;
-  transition-timing-function: ease-in-out;
-}
-.EOM_Button.Tui7.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_red.png");
-}
-.EOM_Button.Tui7.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_green.png");
-}
-.EOM_Button.Tui7.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_purple.png");
-}
-.EOM_Button.Tui7.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gray.png");
-}
-.EOM_Button.Tui7.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gold.png");
-}
-.EOM_Button.Tui7.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_blue.png");
-}
-.EOM_Button.Tui7:enabled:hover {
-  brightness: 1.5;
-}
-.EOM_Button.Tui7:active {
-  brightness: 0.5;
-}
-.EOM_Button.Tui7:disabled {
-  wash-color: #AAAAAA;
-  saturation: 0;
-}
-.EOM_Button.Tui7 Label {
-  letter-spacing: 2px;
-  color: #FFFFFF;
-  horizontal-align: center;
-  text-align: center;
-  vertical-align: middle;
-  text-shadow: 0px 0px 5px 2 #000000;
-  text-overflow: shrink;
-  transition-property: color, opacity;
-  transition-duration: 0.35s;
-  transition-timing-function: ease-in-out;
-}
-.EOM_Button.Tui7.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui7/btn_red.png");
-}
-.EOM_Button.Tui7.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui7/btn_green.png");
-}
-.EOM_Button.Tui7.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui7/btn_purple.png");
-}
-.EOM_Button.Tui7.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui7/btn_gray.png");
-}
-.EOM_Button.Tui7.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui7/btn_gold.png");
-}
-.EOM_Button.Tui7.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui7/btn_blue.png");
-}
-/** Tui9 */
-.EOM_Button.Tui9 {
-  width: 152px;
-  height: 42px;
-  margin: 8px;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  transition-property: brightness, color;
-  transition-duration: 0.05s;
-  transition-timing-function: ease-in-out;
-}
-.EOM_Button.Tui9.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_red.png");
-}
-.EOM_Button.Tui9.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_green.png");
-}
-.EOM_Button.Tui9.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_purple.png");
-}
-.EOM_Button.Tui9.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gray.png");
-}
-.EOM_Button.Tui9.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gold.png");
-}
-.EOM_Button.Tui9.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_blue.png");
-}
-.EOM_Button.Tui9:enabled:hover {
-  brightness: 1.5;
-}
-.EOM_Button.Tui9:active {
-  brightness: 0.5;
-}
-.EOM_Button.Tui9:disabled {
-  wash-color: #AAAAAA;
-  saturation: 0;
-}
-.EOM_Button.Tui9 Label {
-  letter-spacing: 2px;
-  color: #FFFFFF;
-  horizontal-align: center;
-  text-align: center;
-  vertical-align: middle;
-  text-shadow: 0px 0px 5px 2 #000000;
-  text-overflow: shrink;
-  transition-property: color, opacity;
-  transition-duration: 0.35s;
-  transition-timing-function: ease-in-out;
-}
-.EOM_Button.Tui9.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui9/btn_red.png");
-}
-.EOM_Button.Tui9.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui9/btn_green.png");
-}
-.EOM_Button.Tui9.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui9/btn_purple.png");
-}
-.EOM_Button.Tui9.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui9/btn_gray.png");
-}
-.EOM_Button.Tui9.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui9/btn_gold.png");
-}
-.EOM_Button.Tui9.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui9/btn_blue.png");
-}
-/** Tui3 */
-.EOM_Button.Tui3 {
-  width: 152px;
-  height: 42px;
-  margin: 8px;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  transition-property: brightness, color;
-  transition-duration: 0.05s;
-  transition-timing-function: ease-in-out;
-}
-.EOM_Button.Tui3.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_red.png");
-}
-.EOM_Button.Tui3.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_green.png");
-}
-.EOM_Button.Tui3.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_purple.png");
-}
-.EOM_Button.Tui3.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gray.png");
-}
-.EOM_Button.Tui3.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gold.png");
-}
-.EOM_Button.Tui3.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_blue.png");
-}
-.EOM_Button.Tui3:enabled:hover {
-  brightness: 1.5;
-}
-.EOM_Button.Tui3:active {
-  brightness: 0.5;
-}
-.EOM_Button.Tui3:disabled {
-  wash-color: #AAAAAA;
-  saturation: 0;
-}
-.EOM_Button.Tui3 Label {
-  letter-spacing: 2px;
-  color: #FFFFFF;
-  horizontal-align: center;
-  text-align: center;
-  vertical-align: middle;
-  text-shadow: 0px 0px 5px 2 #000000;
-  text-overflow: shrink;
-  transition-property: color, opacity;
-  transition-duration: 0.35s;
-  transition-timing-function: ease-in-out;
-}
-.EOM_Button.Tui3.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui3/btn_red.png");
-}
-.EOM_Button.Tui3.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui3/btn_green.png");
-}
-.EOM_Button.Tui3.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui3/btn_purple.png");
-}
-.EOM_Button.Tui3.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui3/btn_gray.png");
-}
-.EOM_Button.Tui3.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui3/btn_gold.png");
-}
-.EOM_Button.Tui3.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui3/btn_blue.png");
-}
-/** P2 */
-.EOM_Button.P2 {
-  width: 152px;
-  height: 42px;
-  margin: 8px;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  transition-property: brightness, color;
-  transition-duration: 0.05s;
-  transition-timing-function: ease-in-out;
-}
-.EOM_Button.P2.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_red.png");
-}
-.EOM_Button.P2.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_green.png");
-}
-.EOM_Button.P2.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_purple.png");
-}
-.EOM_Button.P2.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gray.png");
-}
-.EOM_Button.P2.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gold.png");
-}
-.EOM_Button.P2.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_blue.png");
-}
-.EOM_Button.P2:enabled:hover {
-  brightness: 1.5;
-}
-.EOM_Button.P2:active {
-  brightness: 0.5;
-}
-.EOM_Button.P2:disabled {
-  wash-color: #AAAAAA;
-  saturation: 0;
-}
-.EOM_Button.P2 Label {
-  letter-spacing: 2px;
-  color: #FFFFFF;
-  horizontal-align: center;
-  text-align: center;
-  vertical-align: middle;
-  text-shadow: 0px 0px 5px 2 #000000;
-  text-overflow: shrink;
-  transition-property: color, opacity;
-  transition-duration: 0.35s;
-  transition-timing-function: ease-in-out;
-}
-.EOM_Button.P2.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/P2/btn_red.png");
-}
-.EOM_Button.P2.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/P2/btn_green.png");
-}
-.EOM_Button.P2.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/P2/btn_purple.png");
-}
-.EOM_Button.P2.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/P2/btn_gray.png");
-}
-.EOM_Button.P2.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/P2/btn_gold.png");
-}
-.EOM_Button.P2.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/P2/btn_blue.png");
-}
-/** C4 */
-.EOM_Button.C4 {
-  width: 152px;
-  height: 42px;
-  margin: 8px;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  transition-property: brightness, color;
-  transition-duration: 0.05s;
-  transition-timing-function: ease-in-out;
-  width: 186px;
-  height: 58px;
-}
-.EOM_Button.C4.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_red.png");
-}
-.EOM_Button.C4.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_green.png");
-}
-.EOM_Button.C4.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_purple.png");
-}
-.EOM_Button.C4.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gray.png");
-}
-.EOM_Button.C4.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gold.png");
-}
-.EOM_Button.C4.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_blue.png");
-}
-.EOM_Button.C4:enabled:hover {
-  brightness: 1.5;
-}
-.EOM_Button.C4:active {
-  brightness: 0.5;
-}
-.EOM_Button.C4:disabled {
-  wash-color: #AAAAAA;
-  saturation: 0;
-}
-.EOM_Button.C4 Label {
-  letter-spacing: 2px;
-  color: #FFFFFF;
-  horizontal-align: center;
-  text-align: center;
-  vertical-align: middle;
-  text-shadow: 0px 0px 5px 2 #000000;
-  text-overflow: shrink;
-  transition-property: color, opacity;
-  transition-duration: 0.35s;
-  transition-timing-function: ease-in-out;
-}
-.EOM_Button.C4 Label {
-  color: #FFF9EB;
-  font-size: 22px;
-  text-shadow: 0px 0px 3px 1 #606061;
-}
-.EOM_Button.C4.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/btn_red.png");
-}
-.EOM_Button.C4.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/btn_green.png");
-}
-.EOM_Button.C4.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/btn_purple.png");
-}
-.EOM_Button.C4.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/btn_gray.png");
-}
-.EOM_Button.C4.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/btn_gold.png");
-}
-.EOM_Button.C4.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/btn_blue.png");
-}
-.EOM_Button.C4.Light {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/q_buttom_light.png");
-}
-.EOM_Button.C4:disabled {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/btn_gray.png");
-  wash-color: white;
-  saturation: 1;
-  brightness: 1;
-}
-.EOM_Button.C4:disabled Label {
-  color: #CBCBCB;
-  text-shadow: 0px 0px 3px 1 #606061;
-}
-/** C4 */
-.EOM_Button.C4glass {
-  width: 152px;
-  height: 42px;
-  margin: 8px;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  transition-property: brightness, color;
-  transition-duration: 0.05s;
-  transition-timing-function: ease-in-out;
-  width: 186px;
-  height: 58px;
-}
-.EOM_Button.C4glass.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_red.png");
-}
-.EOM_Button.C4glass.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_green.png");
-}
-.EOM_Button.C4glass.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_purple.png");
-}
-.EOM_Button.C4glass.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gray.png");
-}
-.EOM_Button.C4glass.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_gold.png");
-}
-.EOM_Button.C4glass.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/Tui6/btn_blue.png");
-}
-.EOM_Button.C4glass:enabled:hover {
-  brightness: 1.5;
-}
-.EOM_Button.C4glass:active {
-  brightness: 0.5;
-}
-.EOM_Button.C4glass:disabled {
-  wash-color: #AAAAAA;
-  saturation: 0;
-}
-.EOM_Button.C4glass Label {
-  letter-spacing: 2px;
-  color: #FFFFFF;
-  horizontal-align: center;
-  text-align: center;
-  vertical-align: middle;
-  text-shadow: 0px 0px 5px 2 #000000;
-  text-overflow: shrink;
-  transition-property: color, opacity;
-  transition-duration: 0.35s;
-  transition-timing-function: ease-in-out;
-}
-.EOM_Button.C4glass Label {
-  color: #FFF9EB;
-  font-size: 22px;
-  text-shadow: 0px 0px 3px 1 #606061;
-}
-.EOM_Button.C4glass.Red {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/button_red_02.png");
-}
-.EOM_Button.C4glass.Green {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/button_green_02.png");
-}
-.EOM_Button.C4glass.Purple {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/button_purple_02.png");
-}
-.EOM_Button.C4glass.Gray {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/button_grey_02.png");
-}
-.EOM_Button.C4glass.Gold {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/button_gold_02.png");
-}
-.EOM_Button.C4glass.Blue {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/button_blue_02.png");
-}
-.EOM_Button.C4glass.Light {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/button_light_02.png");
-}
-.EOM_Button.C4glass:disabled {
-  background-image: url("file://{images}/custom_game/eom_design/common/C4/button_grey_02.png");
-  wash-color: white;
-  saturation: 1;
-  brightness: 1;
-}
-.EOM_Button.C4glass:disabled Label {
-  color: #CBCBCB;
-  text-shadow: 0px 0px 3px 1 #606061;
-}
-/** 以下为官方样式 */
-.EOM_Button.Bevel {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#373d45), to(#4d5860));
-  border-style: solid;
-  border-width: 1px;
-  padding: 4px 10px;
-  margin: 8px;
-  border-top-color: #555555;
-  border-left-color: #494949;
-  border-bottom-color: #333333;
-  border-right-color: #404040;
-  transition-property: background-color, opacity;
-  transition-duration: 0.05s;
-  transition-timing-function: linear;
-  box-shadow: #00000055 0px 0px 4px 0px;
-  min-width: 192px;
-  min-height: 36px;
-}
-.EOM_Button.Bevel.Green {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#2a481f), to(#226326));
-  border-top-color: #355639;
-  border-left-color: #2c4d30;
-  border-bottom-color: #1e371e;
-  border-right-color: #214123;
-}
-.EOM_Button.Bevel.DarkGreen {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#1a2c13), to(#18441b));
-  border-top-color: #223524;
-  border-left-color: #2c4d30;
-  border-bottom-color: #091009;
-  border-right-color: #132615;
-}
-.EOM_Button.Bevel.Bronze {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#b9894c), to(#dca157));
-  border-top-color: #e0a75e;
-  border-left-color: #dca35b;
-  border-bottom-color: #8d683a;
-  border-right-color: #8f6b3c;
-}
-.EOM_Button.Bevel.Plus {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#877f4f), to(#a79c5b));
-  border-top-color: #b4a442;
-  border-left-color: #aea463;
-  border-bottom-color: #635e3b;
-  border-right-color: #756f45;
-}
-.EOM_Button.Bevel:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#4c5561), to(#6c7d88));
-  border-top-color: #aaaaaa77;
-  border-left-color: #aaaaaa33;
-  border-bottom-color: #333333;
-  border-right-color: #404040;
-}
-.EOM_Button.Bevel.Green:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#226528), to(#288a36));
-  border-top-color: #030503;
-  border-left-color: #000000;
-  border-bottom-color: #1e371d;
-  border-right-color: #244426;
-}
-.EOM_Button.Bevel.DarkGreen:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#17421b), to(#185321));
-  border-top-color: #000000;
-  border-left-color: #000000;
-  border-bottom-color: #172a16;
-  border-right-color: #152716;
-}
-.EOM_Button.Bevel.Bronze:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#dda45a), to(#fcb965));
-  border-top-color: #f2b362;
-  border-left-color: #edb062;
-  border-bottom-color: #966f3e;
-  border-right-color: #966f3e;
-}
-.EOM_Button.Bevel.Plus:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#a79d63), to(#c2b56b));
-  border-top-color: #cab84b;
-  border-left-color: #c6bb72;
-  border-bottom-color: #7c764b;
-  border-right-color: #8e8755;
-}
-.EOM_Button.Bevel:disabled {
-  wash-color: #AAAAAA;
-  saturation: 0;
-}
-.EOM_Button.Bevel.Bronze:disabled {
-  saturation: 0.75;
-}
-.EOM_Button.Bevel.Plus:disabled {
-  saturation: 0.75;
-}
-.EOM_Button.Bevel Label {
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: #FFFFFF;
-  horizontal-align: center;
-  text-align: center;
-  vertical-align: middle;
-  text-shadow: 0px 0px 0px 1 #000000;
-  transition-property: color;
-  transition-duration: 0.35s;
-  transition-timing-function: ease-in-out;
-}
-.EOM_Button.Bevel:disabled Label {
-  color: #333333;
-}
-.EOM_Button.Bevel:active {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#393939), to(#555555));
-  border-top-color: #222222;
-  border-left-color: #303030;
-  border-bottom-color: #666666;
-  border-right-color: #444444;
-  sound: "ui_generic_button_click";
-}
-.EOM_Button.Bevel.Green:active {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#1f3d25), to(#2b562c));
-  border-top-color: #132416;
-  border-left-color: #192f1b;
-  border-bottom-color: #386b3b;
-  border-right-color: #264a29;
-}
-.EOM_Button.Bevel.DarkGreen:active {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#132416), to(#183019));
-  border-top-color: #09110a;
-  border-left-color: #0f1b10;
-  border-bottom-color: #1f3820;
-  border-right-color: #172c19;
-}
-.EOM_Button.Bevel.Bronze:active {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#4d391f), to(#9b713c));
-  border-top-color: #684e2d;
-  border-left-color: #6d522f;
-  border-bottom-color: #977242;
-  border-right-color: #906c3f;
-}
-.EOM_Button.Bevel.Plus:active {
-  color: #DCD086;
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#877f4f), to(#a79c5b));
-  border-top-color: #635e3b;
-  border-left-color: #756f45;
-  border-bottom-color: #b4a442;
-  border-right-color: #aea463;
-}
-.EOM_Button.Bevel:active Label {
-  transform: translateY(1px);
-}
-.EOM_Button.Default {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#222222), to(#4B555D));
-  background-image: url("s2r://panorama/images/backgrounds/background_play_button_2x_png.vtex");
-  background-size: cover;
-  border: 1px solid #83838390;
-  margin: 8px;
-  min-width: 192px;
-  max-width: 500px;
-  padding: 10px 30px;
-  transition-property: background-color, wash-color;
-  transition-delay: 0s;
-  transition-duration: 0.1s;
-  transition-timing-function: linear;
-}
-.EOM_Button.Default Label {
-  color: white;
-  font-size: 20px;
-  horizontal-align: center;
-  vertical-align: middle;
-  text-transform: uppercase;
-  text-overflow: shrink;
-  text-shadow: 0px 0px 5px 3 #000000;
-  font-weight: semi-bold;
-  letter-spacing: 1px;
-}
-.EOM_Button.Default:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#58636e), to(#53626e));
-}
-.EOM_Button.Default:disabled {
-  opacity: 0.3;
-}
-.EOM_Button.Default:disabled Label {
-  color: #999999;
-}
-.EOM_Button.Default:active Label {
-  transform: translateY(1px);
-}
-.EOM_Button.Default:active {
-  border: 1px solid #83838390;
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#272f33), to(#5a6c75));
-}
-.EOM_Button.Default.Activated {
-  sound: "ui_quit_menu_fadeout";
-}
-.EOM_Button.Default.Green {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#03380a), to(#3d9b3d));
-  border: 1px solid #91EA4B40;
-}
-.EOM_Button.Default.Green:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#085c13), to(#49a349));
-}
-.EOM_Button.Default.Green:active {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#012907), to(#215c21));
-  border: 1px solid #ffffff10;
-}
-.EOM_Button.Default.Blue {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#112b3a), to(#1E5D81));
-  border: 1px solid #4BCDEA30;
-}
-.EOM_Button.Default.Blue:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#164f70), to(#287aaa));
-}
-.EOM_Button.Default.Blue:active {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#091a24), to(#174864));
-  border: 1px solid #ffffff10;
-}
-.EOM_Button.Default.Red {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#7e1212), to(#da4d4d));
-  border: 1px solid #ff555550;
-}
-.EOM_Button.Default.Red:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#9e2828), to(#f76d6d));
-}
-.EOM_Button.Default.Red:active {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#580d0d), to(#a52e2e));
-  border: 1px solid #ffffff10;
-}
-.EOM_Button.Default.Purple {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#431172), to(#893cad));
-  border: 1px solid #b772f850;
-}
-.EOM_Button.Default.Purple:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#5c179c), to(#ad5cd3));
-}
-.EOM_Button.Default.Purple:active {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#2e0b4e), to(#61237e));
-  border: 1px solid #ffffff10;
-}
-.EOM_Button.Default.Gold {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#795714), to(#fdc762));
-  border: 1px solid #fcc81e50;
-}
-.EOM_Button.Default.Gold:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#a37924), to(#ffda95));
-}
-.EOM_Button.Default.Gold:active {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#4b360b), to(#b48630));
-  border: 1px solid #ffffff10;
-}
-.EOM_Button.Store {
-  border-top: 1px solid #ffffff22;
-  border-bottom: 1px solid #00000088;
-  padding: 5px 14px 3px 14px;
-  min-width: 180px;
-  margin: 8px;
-  height: 39px;
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#60862d), to(#3d5f1c));
-}
-.EOM_Button.Store Label {
-  color: white;
-  horizontal-align: center;
-  vertical-align: middle;
-  text-transform: uppercase;
-  text-overflow: shrink;
-  text-shadow: 0px 0px 3px 2 #000000;
-  font-weight: semi-bold;
-  letter-spacing: 1px;
-}
-.EOM_Button.Store:disabled Label {
-  color: #999999;
-}
-.EOM_Button.Store:hover:enabled {
-  brightness: 2;
-}
-.EOM_Button.Store:active {
-  brightness: 1.5;
-  sound: "ui_generic_button_click";
-}
-.EOM_Button.Store:disabled {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#646666), to(#646666));
-}
-.EOM_Button.Store.Direct {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#60862d), to(#3d5f1c));
-}
-.EOM_Button.Store.InBundle {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#c28000), to(#744c00));
-}
-.EOM_Button.Store.Blue,
-.EOM_Button.Store.InTreasure {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#3784a6), to(#215373));
-}
-.EOM_Button.Store.AdditionalDropInTreasure {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#3751a6), to(#1b2b5e));
-}
-.EOM_Button.Store.DotaPlus {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#e0c59a), to(#ae9249));
-}
-.EOM_Button.Store.DotaPlus:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#f7d9aa), to(#d1af58));
-}
-.EOM_Button.Store.DotaPlus:active {
-  background-color: gradient(linear, 0% 100%, 0% 0%, from(#f7d9aa), to(#d1af58));
-}
-.EOM_Button.Store.Market {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#307663), to(#245a4b));
-}
-.EOM_Button.Store.ShardsPurchase {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#433620), to(#141b21));
-  border-top: 1px solid #ffffff11;
-}
-.EOM_Button.Store.Gift {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#60862d), to(#3d5f1c));
-}
-.EOM_Button.Store.Season_Winter2017 {
-  background-image: url("s2r://panorama/images/compendium/winter2016/home_block_backgrounds/silver_png.vtex");
-  background-size: 100% 100%;
-}
-.EOM_Button.Store.Season_International2016 {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#6b211c), to(#8e2b19));
-  background-size: 100% 100%;
-}
-.EOM_Button.Store.Season_Fall2016 {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#2b3e18), to(#455c1e));
-  background-size: 100% 100%;
-}
-.EOM_Button.Store.Season_International2017 {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#154e6b), to(#52a0ae));
-  background-size: 100% 100%;
-}
-.EOM_Button.Store.Season_International2018 {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#012311), to(#1f8c51));
-  background-size: 100% 100%;
-}
-.EOM_Button.Store.Season_International2019 {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#0B0119), to(#34156B));
-  background-size: 100% 100%;
-}
-.EOM_Button.Store.Season_International2020 {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#B28948), to(#3A1803));
-  background-size: 100% 100%;
-}
-.EOM_Button.Store.Season_Spring2021 {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#9D5599), to(#3A103A));
-  background-size: 100% 100%;
-}
-.EOM_Button.Primary {
-  margin: 8px;
-  min-width: 330px;
-  max-height: 49px;
-  padding: 4px 12px 4px 12px;
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#5A615Ecc), to(#879695cc));
-  background-image: url("s2r://panorama/images/backgrounds/background_play_button_2x_png.vtex");
-  background-size: 328px 50px;
-  box-shadow: fill #002a6644 1px 1px 8px 1px;
-  border-top: 1px solid #ffffff44;
-  border-right: 1px solid #00000088;
-  border-left: 1px solid #ffffff44;
-  border-bottom: 1px solid #00000088;
-  opacity: 1;
-  transition-property: box-shadow, background-color, opacity, transform;
-  transition-delay: 0s;
-  transition-duration: 0.2s;
-  transition-timing-function: ease-in-out;
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#5Aa15E), to(#87d69533));
-  background-size: 100% 100%;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-}
-.EOM_Button.Primary:enabled:hover {
-  box-shadow: fill #414f4daa 0px 0px 8px 0px;
-  brightness: 1.2;
-}
-.EOM_Button.Primary:disabled {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#5A615E), to(#ffffff));
-}
-.EOM_Button.Primary:active {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#5A615E), to(#ffffff));
-}
-.EOM_Button.Primary Label {
-  margin-top: 2px;
-  horizontal-align: center;
-  font-size: 28px;
-  font-weight: bold;
-  color: white;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  text-align: center;
-  height: 40px;
-  text-overflow: shrink;
-  text-shadow: 0px 0px 5px #000000;
-  transition-property: color;
-  transition-delay: 0s;
-  transition-duration: 0.2s;
-}
-.EOM_Button.Primary.Gray {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#5A615Ecc), to(#879695cc));
-  saturation: 0.1;
-  opacity: 0.5;
-  box-shadow: none;
-}
-.EOM_Button.Primary.Gray:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#5Aa15E), to(#87d695));
-  box-shadow: fill #5Aa15E20 0px 0px 8px 0px;
-}
-.EOM_Button.Primary.Black {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#14161a), to(#23262b));
-  box-shadow: fill #00000000 0px 0px 0px 0px;
-  border-top: 1px solid #ffffff03;
-  border-left: 1px solid #ffffff03;
-}
-.EOM_Button.Primary.Black:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#14161a), to(#23262b));
-  box-shadow: fill #00000000 0px 0px 0px 0px;
-}
-.EOM_Button.Primary.Blue {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#2d4881cc), to(#486ca9cc));
-  box-shadow: fill #486ca922 0px 0px 8px 0px;
-  border-top: 1px solid #ffffff03;
-  border-left: 1px solid #ffffff03;
-}
-.EOM_Button.Primary.Blue:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#2d4881cc), to(#84acff));
-  box-shadow: fill #486ca966 0px 0px 18px 0px;
-}
-.EOM_Button.Primary.DarkBlue {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#102149cc), to(#1e3565cc));
-  box-shadow: fill #486ca922 0px 0px 8px 0px;
-  border-top: 1px solid #486ca944;
-  border-left: 1px solid #486ca944;
-  border-right: 1px solid #00000088;
-  border-bottom: 1px solid #00000088;
-}
-.EOM_Button.Primary.DarkBlue:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#102149ff), to(#345288));
-  box-shadow: fill transparent 0px 0px 0px 0px;
-}
-.EOM_Button.Primary.Red {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#7e1212), to(#da4d4d));
-  border: 1px solid #ff555550;
-}
-.EOM_Button.Primary.Red:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#9e2828), to(#f76d6d));
-}
-.EOM_Button.Primary.Red:active {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#580d0d), to(#a52e2e));
-  border: 1px solid #ffffff10;
-}
-.EOM_Button.Text {
-  margin: 8px;
+.EOM_Button.Loading .EOM_Button_LoadingIcon {
+  width: 24px;
   height: 24px;
-}
-.EOM_Button.Text:enabled:hover Label {
-  color: #CCCCCC;
-}
-.EOM_Button.Text.selected Label {
-  color: white;
-  sound: "ui_rollover_micro";
-}
-.EOM_Button.Text:active {
-  transform: translateY(2px);
-}
-.EOM_Button.Text:active:selected {
-  transform: translateY(0px);
-}
-.EOM_Button.Text Label {
-  color: #939da044;
-  font-size: 20px;
-  align: center center;
-  text-overflow: shrink;
-  text-shadow: 0px 0px 5px 3 #000000;
-  font-weight: semi-bold;
-  letter-spacing: 1px;
-  transition-property: color, text-shadow;
-  transition-duration: 0.2s;
-  transition-timing-function: linear;
-}
-.EOM_Button.Outline {
-  margin: 8px;
-  border: 1px solid #ffffff30;
-  padding: 8px 16px;
-  border-radius: 2px;
-  background-color: #00000030;
-  transition-property: border, background-color;
-  transition-duration: 0.3s;
-}
-.EOM_Button.Outline Label {
-  text-align: right;
-  font-size: 14px;
-  color: #ffffff;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 2px 2px 4px black;
-}
-.EOM_Button.Outline:hover {
-  border: 1px solid #ffffff90;
-  background-color: #00000090;
-  transition-property: border, background-color;
-  transition-duration: 0.3s;
-}
-.EOM_Button.Outline:active {
-  brightness: 1.5;
-  sound: "ui_select_blue";
-}
-.EOM_Button.Outline.Blue {
-  border: 1px solid #3366aa55;
-  background-color: #3366aa11;
-  border-radius: 0px;
-}
-.EOM_Button.Outline.Blue Label {
-  margin: 0px 24px 0px 24px;
-  color: #66aadd;
-  font-size: 16px;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  vertical-align: middle;
-}
-.EOM_Button.Outline.Blue:enabled:hover Label {
-  color: white;
-}
-.EOM_Button.Outline.Blue:enabled:hover {
-  border: 1px solid #22aaffaa;
-  background-color: #3366aa44;
-}
-.EOM_Button.Outline.Blue:active {
-  background-color: #23468a44;
-  sound: "ui_select_blue";
-}
-.EOM_Button.Outline.Blue:active Label {
-  color: #76baed;
-}
-.EOM_Button.Outline.Blue:disabled {
-  wash-color: #000000DD;
-  saturation: 0;
-}
-.EOM_Button.Outline.Gray {
-  border-color: #4C575F44;
-  border-color: #4C575Fff;
-  background-color: #3A444433;
-  border-radius: 0px;
-}
-.EOM_Button.Outline.Gray Label {
-  color: #768E8D;
-}
-.EOM_Button.Outline.Gray:enabled:hover Label {
-  color: white;
-}
-.EOM_Button.Outline.Gray:enabled:hover {
-  border-color: #4C575Fff;
-}
-.EOM_Button.Outline.Gray:selected,
-.EOM_Button.Outline.Gray:active {
-  background-color: #4C575F;
-}
-.EOM_Button.Outline.Red {
-  border-color: #EA6953;
-  border-radius: 0px;
-}
-.EOM_Button.Outline.Red Label {
-  color: #EA6953;
-}
-.EOM_Button.Outline.Red:enabled:hover Label {
-  color: #FEE6A9;
-}
-.EOM_Button.Outline.Red:enabled:hover {
-  border-color: #EA6953;
-}
-.EOM_DiamondButton {
-  background-repeat: no-repeat;
-  transition-property: brightness;
-  transition-duration: 0.05s;
-  width: 38px;
-  height: 38px;
+  background-image: url("s2r://panorama/images/control_icons/party_finder_icon_03_png.vtex");
   background-size: 100%;
-  background-image: url("file://{images}/custom_game/eom_design/icon/C4/anim_button_bg.png");
-}
-.EOM_DiamondButton:disabled:hover {
-  brightness: 1;
-}
-.EOM_DiamondButton:disabled {
-  saturation: 0;
-  brightness: 0.5;
-}
-.EOM_DiamondButton:not(:disabled):hover {
-  brightness: 2;
-}
-.EOM_DiamondButton:not(:disabled):active {
-  brightness: 0.5;
-  sound: "ui_generic_button_click";
-}
-.EOM_DiamondButton #EOM_DiamondButton_Point {
-  width: 100%;
-  height: 100%;
-  background-size: 100%;
-  background-image: url("file://{images}/custom_game/eom_design/icon/C4/anim_button_point.png");
-}
-.EOM_DiamondButton #EOM_DiamondButton_Arrow {
-  width: 100%;
-  height: 100%;
-  background-size: 100%;
-  background-image: url("file://{images}/custom_game/eom_design/icon/C4/anim_button_arrow.png");
-}
-.EOM_DiamondButton.animation #EOM_DiamondButton_Point {
-  animation-duration: 2s;
-  animation-name: EOM_DiamondButtonPoint;
-  animation-timing-function: ease-in-out;
+  animation-name: SpinnerRotate;
+  animation-duration: 1s;
+  animation-timing-function: linear;
   animation-iteration-count: infinite;
+  animation-direction: reverse;
 }
-.EOM_DiamondButton.animation #EOM_DiamondButton_Arrow {
-  animation-duration: 2s;
-  animation-name: EOM_DiamondButtonArrow;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
+.EOM_Button.Loading_Refresh .EOM_Button_LoadingIcon {
+  background-image: url("s2r://panorama/images/control_icons/refresh_psd.vtex");
 }
-.EOM_DiamondButton.up {
-  pre-transform-rotate2d: -90deg;
-}
-.EOM_DiamondButton.down {
-  pre-transform-rotate2d: 90deg;
-}
-.EOM_DiamondButton.left {
-  pre-transform-rotate2d: 180deg;
-}
-@keyframes 'EOM_DiamondButtonPoint' {
-  0% {
-    x: 6%;
-  }
-  50% {
-    x: -8%;
-  }
-  100% {
-    x: 6%;
-  }
-}
-@keyframes 'EOM_DiamondButtonArrow' {
-  0% {
-    x: 0;
-  }
-  50% {
-    x: 7%;
-  }
-  100% {
-    x: 0%;
-  }
+.EOM_CloseButton {
+  width: 34px;
+  height: 36px;
+  background-image: url("file://{images}/custom_game/eom_design/button/btn_close.png");
+  background-size: 100%;
 }

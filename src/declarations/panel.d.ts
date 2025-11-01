@@ -1,3 +1,7 @@
+declare interface PanelAttributes<T extends PanelBase = Panel> {
+	acceptsinput?: boolean,
+	disallowedstyleflags?: string,
+}
 type CustomPanelEvent = PanelEvent | 'onblur';
 declare interface PanelBase {
 	SetPanelEvent(event: CustomPanelEvent, handler: () => void): void;

@@ -1,7 +1,6 @@
 import classNames from "classnames";
 
-import { ParentComponent, Show, createEffect, createSignal } from "solid-js";
-import { useSimpleProps } from "../../EOMDesign";
+import { ParentComponent, Show, createEffect, createSignal, mergeProps, splitProps } from "solid-js";
 import "./EOM_KeyBinder.less";
 
 /** 面板上的按键绑定 */
@@ -243,14 +242,18 @@ interface EOM_KeyBinderProps extends PanelAttributes {
 }
 
 export const EOM_KeyBinder: ParentComponent<EOM_KeyBinderProps> = (props) => {
-	const { local, others } = useSimpleProps(props, {
-		defaultValues: { type: KeyBinderType.Normal, text: "", initKey: "", initDropIndex: 0 },
-		localKeys: ["callback", "onChange", "initKey", "initDropIndex", "text", "tooltip", "type"] as const,
-		componentClass: classNames("SettingsKeyBinder", "BindingRow", {
+	const merged = mergeProps({
+		type: KeyBinderType.Normal,
+		text: "",
+		initKey: "",
+		initDropIndex: 0,
+	}, props, {
+		class: classNames("SettingsKeyBinder", "BindingRow", {
 			HeroAbilityBindAbilityButton: props.type == KeyBinderType.Ability,
 			ItemBindButton: props.type == KeyBinderType.Item,
 		})
 	});
+	const [local, others] = splitProps(merged, ["callback", "onChange", "initKey", "initDropIndex", "text", "tooltip", "type"]);
 
 	let panel: Panel | undefined;
 	let eventKey: string | undefined;

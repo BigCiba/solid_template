@@ -1,8 +1,8 @@
-import { createMemo, Match, ParentComponent, Switch } from "solid-js";
-import { useSimpleProps } from "../../EOMDesign";
+import classNames from "classnames";
+import { createMemo, Match, mergeProps, ParentComponent, splitProps, Switch } from "solid-js";
 import "./EOM_Button.less";
 
-interface EOM_ButtonAttribute extends TextButtonAttributes {
+interface EOM_ButtonAttribute extends LabelLikeAttributes<Button> {
 	/** 图标 */
 	icon?: JSX.Element;
 	/** 设置按钮颜色 */
@@ -16,17 +16,17 @@ interface EOM_ButtonAttribute extends TextButtonAttributes {
 }
 
 export const EOM_Button: ParentComponent<EOM_ButtonAttribute> = (props) => {
-	const { local, others } = useSimpleProps(props, {
-		localKeys: ["icon", "color", "size", "loading", "loadingStyle", "children", "enabled", "text", "html", "vars"] as const,
-		componentClass: [
-			"EOM_Button",
-			props.loading ? "Loading" : "",
-			props.loadingStyle == "Refresh" ? "Loading_Refresh" : "Loading_Spinner",
-			`color-${props.enabled == false ? "Gray" : (props.color || "Gold")}`,
-			`size-${props.size || "Normal"}`
-		]
-	});
-	const enabled = createMemo(() => local.loading ? false : local.enabled);
+	const mergedClass = classNames(
+		"EOM_Button",
+		props.loading ? "Loading" : "",
+		props.loadingStyle == "Refresh" ? "Loading_Refresh" : "Loading_Spinner",
+		`color-${props.enabled == false ? "Gray" : (props.color || "Gold")}`,
+		`size-${props.size || "Normal"}`,
+		props.class
+	);
+	const merged = mergeProps({ loading: false, color: "Gold", size: "Normal" }, props, { class: mergedClass });
+	const [local, others] = splitProps(merged, ["loading", "icon", "color", "size", "children", "text", "html", "vars"]);
+	const enabled = createMemo(() => local.loading ? false : props.enabled);
 	return (
 		<EOM_BaseButton {...others} enabled={enabled()}>
 			<Panel class="EOM_Button_Content">
@@ -47,11 +47,10 @@ export const EOM_Button: ParentComponent<EOM_ButtonAttribute> = (props) => {
 	);
 };
 
-export const EOM_BaseButton: ParentComponent<PanelAttributes> = (props) => {
-	const { local, others } = useSimpleProps(props, {
-		localKeys: ["children"] as const,
-		componentClass: ["EOM_BaseButton"]
-	});
+export const EOM_BaseButton: ParentComponent<PanelAttributes<Button>> = (props) => {
+	const merged = mergeProps(props, { class: classNames("EOM_BaseButton", props.class) });
+	const [local, others] = splitProps(merged, ["children"]);
+
 	return (
 		<Button {...others}>
 			{local.children}
@@ -59,11 +58,9 @@ export const EOM_BaseButton: ParentComponent<PanelAttributes> = (props) => {
 	);
 };
 
-export const EOM_CloseButton: ParentComponent<PanelAttributes> = (props) => {
-	const { local, others } = useSimpleProps(props, {
-		localKeys: ["children"] as const,
-		componentClass: ["EOM_CloseButton"]
-	});
+export const EOM_CloseButton: ParentComponent<PanelAttributes<Button>> = (props) => {
+	const merged = mergeProps(props, { class: classNames("EOM_CloseButton", props.class) });
+	const [local, others] = splitProps(merged, ["children"]);
 	return <EOM_BaseButton {...others}>
 		{local.children}
 	</EOM_BaseButton>;
@@ -73,10 +70,8 @@ interface EOM_IconAttribute extends PanelAttributes<Button> {
 	icon: JSX.Element;
 }
 export const EOM_IconButton: ParentComponent<EOM_IconAttribute> = (props) => {
-	const { local, others } = useSimpleProps(props, {
-		localKeys: ["icon", "children"] as const,
-		componentClass: ["EOM_IconButton"]
-	});
+	const merged = mergeProps(props, { class: classNames("EOM_IconButton", props.class) });
+	const [local, others] = splitProps(merged, ["children", "icon"]);
 	return (
 		<Button {...others}>
 			{local.icon}

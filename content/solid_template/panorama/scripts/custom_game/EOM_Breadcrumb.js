@@ -1,22 +1,17 @@
 'use strict'; const exports = {}; GameUI.__loadModule('EOM_Breadcrumb', exports); const require = GameUI.__require;
 
 var libs = require('./libs.js');
-var EOM_Button = require('./EOM_Button.js');
 
 const EOM_Breadcrumb = props => {
-  const {
-    local,
-    others
-  } = EOM_Button.useSimpleProps(props, {
-    defaultValues: {
-      list: [],
-      defaultSelected: 0,
-      activateType: "onactivate",
-      group: "EOM_Breadcrumb" + Math.random()
-    },
-    localKeys: ["children", "list", "defaultSelected", "selected", "group", "activateType"],
-    componentClass: ["EOM_Breadcrumb"]
+  const merged = libs.mergeProps({
+    list: [],
+    defaultSelected: 0,
+    activateType: "onactivate",
+    group: "EOM_Breadcrumb" + Math.random()
+  }, props, {
+    class: libs.classNames("EOM_Breadcrumb", props.class)
   });
+  const [local, others] = libs.splitProps(merged, ["children", "list", "defaultSelected", "selected", "group", "activateType"]);
   const {
     defaultSelected,
     list,

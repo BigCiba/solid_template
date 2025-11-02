@@ -2,40 +2,17 @@
 
 var libs = require('./libs.js');
 
-function useComponentProps(props, options) {
-  const merged = options.defaultValues ? libs.mergeProps(options.defaultValues, props) : props;
-  const [local, others] = libs.splitProps(merged, options.localKeys);
-  const mergedClass = libs.classNames(options.componentClass, props.class);
-  return {
-    local,
-    others,
-    mergedClass
-  };
-}
-function useSimpleProps(props, options) {
-  const {
-    local,
-    others,
-    mergedClass
-  } = useComponentProps(props, options);
-  return {
-    local,
-    others: {
-      ...others,
-      class: mergedClass
-    }
-  };
-}
-
 const EOM_Button = props => {
-  const {
-    local,
-    others
-  } = useSimpleProps(props, {
-    localKeys: ["icon", "color", "size", "loading", "loadingStyle", "children", "enabled", "text", "html", "vars"],
-    componentClass: ["EOM_Button", props.loading ? "Loading" : "", props.loadingStyle == "Refresh" ? "Loading_Refresh" : "Loading_Spinner", `color-${props.enabled == false ? "Gray" : props.color || "Gold"}`, `size-${props.size || "Normal"}`]
+  const mergedClass = libs.classNames("EOM_Button", props.loading ? "Loading" : "", props.loadingStyle == "Refresh" ? "Loading_Refresh" : "Loading_Spinner", `color-${props.enabled == false ? "Gray" : props.color || "Gold"}`, `size-${props.size || "Normal"}`, props.class);
+  const merged = libs.mergeProps({
+    loading: false,
+    color: "Gold",
+    size: "Normal"
+  }, props, {
+    class: mergedClass
   });
-  const enabled = libs.createMemo(() => local.loading ? false : local.enabled);
+  const [local, others] = libs.splitProps(merged, ["loading", "icon", "color", "size", "children", "text", "html", "vars"]);
+  const enabled = libs.createMemo(() => local.loading ? false : props.enabled);
   return libs.createComponent(EOM_BaseButton, libs.mergeProps$1(others, {
     get enabled() {
       return enabled();
@@ -95,13 +72,10 @@ const EOM_Button = props => {
   }));
 };
 const EOM_BaseButton = props => {
-  const {
-    local,
-    others
-  } = useSimpleProps(props, {
-    localKeys: ["children"],
-    componentClass: ["EOM_BaseButton"]
+  const merged = libs.mergeProps(props, {
+    class: libs.classNames("EOM_BaseButton", props.class)
   });
+  const [local, others] = libs.splitProps(merged, ["children"]);
   return (() => {
     const _el$4 = libs.createElement("Button", others, null);
     libs.spread(_el$4, others, true);
@@ -110,13 +84,10 @@ const EOM_BaseButton = props => {
   })();
 };
 const EOM_IconButton = props => {
-  const {
-    local,
-    others
-  } = useSimpleProps(props, {
-    localKeys: ["icon", "children"],
-    componentClass: ["EOM_IconButton"]
+  const merged = libs.mergeProps(props, {
+    class: libs.classNames("EOM_IconButton", props.class)
   });
+  const [local, others] = libs.splitProps(merged, ["children", "icon"]);
   return (() => {
     const _el$5 = libs.createElement("Button", others, null);
     libs.spread(_el$5, others, true);
@@ -129,4 +100,3 @@ const EOM_IconButton = props => {
 exports.EOM_BaseButton = EOM_BaseButton;
 exports.EOM_Button = EOM_Button;
 exports.EOM_IconButton = EOM_IconButton;
-exports.useSimpleProps = useSimpleProps;

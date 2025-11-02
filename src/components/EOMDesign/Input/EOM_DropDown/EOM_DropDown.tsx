@@ -1,6 +1,6 @@
 import { render } from "@bigciba/solid-panorama-runtime";
-import { ParentComponent, children, getOwner, onCleanup, onMount, runWithOwner } from "solid-js";
-import { useSimpleProps } from "../../EOMDesign";
+import classNames from "classnames";
+import { ParentComponent, children, getOwner, mergeProps, onCleanup, onMount, runWithOwner, splitProps } from "solid-js";
 import "./EOM_DropDown.less";
 
 /** 找到最顶层 */
@@ -52,11 +52,8 @@ function doUniqueString(str: string) {
 	return result;
 }
 export const EOM_DropDown: ParentComponent<EOM_DropDownProp> = (props) => {
-	const { local, others } = useSimpleProps(props, {
-		defaultValues: { id: doUniqueString("EOM_DropDown"), menuPosition: "bottom", index: 0 },
-		localKeys: ["children", "index", "placeholder", "onChange", "onClear", "menuPosition"] as const,
-		componentClass: ["EOM_DropDown"]
-	});
+	const mergerd = mergeProps({ id: doUniqueString("EOM_DropDown"), menuPosition: "bottom", index: 0 }, props, { class: classNames("EOM_DropDown", props.class) });
+	const [local, others] = splitProps(mergerd, ["children", "index", "placeholder", "onChange", "onClear", "type", "id", "menuPosition"]);
 
 	let selfRef: Button | undefined;
 	let myMenu: Panel | undefined;
@@ -201,7 +198,7 @@ export const EOM_DropDown: ParentComponent<EOM_DropDownProp> = (props) => {
 	};
 
 	return (
-		<Button ref={selfRef} {...others}
+		<Button ref={selfRef} id={local.id} {...others}
 			onactivate={(self) => {
 				toggleMenu(self);
 			}}

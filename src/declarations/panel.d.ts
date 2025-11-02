@@ -1,3 +1,6 @@
+/// <reference path="../../node_modules/solid-panorama-polyfill/console.d.ts" />
+/// <reference path="../../node_modules/solid-panorama-polyfill/timers.d.ts" />
+
 declare interface PanelAttributes<T extends PanelBase = Panel> {
 	acceptsinput?: boolean,
 	disallowedstyleflags?: string,
@@ -102,15 +105,4 @@ declare interface UICanvas extends Panel {
 	 * @param sColor 折线的颜色
 	 */
 	DrawSoftLinePointsJS(iPoint: number, arrPoints: number[], iWidth: number, iMode: 0 | 1, sColor: string): void;
-}
-
-
-declare interface DOTAParticleScenePanelAttributes extends PanelAttributes<ParticleScenePanel> {
-	particleonly?: boolean;
-	squarePixels?: boolean;
-	particleName: string;
-	cameraOrigin?: string;
-	lookAt?: string;
-	fov?: number | string;
-	startAcitve?: boolean;
 }

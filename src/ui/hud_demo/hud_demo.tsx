@@ -174,7 +174,7 @@ function Demo() {
 	});
 
 	return (
-		<Show when={setting()?.is_in_tools_mode == 1 || demoSetting()?.ding}>
+		<Show when={true}>
 			<EOM_DebugTool direction="left" tabList={["常用", "后端"]} containerElement={
 				<>
 					<EOM_DebugTool_AbilityPicker title="添加技能" eventName="AddAbilityButtonPressed" itemNames={abilityList()} toggleList={getAbilityToggleList()} filterFunc={abilityFilter} />
@@ -240,5 +240,4 @@ function Demo() {
 	);
 }
 
-print(GameUI.CustomUIConfig().HeroesKv);
 render(() => <Demo />, $.GetContextPanel());

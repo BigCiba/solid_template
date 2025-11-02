@@ -68,43 +68,43 @@ export const EOM_DebugTool: ParentComponent<EOM_DebugToolAttribute> = (props) =>
 		<Panel id="EOM_DebugTool" hittest={false} >
 			{props.containerElement}
 			<EOM_DebugTool_Setting />
-			<Panel id="EOM_DebugToolControlPanel" className={classNames("ControlPanel", {
+			<Panel id="EOM_DebugToolControlPanel" class={classNames("ControlPanel", {
 				Minimized: minimized(),
 				DirectionLeft: direction() == "left",
 				DirectionRight: direction() == "right",
 				DirectionTop: direction() == "top",
 			})} hittest={false}>
-				<Panel className={"ControlPanelContainer TabShow" + tabIndex()}>
-					<Panel className="ControlPanelTitle">
-						<Panel className="CategoryHeaderFilledFront" />
-						{/* <Label className="CategoryHeader" text={`工具(FPS:${fps()})`} /> */}
-						<Switch fallback={<Label className="CategoryHeader" text={`工具`} />}>
+				<Panel class={"ControlPanelContainer TabShow" + tabIndex()}>
+					<Panel class="ControlPanelTitle">
+						<Panel class="CategoryHeaderFilledFront" />
+						{/* <Label class="CategoryHeader" text={`工具(FPS:${fps()})`} /> */}
+						<Switch fallback={<Label class="CategoryHeader" text={`工具`} />}>
 							<Match when={props.tabList != undefined && props.tabList.length > 0}>
 								<EOM_Breadcrumb class="CategoryHeader" list={props.tabList!} onChange={(index, text) => setTabIndex(index)} />
 							</Match>
 						</Switch>
-						<Panel className="CategoryHeaderFilledNext" />
-						<EOM_IconButton className="CategoryHeaderIcon" tooltip="切换布局" verticalAlign="center" icon={<EOM_Icon type="Popout" size="24" />} >
-							<EOM_DropDown id="ToggleSize" type="" onChange={(index, item) => { setDirection(item.id); SaveConfig("direction", item.id); }}>
+						<Panel class="CategoryHeaderFilledNext" />
+						<EOM_IconButton class="CategoryHeaderIcon" tooltip="切换布局" verticalAlign="center" icon={<EOM_Icon type="Popout" size="24" />} >
+							<EOM_DropDown id="ToggleSize" onChange={(index, item) => { setDirection(item.id); SaveConfig("direction", item.id); }}>
 								<Label text={"左侧"} id="left" />
 								<Label text={"上方"} id="top" />
 								<Label text={"右侧"} id="right" />
 							</EOM_DropDown>
 						</EOM_IconButton>
-						<EOM_IconButton className="CategoryHeaderIcon" tooltip="重载数据" verticalAlign="center" icon={<EOM_Icon type="Refresh" size="24" />} onactivate={() => {
+						<EOM_IconButton class="CategoryHeaderIcon" tooltip="重载数据" verticalAlign="center" icon={<EOM_Icon type="Refresh" size="24" />} onactivate={() => {
 							// @ts-ignore
 							GameEvents.SendEventClientSide("client_side_event", { event_name: "RefreshDebugToolData", event_data: JSON.stringify({}) });
 						}} />
-						<EOM_IconButton className="CategoryHeaderIcon" tooltip="设置" verticalAlign="center" icon={<EOM_Icon type="Gear" size="24" onactivate={() => ToggleSelection("EOM_DebugTool_Setting")} />} />
+						<EOM_IconButton class="CategoryHeaderIcon" tooltip="设置" verticalAlign="center" icon={<EOM_Icon type="Gear" size="24" onactivate={() => ToggleSelection("EOM_DebugTool_Setting")} />} />
 					</Panel>
 					{props.children}
 				</Panel>
-				<Panel id="ExpandButtonContainer" style={{ verticalAlign: "center" }} >
+				<Panel id="ExpandButtonContainer" verticalAlign="center" >
 					<Button id="ExpandButton" onactivate={() => {
 						setManualShowPanel(minimized());
 						setMinimized(!minimized());
 					}} >
-						<EOM_Icon type="ArrowRight" width="8px" height="14px" align="center center" rotate={minimized() ? (props.direction == "top" ? 90 : 0) : (props.direction == "top" ? 270 : 180)} />
+						<EOM_Icon type="ArrowRight" width="8px" height="14px" align="center center" preTransformRotate2d={(minimized() ? (props.direction == "top" ? 90 : 0) : (props.direction == "top" ? 270 : 180)) + "deg"} />
 					</Button>
 				</Panel>
 			</Panel>
@@ -237,16 +237,16 @@ function EOM_DebugTool_Setting() {
 			hasToggleSize={false}
 			hasFilter={false}
 		>
-			<Panel id="EOM_DebugTool_Setting" className="EOM_DebugTool_Setting" flowChildren="down" width="100%" height="100%">{/* 面板热键 */}
+			<Panel id="EOM_DebugTool_Setting" class="EOM_DebugTool_Setting" flowChildren="down" width="100%" height="100%">{/* 面板热键 */}
 				{/* 面板热键 */}
 				<Panel flowChildren="down" width="100%" marginTop="12px" onload={self => OnLoad(self)}>
 					<SettingToggleButton selected={playerConfig()["alt_tool"]} settingName="alt_tool" text="ALT切换调试工具" />
-					{/* <ToggleButton className="HotKeyValid FireEvent" selected={playerConfig()["alt_tool"]} onactivate={self => {
+					{/* <ToggleButton class="HotKeyValid FireEvent" selected={playerConfig()["alt_tool"]} onactivate={self => {
 						SaveConfig("alt_tool", self.IsSelected());
 						// SaveConfig({ ["alt_tool"]: self.IsSelected() ? "1" : "0" });
 					}} text={"ALT切换调试工具"} /> */}
-					{/* <Label text="面板热键" className="SectionHeader" />
-					<Panel className="SectionHeaderLine" /> */}
+					{/* <Label text="面板热键" class="SectionHeader" />
+					<Panel class="SectionHeaderLine" /> */}
 					{/* 默认设置 */}
 					<For each={defaultSettingList}>
 						{(eventName, index) => {
@@ -264,7 +264,7 @@ function EOM_DebugTool_Setting() {
 						{(eventName, index) => {
 							if (eventName.indexOf("hotkey_") != -1 && defaultSettingList.indexOf(eventName.replace("hotkey_", "")) == -1) {
 								return (
-									<Panel width="100%" height="36px" flowChildren="right" className={classNames("CanRemoveKeyBind", { deleteMode: deleteMode })}>
+									<Panel width="100%" height="36px" flowChildren="right" class={classNames("CanRemoveKeyBind", { deleteMode: deleteMode })}>
 										<EOM_IconButton verticalAlign="center" icon={<Image src="s2r://panorama/images/control_icons/x_close_png.vtex" />} onactivate={self => {
 											// FireEvent("ChangeToolSettingKeyBind", "_delete_" + eventName);
 											SaveConfig(eventName, "");
@@ -284,7 +284,7 @@ function EOM_DebugTool_Setting() {
 					{[...Array(customKeyBindCount)].map((_, index) => {
 						if (buttonTextList.length > 0) {
 							return (
-								<Panel width="100%" height="36px" flowChildren="right" className={classNames("CanRemoveKeyBind", { deleteMode: deleteMode })}>
+								<Panel width="100%" height="36px" flowChildren="right" class={classNames("CanRemoveKeyBind", { deleteMode: deleteMode })}>
 									<EOM_IconButton verticalAlign="center" icon={<Image src="s2r://panorama/images/control_icons/x_close_png.vtex" />} onactivate={self => setCustomKeyBindCount(customKeyBindCount() - 1)} />
 									<EOM_KeyBinder text={buttonTextList()} onChange={(key, bInit, dropIndex) => {
 										if (eventNameList()[dropIndex]) {
@@ -298,12 +298,12 @@ function EOM_DebugTool_Setting() {
 						}
 					})}
 					{/* <Panel width="100%">
-						<EOM_Button margin="4px 8px" className="AddNewKeyBind" type="Text" text="+ 按键绑定" onactivate={(self: Panel) => addKeyBind(self)} />
+						<EOM_Button margin="4px 8px" class="AddNewKeyBind" type="Text" text="+ 按键绑定" onactivate={(self: Panel) => addKeyBind(self)} />
 						{!deleteMode() &&
-							<EOM_Button margin="4px 8px" className="AddNewKeyBind" horizontalAlign="right" type="Text" text="- 删除绑定" onactivate={(self: Panel) => setDeleteMode(true)} />
+							<EOM_Button margin="4px 8px" class="AddNewKeyBind" horizontalAlign="right" type="Text" text="- 删除绑定" onactivate={(self: Panel) => setDeleteMode(true)} />
 						}
 						{deleteMode() &&
-							<EOM_Button margin="4px 8px" className="AddNewKeyBind" horizontalAlign="right" type="Text" text="取消" onactivate={(self: Panel) => setDeleteMode(false)} />
+							<EOM_Button margin="4px 8px" class="AddNewKeyBind" horizontalAlign="right" type="Text" text="取消" onactivate={(self: Panel) => setDeleteMode(false)} />
 						}
 					</Panel> */}
 				</Panel>
@@ -325,7 +325,7 @@ const SettingToggleButton = (props: {
 	text: string;
 	selected?: boolean | string;
 }) => {
-	const tooltip = $.Localize(`${props.settingName}_Description`, $.GetContextPanel());
+	const tooltip = GetLocalization(`${props.settingName}_Description`);
 	const [selected, setSelected] = createSignal(props.selected);
 	createEffect(() => {
 		setSelected(props.selected);
@@ -358,16 +358,16 @@ export function EOM_DebugTool_Category(props: {
 	const childs = children(() => props.children).toArray();
 
 	return (
-		<Panel className={classNames("Category", "TabIndex" + (props.tabIndex ?? ""), { SingleCol: col() <= 1 })}>
-			<Panel className="CategoryHeader">
-				<Label className="CategoryHeaderLabel" text={props.title} />
-				<Panel style={{ width: "fill-parent-flow(1)" }} />
+		<Panel class={classNames("Category", "TabIndex" + (props.tabIndex ?? ""), { SingleCol: col() <= 1 })}>
+			<Panel class="CategoryHeader">
+				<Label class="CategoryHeaderLabel" text={props.title} />
+				<Panel width="fill-parent-flow(1)" />
 				{/* <EOM_Switch horizontalAlign="right" checkedChildren="1列" unCheckedChildren="2列" checked={col == 1 ? true : false} onChange={(checked) => { SaveConfig({ ["ctg_col_" + this.props.title]: checked ? 1 : 2 }); this.setState({ col: checked ? 1 : 2 }); }} /> */}
 			</Panel>
-			<Panel className="CategoryButtonContainer">
+			<Panel class="CategoryButtonContainer">
 				<Show when={!(props.layout ?? false)} fallback={props.children}>
-					<For each={childs.slice(0, childs.length % col())}>
-						{(child, rowIndex) => <Panel className="Row">
+					<For each={Array.from({ length: childs.length / col() })}>
+						{(child, rowIndex) => <Panel class="Row">
 							<For each={Array.from({ length: col() })}>
 								{(_, idx) => {
 									let childIndex = rowIndex() * col() + idx();
@@ -480,9 +480,7 @@ export const DemoButton: ParentComponent<{
 	color?: "RedButton" | "GreenButton" | "QuitButton";
 }> = (props) => {
 	const onactivate = props.onactivate ?? (() => FireEvent(props.eventName, props.str));
-	return (
-		<TextButton id={props.eventName} className={classNames("DemoButton", "HotKeyValid", "FireEvent", props.color)} text={props.text} onactivate={onactivate} />
-	);
+	return <TextButton id={props.eventName} class={classNames("DemoButton", "HotKeyValid", "FireEvent", props.color)} text={props.text} onactivate={onactivate} />;
 };
 
 // 切换按钮
@@ -494,7 +492,7 @@ export const DemoToggle: ParentComponent<{
 }> = (props) => {
 	const selected = props.selected ?? false;
 	return (
-		<ToggleButton id={props.eventName} className="HotKeyValid FireEvent" selected={selected} onactivate={self => { FireEvent(props.eventName, self.IsSelected() ? "1" : "0"); }} text={props.text} />
+		<ToggleButton id={props.eventName} class="HotKeyValid FireEvent" selected={selected} onactivate={self => { FireEvent(props.eventName, self.IsSelected() ? "1" : "0"); }} text={props.text} />
 	);
 };
 // 文本输入按钮
@@ -505,7 +503,7 @@ export const DemoTextEntry: ParentComponent<{
 	onClick?: (value: string) => void;
 }> = (props) => {
 	return (
-		<TextButton className="DemoTextEntry" style={{ flowChildren: "right" }} onactivate={(self) => {
+		<TextButton class="DemoTextEntry" flowChildren="right" onactivate={(self) => {
 			let TextEntry = self.FindChildTraverse("DemoTextEntry") as TextEntry;
 			FireEvent(props.eventName, TextEntry.text);
 			if (props.onClick) {
@@ -536,12 +534,12 @@ export const DemoSlider: ParentComponent<{
 }> = (props) => {
 	const [value, setValue] = createSignal(props.defaultValue);
 	return (
-		<Panel className="DemoSlider">
+		<Panel class="DemoSlider">
 			<Panel flowChildren="right">
-				<Label className="Title" text={props.text} />
-				<Label className="Value" text={value().toFixed(0)} />
+				<Label class="Title" text={props.text} />
+				<Label class="Value" text={value().toFixed(0)} />
 			</Panel>
-			<Slider className="HorizontalSlider" value={(props.defaultValue - props.min) / (props.max - props.min)} direction="horizontal" onvaluechanged={self => {
+			<Slider class="HorizontalSlider" value={(props.defaultValue - props.min) / (props.max - props.min)} direction="horizontal" onvaluechanged={self => {
 				props.onChange(self.value * (props.max - props.min) + props.min);
 				setValue(self.value * (props.max - props.min) + props.min);
 			}} onload={self => {
@@ -554,10 +552,10 @@ export const DemoSlider: ParentComponent<{
 /** 打开一个面板 */
 export const DemoSelectionButton: ParentComponent<{ eventName: string, text: string; }> = (props) => {
 	return (
-		<TextButton id={props.eventName} className="DemoButton HotKeyValid ToggleSelection" text={props.text} onactivate={() => {
+		<TextButton id={props.eventName} class="DemoButton HotKeyValid ToggleSelection" text={props.text} onactivate={() => {
 			ToggleSelection(props.eventName);
 		}}>
-			<EOM_Icon type="ArrowSolidRight" width="10px" height="16px" align="right center" style={{ marginRight: "4px" }} />
+			<EOM_Icon type="ArrowSolidRight" width="10px" height="16px" align="right center" marginRight="4px" />
 		</TextButton>
 	);
 };
@@ -659,15 +657,15 @@ export const SelectionContainer: ParentComponent<SelectContainerAttribute> = (pr
 		}
 	};
 	return (
-		<Panel id={local.eventName} className={classNames("SelectionContainer", { LockWindow: lock() })} hittest={true} width={size().width} height={size().height}>
+		<Panel id={local.eventName} class={classNames("SelectionContainer", { LockWindow: lock() })} hittest={true} width={size().width} height={size().height}>
 			<Panel id="SelectionPicker" >
 				<Panel id="SelectionPickerHeader" onactivate={() => { }} onmouseover={self => dragStart(self)} onmouseout={self => dragable = false} >
 					<Label id="SelectionTitle" text={local.title} />
-					<Panel className="FillWidth" />
+					<Panel class="FillWidth" />
 					{local.hasFilter != false &&
-						<Panel id="SelectionSearch" className="SearchBox" >
+						<Panel id="SelectionSearch" class="SearchBox" >
 							<Show when={hasToggleList()}>
-								<EOM_DropDown type="" placeholder="筛选" onChange={(index, item) => {
+								<EOM_DropDown placeholder="筛选" onChange={(index, item) => {
 									if (local.onToggleType) {
 										local.onToggleType(Object.keys(local.toggleList ?? {})[index - 1]);
 									}
@@ -685,7 +683,7 @@ export const SelectionContainer: ParentComponent<SelectContainerAttribute> = (pr
 									</For>
 								</EOM_DropDown>
 							</Show>
-							<TextEntry id="SelectionSearchTextEntry" style={{ borderLeftWidth: hasToggleList() ? "0px" : "1px" }} placeholder="#DOTA_Search" onload={self => {
+							<TextEntry id="SelectionSearchTextEntry" borderLeftWidth={hasToggleList() ? "0px" : "1px"} placeholder="#DOTA_Search" onload={self => {
 								self.SetDisableFocusOnMouseDown(false);
 							}} oninputsubmit={(self) => {
 								if (local.onSearch) {
@@ -702,13 +700,13 @@ export const SelectionContainer: ParentComponent<SelectContainerAttribute> = (pr
 					}
 					{/* 功能按钮 */}
 					{local.hasRawMode != false &&
-						<Panel className="CodeModeLabel" tooltip={"查看内部编码"} tooltipPosition="top" height="28px" verticalAlign="center">
-							<TextButton style={{ fontSize: "20px", width: "27px", height: "27px", marginTop: "2px" }} text={rawMode() ? "汉" : "Aa"} onactivate={() => toggleRawMode()} />
+						<Panel class="CodeModeLabel" tooltip={"查看内部编码"} tooltipPosition="top" height="28px" verticalAlign="center">
+							<TextButton fontSize="20px" width="27px" height="27px" marginTop="2px" text={rawMode() ? "汉" : "Aa"} onactivate={() => toggleRawMode()} />
 						</Panel>
 					}
 					{local.hasToggleSize != false &&
 						<EOM_IconButton width="30px" tooltip={"切换窗口大小"} tooltipPosition="top" icon={<EOM_Icon type="ArrowExpand" />} >
-							<EOM_DropDown id="ToggleSize" type="" onChange={(index, item) => { toggleSize(item.text.split("x")); }}>
+							<EOM_DropDown id="ToggleSize" onChange={(index, item) => { toggleSize(item.text.split("x")); }}>
 								<Label text={"1280x720"} />
 								<Label text={"864x620"} />
 								<Label text={"620x360"} />
@@ -717,12 +715,12 @@ export const SelectionContainer: ParentComponent<SelectContainerAttribute> = (pr
 						</EOM_IconButton>
 					}
 					{local.hasLock != false &&
-						<EOM_IconButton width="28px" verticalAlign="center" tooltip={"锁定窗口"} tooltipPosition="top" className={classNames("LockIconButton", { Unlock: !lock() })} icon={<EOM_Icon verticalAlign="center" width="28px" height="28px" type="LockSmall" />} onactivate={() => setLock(!lock())} />
+						<EOM_IconButton width="28px" verticalAlign="center" tooltip={"锁定窗口"} tooltipPosition="top" class={classNames("LockIconButton", { Unlock: !lock() })} icon={<EOM_Icon verticalAlign="center" width="28px" height="28px" type="LockSmall" />} onactivate={() => setLock(!lock())} />
 					}
 					<EOM_IconButton width="28px" verticalAlign="center" tooltip={"关闭窗口"} tooltipPosition="top" icon={<EOM_Icon type="XClose" />} onactivate={() => ToggleSelection(local.eventName)} />
 				</Panel>
 				{/* 物品列表 */}
-				<Panel id="SelectionList" style={{ overflow: local.canScroll ? "squish scroll" : "clip" }} >
+				<Panel id="SelectionList" overflow={local.canScroll ? "squish scroll" : "clip"} >
 					{props.children}
 				</Panel>
 			</Panel>
@@ -784,9 +782,9 @@ export const EOM_DebugTool_TextPicker: ParentComponent<{
 		// width="620px"
 		// height="360px"
 		>
-			<Panel className="EOM_DebugTool_TextPicker" flowChildren="right-wrap" width="100%" height="100%" scroll="y" >
+			<Panel class="EOM_DebugTool_TextPicker" flowChildren="right-wrap" width="100%" height="100%" scroll="y" >
 				<For each={props.itemNames}>
-					{(itemName, index) => <TextButton visible={visiable(itemName)} className="EOM_DebugTool_TextPickerItem" text={rawMode() ? itemName : ("#" + itemName)} tooltip_text={props.tooltipText ? props.tooltipText(itemName) : "#" + itemName + "_description"} onactivate={self => FireEvent(props.eventName, itemName, props.extraEventParams)} />}
+					{(itemName, index) => <TextButton visible={visiable(itemName)} class="EOM_DebugTool_TextPickerItem" text={rawMode() ? itemName : ("#" + itemName)} tooltip_text={props.tooltipText ? props.tooltipText(itemName) : "#" + itemName + "_description"} onactivate={self => FireEvent(props.eventName, itemName, props.extraEventParams)} />}
 				</For>
 			</Panel>
 		</SelectionContainer>
@@ -822,7 +820,7 @@ export const EOM_DebugTool_AbilityPicker: ParentComponent<{
 			onToggleType={text => setToggleType(text)}
 			onChangeRawMode={rawMode => setRawMode(rawMode)}
 		>
-			<Panel className="EOM_DebugTool_AbilityPicker" flowChildren="right-wrap" width="100%" scroll="y" >
+			<Panel class="EOM_DebugTool_AbilityPicker" flowChildren="right-wrap" width="100%" scroll="y" >
 				{local.itemNames?.map((abilityname, index) => {
 					if (local.filterFunc) {
 						if (!local.filterFunc(toggleType(), abilityname)) {
@@ -835,9 +833,9 @@ export const EOM_DebugTool_AbilityPicker: ParentComponent<{
 						}
 					}
 					return (
-						<EOM_BaseButton className="EOM_DebugTool_AbilityPickerItem" width="64px" flowChildren="down" onactivate={self => FireEvent(local.eventName, abilityname)} onmouseover={p => CustomUIConfig.ShowAbilityTooltip<AbilityTooltip>(p, { abilityname: abilityname })} onmouseout={p => CustomUIConfig.HideAbilityTooltip(p)}>
+						<EOM_BaseButton class="EOM_DebugTool_AbilityPickerItem" width="64px" flowChildren="down" onactivate={self => FireEvent(local.eventName, abilityname)} onmouseover={p => CustomUIConfig.ShowAbilityTooltip<AbilityTooltip>(p, { abilityname: abilityname })} onmouseout={p => CustomUIConfig.HideAbilityTooltip(p)}>
 							<DOTAAbilityImage abilityname={abilityname} showtooltip={false} />
-							<Label className="EOM_DebugTool_AbilityPickerItemName" text={rawMode() ? abilityname : "#DOTA_Tooltip_ability_" + abilityname} />
+							<Label class="EOM_DebugTool_AbilityPickerItemName" text={rawMode() ? abilityname : "#DOTA_Tooltip_ability_" + abilityname} />
 						</EOM_BaseButton>
 					);
 				})}
@@ -891,11 +889,11 @@ export const EOM_DebugTool_ItemPicker: ParentComponent<{
 			canScroll={false}
 		>
 			<Panel width={"100%"} height="100%" margin="-6px" backgroundColor="#00000066" >
-				<Panel className="EOM_DebugTool_AbilityPicker" marginTop="10px" paddingTop="30px" flowChildren="right-wrap" width="100%" scroll="y" >
+				<Panel class="EOM_DebugTool_AbilityPicker" marginTop="10px" paddingTop="30px" flowChildren="right-wrap" width="100%" scroll="y" >
 					<For each={local.itemNames}>
-						{(abilityname, index) => <EOM_BaseButton visible={visiable(abilityname)} className="EOM_DebugTool_AbilityPickerItem" width="64px" flowChildren="down" onactivate={self => FireEvent(local.eventName, abilityname)} onmouseover={p => CustomUIConfig.ShowAbilityTooltip<AbilityShopItemTooltip>(p, { abilityname: abilityname, guidename: "", entityindex: -1 as EntityIndex })} onmouseout={p => CustomUIConfig.HideAbilityTooltip(p)}>
+						{(abilityname, index) => <EOM_BaseButton visible={visiable(abilityname)} class="EOM_DebugTool_AbilityPickerItem" width="64px" flowChildren="down" onactivate={self => FireEvent(local.eventName, abilityname)} onmouseover={p => CustomUIConfig.ShowAbilityTooltip<AbilityShopItemTooltip>(p, { abilityname: abilityname, guidename: "", entityindex: -1 as EntityIndex })} onmouseout={p => CustomUIConfig.HideAbilityTooltip(p)}>
 							<DOTAItemImage itemname={abilityname} showtooltip={false} />
-							<Label className="EOM_DebugTool_AbilityPickerItemName" text={rawMode() ? abilityname : "#DOTA_Tooltip_ability_" + abilityname} />
+							<Label class="EOM_DebugTool_AbilityPickerItemName" text={rawMode() ? abilityname : "#DOTA_Tooltip_ability_" + abilityname} />
 						</EOM_BaseButton>}
 					</For>
 				</Panel>
@@ -976,82 +974,15 @@ export const EOM_UnitInfo: ParentComponent = (props) => {
 	const Update = () => {
 		const entIndex = Players.GetLocalPlayerPortraitUnit();
 		if (entIndex != -1 && panel?.FindAncestor("EOM_UnitInfo")?.BHasClass("Show")) {
-			const position = Entities.GetAbsOrigin(entIndex);
-			const forward = Entities.GetForward(entIndex);
+			// const position = Entities.GetAbsOrigin(entIndex);
+			// const forward = Entities.GetForward(entIndex);
 
-			const healthPct = Entities.GetHealth(entIndex) / Entities.GetMaxHealth(entIndex);
-			const minHealth = Entities.IsAlive(entIndex) ? 1 : 0;
-			const maxHealth = toFiniteNumber(Entities.GetUnitData(entIndex, "GetHealth"));
-			const healthLabel = FormatNumber(Math.max(minHealth, Math.floor(healthPct * maxHealth)));
-			const maxHealthLabel = FormatNumber(Math.floor(maxHealth));
-			setUnitInfo({
-				entIndex: entIndex,
-				name: Entities.GetUnitName(entIndex),
-				className: Entities.GetClassNameAsCStr(entIndex),
-				position: `${position[0].toFixed(0)}, ${position[1].toFixed(0)}, ${position[2].toFixed(0)}`,
-				forward: `${forward[0].toFixed(3)}, ${forward[1].toFixed(3)}, ${forward[2].toFixed(3)}`,
-				health: healthLabel,
-				maxHealth: maxHealthLabel,
-				mana: Entities.GetMana(entIndex),
-				maxMana: Entities.GetMaxMana(entIndex),
-				attack: FormatNumber(Entities.GetAttackDamage(entIndex)),
-				attackrange: FormatNumber(Entities.GetAttackRange(entIndex)),
-				outgoingPhysical: Round(Entities.GetUnitData(entIndex, "GetOutgoingPhysicalDamagePercent")!, 3) + "%",
-				outgoingMagical: Round(Entities.GetUnitData(entIndex, "GetOutgoingMagicalDamagePercent")!, 3) + "%",
-				critChance: Round(Entities.GetUnitData(entIndex, "GetCriticalStrikeChance")!, 3) + "%",
-				critDamage: Round(Entities.GetUnitData(entIndex, "GetCriticalStrikeDamage")!, 3) + "%",
-				armor: FormatNumber(Entities.GetArmor(entIndex)),
-				reducePct: Round(Entities.GetUnitData(entIndex, "GetIncomingDamagePercent")!, 3) + "%",
-				attackSpeed: Round(Entities.GetAttackSpeed(entIndex) * 100),
-				baseAttackTime: Entities.GetBaseAttackTime(entIndex).toFixed(2),
-				movespeed: `${Entities.GetMoveSpeed(entIndex).toFixed(0)} (${Entities.HasFlyMovementCapability(entIndex) ? "飞行" : "地面"})`,
-				cooldown: `${Entities.GetCooldownReduction(entIndex).toFixed(1)}%`,
-				hullRadius: Entities.GetHullRadius(entIndex),
-				vision: `${Entities.GetDayTimeVisionRange(entIndex)} (白天) / ${Entities.GetNightTimeVisionRange(entIndex)} (黑夜)`,
-				modifiers: [...Array(Entities.GetNumBuffs(entIndex))].map((_, index) => {
-					return Buffs.GetName(entIndex, Entities.GetBuff(entIndex, index)) + "," + Buffs.GetStackCount(entIndex, Entities.GetBuff(entIndex, index));
-				}),
-				abilities: [...Array(Entities.GetAbilityCount(entIndex))].map((_, index) => {
-					return Entities.GetAbility(entIndex, index);
-				}),
+			// const healthPct = Entities.GetHealth(entIndex) / Entities.GetMaxHealth(entIndex);
+			// const minHealth = Entities.IsAlive(entIndex) ? 1 : 0;
+			// const maxHealth = toFiniteNumber(Entities.GetUnitData(entIndex, "GetHealth"));
+			// const healthLabel = FormatNumber(Math.max(minHealth, Math.floor(healthPct * maxHealth)));
+			// const maxHealthLabel = FormatNumber(Math.floor(maxHealth));
 
-				isHero: Entities.IsHero(entIndex),
-				str: FormatNumber(Entities.GetStrength(entIndex)),
-				agi: FormatNumber(Entities.GetAgility(entIndex)),
-				int: FormatNumber(Entities.GetIntellect(entIndex)),
-				lifesteal: FormatNumber(Entities.GetUnitData(entIndex, "GetLifestealChance") ?? 0),
-				phylifesteal: FormatNumber(Entities.GetUnitData(entIndex, "GetPhysicalLifesteal") ?? 0),
-				maglifesteal: FormatNumber(Entities.GetUnitData(entIndex, "GetMagicalLifesteal") ?? 0),
-				goldPct: FormatNumber(Entities.GetUnitData(entIndex, "GetPlayerGoldPct") ?? 0),
-				scorePct: FormatNumber(Entities.GetUnitData(entIndex, "GetPlayerScorePct") ?? 0),
-				respawn: FormatNumber(Entities.GetUnitData(entIndex, "GetRespawnTime") ?? 0),
-				AttackPerKill: FormatNumber(Entities.GetUnitData(entIndex, "GetAttackPerKill") ?? 0),
-				PowerPerKill: FormatNumber(Entities.GetUnitData(entIndex, "GetPowerPerKill") ?? 0),
-				HealthPerKill: FormatNumber(Entities.GetUnitData(entIndex, "GetHealthPerKill") ?? 0),
-				StrPerKill: FormatNumber(Entities.GetUnitData(entIndex, "GetStrPerKill") ?? 0),
-				AgiPerKill: FormatNumber(Entities.GetUnitData(entIndex, "GetAgiPerKill") ?? 0),
-				IntPerKill: FormatNumber(Entities.GetUnitData(entIndex, "GetIntPerKill") ?? 0),
-				AttackPerSec: FormatNumber(Entities.GetUnitData(entIndex, "GetAttackPerSec") ?? 0),
-				PowerPerSec: FormatNumber(Entities.GetUnitData(entIndex, "GetPowerPerSec") ?? 0),
-				HealthPerSec: FormatNumber(Entities.GetUnitData(entIndex, "GetHealthPerSec") ?? 0),
-				StrPerSec: FormatNumber(Entities.GetUnitData(entIndex, "GetStrPerSec") ?? 0),
-				AgiPerSec: FormatNumber(Entities.GetUnitData(entIndex, "GetAgiPerSec") ?? 0),
-				IntPerSec: FormatNumber(Entities.GetUnitData(entIndex, "GetIntPerSec") ?? 0),
-				AttackPerAttack: FormatNumber(Entities.GetUnitData(entIndex, "GetAttackPerAttack") ?? 0),
-				PowerPerAttack: FormatNumber(Entities.GetUnitData(entIndex, "GetPowerPerAttack") ?? 0),
-				HealthPerAttack: FormatNumber(Entities.GetUnitData(entIndex, "GetHealthPerAttack") ?? 0),
-				StrPerAttack: FormatNumber(Entities.GetUnitData(entIndex, "GetStrPerAttack") ?? 0),
-				AgiPerAttack: FormatNumber(Entities.GetUnitData(entIndex, "GetAgiPerAttack") ?? 0),
-				IntPerAttack: FormatNumber(Entities.GetUnitData(entIndex, "GetIntPerAttack") ?? 0),
-				physicalPerMin: FormatNumber(Entities.GetUnitData(entIndex, "GetPhysicalDamagePerMin") ?? 0),
-				magicalPerMin: FormatNumber(Entities.GetUnitData(entIndex, "GetMagicalDamagePerMin") ?? 0),
-				critDamagePerMin: FormatNumber(Entities.GetUnitData(entIndex, "GetCritDamagePerMin") ?? 0),
-				summonPct: FormatNumber(Entities.GetUnitData(entIndex, "GetSummonedDamage") ?? 0),
-				monster: FormatNumber(Entities.GetUnitData(entIndex, "GetPlayerGoldMonsterBonus") ?? 0),
-				dropLucky: FormatNumber(Entities.GetUnitData(entIndex, "GetPlayerServiceDropLucky") ?? 0),
-				rarityLucky: FormatNumber(Entities.GetUnitData(entIndex, "GetPlayerServiceRarityLucky") ?? 0),
-				devouredList: (getNetTableKey("unit", entIndex.toString())?.devoured_items ?? []) as ItemEntityIndex[],
-			});
 		}
 	};
 	const onDragStart = (source: Panel, dragCallbacks: IDragCallbacks) => {

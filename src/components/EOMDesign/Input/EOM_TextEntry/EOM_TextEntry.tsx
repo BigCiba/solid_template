@@ -1,5 +1,5 @@
-import { ParentComponent, createSignal } from "solid-js";
-import { useSimpleProps } from "../../EOMDesign";
+import classNames from "classnames";
+import { ParentComponent, createSignal, mergeProps, splitProps } from "solid-js";
 import "./EOM_TextEntry.less";
 
 interface EOM_TextEntryAttribute extends PanelAttributes {
@@ -12,10 +12,8 @@ interface EOM_TextEntryAttribute extends PanelAttributes {
 	onChange?: (self: TextEntry, previousText: string, changedText: string) => void;
 }
 export const EOM_TextEntry: ParentComponent<EOM_TextEntryAttribute & TextEntryAttributes> = (props) => {
-	const { local, others } = useSimpleProps(props, {
-		localKeys: ["children", "onChange", "oninputsubmit", "text"] as const,
-		componentClass: ["EOM_TextEntry"]
-	});
+	const merged = mergeProps(props, { class: classNames("EOM_TextEntry", props.class) });
+	const [local, others] = splitProps(merged, ["children", "onChange", "oninputsubmit", "text"]);
 	const [text, setText] = createSignal(local.text ?? "");
 	return (
 		<TextEntry {...others} style={{

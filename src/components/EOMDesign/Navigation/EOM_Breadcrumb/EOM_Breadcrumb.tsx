@@ -1,5 +1,5 @@
-import { For, ParentComponent, createSignal } from "solid-js";
-import { useSimpleProps } from "../../EOMDesign";
+import classNames from "classnames";
+import { For, ParentComponent, createSignal, mergeProps, splitProps } from "solid-js";
 import "./EOM_Breadcrumb.less";
 
 interface EOM_BreadcrumbAttribute extends PanelAttributes {
@@ -17,11 +17,8 @@ interface EOM_BreadcrumbAttribute extends PanelAttributes {
 }
 
 export const EOM_Breadcrumb: ParentComponent<EOM_BreadcrumbAttribute> = (props) => {
-	const { local, others } = useSimpleProps(props, {
-		defaultValues: { list: [], defaultSelected: 0, activateType: "onactivate", group: "EOM_Breadcrumb" + Math.random() },
-		localKeys: ["children", "list", "defaultSelected", "selected", "group", "activateType"] as const,
-		componentClass: ["EOM_Breadcrumb"]
-	});
+	const merged = mergeProps({ list: [], defaultSelected: 0, activateType: "onactivate", group: "EOM_Breadcrumb" + Math.random() }, props, { class: classNames("EOM_Breadcrumb", props.class) });
+	const [local, others] = splitProps(merged, ["children", "list", "defaultSelected", "selected", "group", "activateType"]);
 	const { defaultSelected, list, group, selected, activateType } = local;
 	const [selectedIndex, setSelectedIndex] = createSignal((defaultSelected != undefined) ? Math.min(local.list.length - 1, Math.max(0, defaultSelected - 1)) : undefined);
 

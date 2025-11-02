@@ -5,40 +5,20 @@ var EOM_Button = require('./EOM_Button.js');
 var EOM_Breadcrumb = require('./EOM_Breadcrumb.js');
 
 const EOM_Icon = props => {
-  const {
-    local,
-    others
-  } = EOM_Button.useSimpleProps(props, {
-    defaultValues: {
-      size: "32"
-    },
-    localKeys: ["children", "rotate", "spin", "spinDirection", "spinDuration", "shadow", "size", "type", "extraType"],
-    componentClass: libs.classNames("EOM_Icon", {
+  const merged = libs.mergeProps({
+    size: "32"
+  }, props, {
+    class: libs.classNames("EOM_Icon", {
       ["EOM_Icon" + props.type]: props.type != undefined
     }, props.extraType, "Size" + props.size, {
-      EOM_IconSpin: props.spin || props.spinDuration,
+      EOM_IconSpin: props.spin,
       EOM_IconShadow: props.shadow
     })
   });
+  const [local, others] = libs.splitProps(merged, ["children", "spin", "shadow", "size", "type", "extraType"]);
   return (() => {
-    const _el$ = libs.createElement("Panel", libs.mergeProps$1(others, {
-      get style() {
-        return {
-          preTransformRotate2d: local.rotate != undefined ? local.rotate + "deg" : undefined,
-          animationDuration: local.spinDuration != undefined ? local.spinDuration + "s" : undefined,
-          animationDirection: local.spinDirection
-        };
-      }
-    }), null);
-    libs.spread(_el$, libs.mergeProps$1(others, {
-      get style() {
-        return {
-          preTransformRotate2d: local.rotate != undefined ? local.rotate + "deg" : undefined,
-          animationDuration: local.spinDuration != undefined ? local.spinDuration + "s" : undefined,
-          animationDirection: local.spinDirection
-        };
-      }
-    }), true);
+    const _el$ = libs.createElement("Panel", others, null);
+    libs.spread(_el$, others, true);
     libs.insert(_el$, () => local.children);
     return _el$;
   })();
@@ -73,18 +53,14 @@ function doUniqueString(str) {
   return result;
 }
 const EOM_DropDown = props => {
-  const {
-    local,
-    others
-  } = EOM_Button.useSimpleProps(props, {
-    defaultValues: {
-      id: doUniqueString("EOM_DropDown"),
-      menuPosition: "bottom",
-      index: 0
-    },
-    localKeys: ["children", "index", "placeholder", "onChange", "onClear", "menuPosition"],
-    componentClass: ["EOM_DropDown"]
+  const mergerd = libs.mergeProps({
+    id: doUniqueString("EOM_DropDown"),
+    menuPosition: "bottom",
+    index: 0
+  }, props, {
+    class: libs.classNames("EOM_DropDown", props.class)
   });
+  const [local, others] = libs.splitProps(mergerd, ["children", "index", "placeholder", "onChange", "onClear", "type", "id", "menuPosition"]);
   let selfRef;
   let myMenu;
   libs.onMount(() => {
@@ -209,7 +185,11 @@ const EOM_DropDown = props => {
     }
   };
   return (() => {
-    const _el$ = libs.createElement("Button", others, null),
+    const _el$ = libs.createElement("Button", libs.mergeProps$1({
+        get id() {
+          return local.id;
+        }
+      }, others), null),
       _el$2 = libs.createElement("Label", {
         id: "EOM_DropDown_placeholder",
         get text() {
@@ -221,7 +201,11 @@ const EOM_DropDown = props => {
       }, _el$);
     const _ref$ = selfRef;
     typeof _ref$ === "function" ? libs.use(_ref$, _el$) : selfRef = _el$;
-    libs.spread(_el$, libs.mergeProps$1(others, {
+    libs.spread(_el$, libs.mergeProps$1({
+      get id() {
+        return local.id;
+      }
+    }, others, {
       "onactivate": self => {
         toggleMenu(self);
       }
@@ -233,13 +217,10 @@ const EOM_DropDown = props => {
 };
 
 const EOM_TextEntry = props => {
-  const {
-    local,
-    others
-  } = EOM_Button.useSimpleProps(props, {
-    localKeys: ["children", "onChange", "oninputsubmit", "text"],
-    componentClass: ["EOM_TextEntry"]
+  const merged = libs.mergeProps(props, {
+    class: libs.classNames("EOM_TextEntry", props.class)
   });
+  const [local, others] = libs.splitProps(merged, ["children", "onChange", "oninputsubmit", "text"]);
   const [text, setText] = libs.createSignal(local.text ?? "");
   return (() => {
     const _el$ = libs.createElement("TextEntry", libs.mergeProps$1(others, {
@@ -353,22 +334,18 @@ let KeyBinderType = function (KeyBinderType) {
   return KeyBinderType;
 }({});
 const EOM_KeyBinder = props => {
-  const {
-    local,
-    others
-  } = EOM_Button.useSimpleProps(props, {
-    defaultValues: {
-      type: KeyBinderType.Normal,
-      text: "",
-      initKey: "",
-      initDropIndex: 0
-    },
-    localKeys: ["callback", "onChange", "initKey", "initDropIndex", "text", "tooltip", "type"],
-    componentClass: libs.classNames("SettingsKeyBinder", "BindingRow", {
+  const merged = libs.mergeProps({
+    type: KeyBinderType.Normal,
+    text: "",
+    initKey: "",
+    initDropIndex: 0
+  }, props, {
+    class: libs.classNames("SettingsKeyBinder", "BindingRow", {
       HeroAbilityBindAbilityButton: props.type == KeyBinderType.Ability,
       ItemBindButton: props.type == KeyBinderType.Item
     })
   });
+  const [local, others] = libs.splitProps(merged, ["callback", "onChange", "initKey", "initDropIndex", "text", "tooltip", "type"]);
   let panel;
   let eventKey;
   const [keyName, setKeyName] = libs.createSignal(local.initKey ?? "");
@@ -545,29 +522,46 @@ const EOM_DebugTool = props => {
       }, null),
       _el$2 = libs.createElement("Panel", {
         id: "EOM_DebugToolControlPanel",
+        get ["class"]() {
+          return libs.classNames("ControlPanel", {
+            Minimized: minimized(),
+            DirectionLeft: direction() == "left",
+            DirectionRight: direction() == "right",
+            DirectionTop: direction() == "top"
+          });
+        },
         hittest: false
       }, _el$),
-      _el$3 = libs.createElement("Panel", {}, _el$2),
-      _el$4 = libs.createElement("Panel", {}, _el$3),
-      _el$5 = libs.createElement("Panel", {}, _el$4),
-      _el$6 = libs.createElement("Panel", {}, _el$4),
+      _el$3 = libs.createElement("Panel", {
+        get ["class"]() {
+          return "ControlPanelContainer TabShow" + tabIndex();
+        }
+      }, _el$2),
+      _el$4 = libs.createElement("Panel", {
+        "class": "ControlPanelTitle"
+      }, _el$3);
+      libs.createElement("Panel", {
+        "class": "CategoryHeaderFilledFront"
+      }, _el$4);
+      const _el$6 = libs.createElement("Panel", {
+        "class": "CategoryHeaderFilledNext"
+      }, _el$4),
       _el$0 = libs.createElement("Panel", {
-        id: "ExpandButtonContainer"
+        id: "ExpandButtonContainer",
+        verticalAlign: "center"
       }, _el$2),
       _el$1 = libs.createElement("Button", {
         id: "ExpandButton"
       }, _el$0);
     libs.insert(_el$, () => props.containerElement, _el$2);
     libs.insert(_el$, libs.createComponent(EOM_DebugTool_Setting, {}), _el$2);
-    libs.setProp(_el$4, "className", "ControlPanelTitle");
-    libs.setProp(_el$5, "className", "CategoryHeaderFilledFront");
     libs.insert(_el$4, libs.createComponent(libs.Switch, {
       get fallback() {
         return (() => {
           const _el$10 = libs.createElement("Label", {
+            "class": "CategoryHeader",
             text: `工具`
           }, null);
-          libs.setProp(_el$10, "className", "CategoryHeader");
           libs.setProp(_el$10, "text", `工具`);
           return _el$10;
         })();
@@ -589,9 +583,8 @@ const EOM_DebugTool = props => {
         });
       }
     }), _el$6);
-    libs.setProp(_el$6, "className", "CategoryHeaderFilledNext");
     libs.insert(_el$4, libs.createComponent(EOM_Button.EOM_IconButton, {
-      className: "CategoryHeaderIcon",
+      "class": "CategoryHeaderIcon",
       tooltip: "切换布局",
       verticalAlign: "center",
       get icon() {
@@ -603,7 +596,6 @@ const EOM_DebugTool = props => {
       get children() {
         return libs.createComponent(EOM_DropDown, {
           id: "ToggleSize",
-          type: "",
           onChange: (index, item) => {
             setDirection(item.id);
             SaveConfig("direction", item.id);
@@ -624,7 +616,7 @@ const EOM_DebugTool = props => {
       }
     }), null);
     libs.insert(_el$4, libs.createComponent(EOM_Button.EOM_IconButton, {
-      className: "CategoryHeaderIcon",
+      "class": "CategoryHeaderIcon",
       tooltip: "重载数据",
       verticalAlign: "center",
       get icon() {
@@ -641,7 +633,7 @@ const EOM_DebugTool = props => {
       }
     }), null);
     libs.insert(_el$4, libs.createComponent(EOM_Button.EOM_IconButton, {
-      className: "CategoryHeaderIcon",
+      "class": "CategoryHeaderIcon",
       tooltip: "设置",
       verticalAlign: "center",
       get icon() {
@@ -653,9 +645,7 @@ const EOM_DebugTool = props => {
       }
     }), null);
     libs.insert(_el$3, () => props.children, null);
-    libs.setProp(_el$0, "style", {
-      verticalAlign: "center"
-    });
+    libs.setProp(_el$0, "verticalAlign", "center");
     libs.setProp(_el$1, "onactivate", () => {
       setManualShowPanel(minimized());
       setMinimized(!minimized());
@@ -665,8 +655,8 @@ const EOM_DebugTool = props => {
       width: "8px",
       height: "14px",
       align: "center center",
-      get rotate() {
-        return minimized() ? props.direction == "top" ? 90 : 0 : props.direction == "top" ? 270 : 180;
+      get preTransformRotate2d() {
+        return (minimized() ? props.direction == "top" ? 90 : 0 : props.direction == "top" ? 270 : 180) + "deg";
       }
     }));
     libs.effect(_p$ => {
@@ -677,8 +667,8 @@ const EOM_DebugTool = props => {
           DirectionTop: direction() == "top"
         }),
         _v$2 = "ControlPanelContainer TabShow" + tabIndex();
-      _v$ !== _p$._v$ && (_p$._v$ = libs.setProp(_el$2, "className", _v$, _p$._v$));
-      _v$2 !== _p$._v$2 && (_p$._v$2 = libs.setProp(_el$3, "className", _v$2, _p$._v$2));
+      _v$ !== _p$._v$ && (_p$._v$ = libs.setProp(_el$2, "class", _v$, _p$._v$));
+      _v$2 !== _p$._v$2 && (_p$._v$2 = libs.setProp(_el$3, "class", _v$2, _p$._v$2));
       return _p$;
     }, {
       _v$: undefined,
@@ -766,6 +756,7 @@ function EOM_DebugTool_Setting() {
     get children() {
       const _el$11 = libs.createElement("Panel", {
           id: "EOM_DebugTool_Setting",
+          "class": "EOM_DebugTool_Setting",
           flowChildren: "down",
           width: "100%",
           height: "100%"
@@ -775,7 +766,6 @@ function EOM_DebugTool_Setting() {
           width: "100%",
           marginTop: "12px"
         }, _el$11);
-      libs.setProp(_el$11, "className", "EOM_DebugTool_Setting");
       libs.setProp(_el$11, "flowChildren", "down");
       libs.setProp(_el$11, "width", "100%");
       libs.setProp(_el$11, "height", "100%");
@@ -820,7 +810,12 @@ function EOM_DebugTool_Setting() {
               const _el$13 = libs.createElement("Panel", {
                 width: "100%",
                 height: "36px",
-                flowChildren: "right"
+                flowChildren: "right",
+                get ["class"]() {
+                  return libs.classNames("CanRemoveKeyBind", {
+                    deleteMode: deleteMode
+                  });
+                }
               }, null);
               libs.setProp(_el$13, "width", "100%");
               libs.setProp(_el$13, "height", "36px");
@@ -853,7 +848,7 @@ function EOM_DebugTool_Setting() {
                 },
                 callback: () => RegisterHotkey(eventName)
               }), null);
-              libs.effect(_$p => libs.setProp(_el$13, "className", libs.classNames("CanRemoveKeyBind", {
+              libs.effect(_$p => libs.setProp(_el$13, "class", libs.classNames("CanRemoveKeyBind", {
                 deleteMode: deleteMode
               }), _$p));
               return _el$13;
@@ -867,7 +862,12 @@ function EOM_DebugTool_Setting() {
             const _el$15 = libs.createElement("Panel", {
               width: "100%",
               height: "36px",
-              flowChildren: "right"
+              flowChildren: "right",
+              get ["class"]() {
+                return libs.classNames("CanRemoveKeyBind", {
+                  deleteMode: deleteMode
+                });
+              }
             }, null);
             libs.setProp(_el$15, "width", "100%");
             libs.setProp(_el$15, "height", "36px");
@@ -894,7 +894,7 @@ function EOM_DebugTool_Setting() {
               },
               callback: () => {}
             }), null);
-            libs.effect(_$p => libs.setProp(_el$15, "className", libs.classNames("CanRemoveKeyBind", {
+            libs.effect(_$p => libs.setProp(_el$15, "class", libs.classNames("CanRemoveKeyBind", {
               deleteMode: deleteMode
             }), _$p));
             return _el$15;
@@ -920,7 +920,7 @@ function EOM_DebugTool_Setting() {
   });
 }
 const SettingToggleButton = props => {
-  const tooltip = $.Localize(`${props.settingName}_Description`, $.GetContextPanel());
+  const tooltip = GetLocalization(`${props.settingName}_Description`);
   const [selected, setSelected] = libs.createSignal(props.selected);
   libs.createEffect(() => {
     setSelected(props.selected);
@@ -968,21 +968,29 @@ function EOM_DebugTool_Category(props) {
   const col = () => props.col ?? 2;
   const childs = libs.children(() => props.children).toArray();
   return (() => {
-    const _el$21 = libs.createElement("Panel", {}, null),
-      _el$22 = libs.createElement("Panel", {}, _el$21),
+    const _el$21 = libs.createElement("Panel", {
+        get ["class"]() {
+          return libs.classNames("Category", "TabIndex" + (props.tabIndex ?? ""), {
+            SingleCol: col() <= 1
+          });
+        }
+      }, null),
+      _el$22 = libs.createElement("Panel", {
+        "class": "CategoryHeader"
+      }, _el$21),
       _el$23 = libs.createElement("Label", {
+        "class": "CategoryHeaderLabel",
         get text() {
           return props.title;
         }
       }, _el$22),
-      _el$24 = libs.createElement("Panel", {}, _el$22),
-      _el$25 = libs.createElement("Panel", {}, _el$21);
-    libs.setProp(_el$22, "className", "CategoryHeader");
-    libs.setProp(_el$23, "className", "CategoryHeaderLabel");
-    libs.setProp(_el$24, "style", {
-      width: "fill-parent-flow(1)"
-    });
-    libs.setProp(_el$25, "className", "CategoryButtonContainer");
+      _el$24 = libs.createElement("Panel", {
+        width: "fill-parent-flow(1)"
+      }, _el$22),
+      _el$25 = libs.createElement("Panel", {
+        "class": "CategoryButtonContainer"
+      }, _el$21);
+    libs.setProp(_el$24, "width", "fill-parent-flow(1)");
     libs.insert(_el$25, libs.createComponent(libs.Show, {
       get when() {
         return !(props.layout ?? false);
@@ -993,11 +1001,14 @@ function EOM_DebugTool_Category(props) {
       get children() {
         return libs.createComponent(libs.For, {
           get each() {
-            return childs.slice(0, childs.length % col());
+            return Array.from({
+              length: childs.length / col()
+            });
           },
           children: (child, rowIndex) => (() => {
-            const _el$26 = libs.createElement("Panel", {}, null);
-            libs.setProp(_el$26, "className", "Row");
+            const _el$26 = libs.createElement("Panel", {
+              "class": "Row"
+            }, null);
             libs.insert(_el$26, libs.createComponent(libs.For, {
               get each() {
                 return Array.from({
@@ -1019,7 +1030,7 @@ function EOM_DebugTool_Category(props) {
           SingleCol: col() <= 1
         }),
         _v$6 = props.title;
-      _v$5 !== _p$._v$5 && (_p$._v$5 = libs.setProp(_el$21, "className", _v$5, _p$._v$5));
+      _v$5 !== _p$._v$5 && (_p$._v$5 = libs.setProp(_el$21, "class", _v$5, _p$._v$5));
       _v$6 !== _p$._v$6 && (_p$._v$6 = libs.setProp(_el$23, "text", _v$6, _p$._v$6));
       return _p$;
     }, {
@@ -1079,6 +1090,9 @@ const DemoButton = props => {
       get id() {
         return props.eventName;
       },
+      get ["class"]() {
+        return libs.classNames("DemoButton", "HotKeyValid", "FireEvent", props.color);
+      },
       get text() {
         return props.text;
       },
@@ -1090,7 +1104,7 @@ const DemoButton = props => {
         _v$8 = libs.classNames("DemoButton", "HotKeyValid", "FireEvent", props.color),
         _v$9 = props.text;
       _v$7 !== _p$._v$7 && (_p$._v$7 = libs.setProp(_el$27, "id", _v$7, _p$._v$7));
-      _v$8 !== _p$._v$8 && (_p$._v$8 = libs.setProp(_el$27, "className", _v$8, _p$._v$8));
+      _v$8 !== _p$._v$8 && (_p$._v$8 = libs.setProp(_el$27, "class", _v$8, _p$._v$8));
       _v$9 !== _p$._v$9 && (_p$._v$9 = libs.setProp(_el$27, "text", _v$9, _p$._v$9));
       return _p$;
     }, {
@@ -1108,12 +1122,12 @@ const DemoToggle = props => {
       get id() {
         return props.eventName;
       },
+      "class": "HotKeyValid FireEvent",
       selected: selected,
       get text() {
         return props.text;
       }
     }, null);
-    libs.setProp(_el$28, "className", "HotKeyValid FireEvent");
     libs.setProp(_el$28, "selected", selected);
     libs.setProp(_el$28, "onactivate", self => {
       FireEvent(props.eventName, self.IsSelected() ? "1" : "0");
@@ -1134,6 +1148,8 @@ const DemoToggle = props => {
 const DemoTextEntry = props => {
   return (() => {
     const _el$29 = libs.createElement("TextButton", {
+        "class": "DemoTextEntry",
+        flowChildren: "right",
         get text() {
           return props.text;
         }
@@ -1144,10 +1160,7 @@ const DemoTextEntry = props => {
           return props.defaultValue;
         }
       }, _el$29);
-    libs.setProp(_el$29, "className", "DemoTextEntry");
-    libs.setProp(_el$29, "style", {
-      flowChildren: "right"
-    });
+    libs.setProp(_el$29, "flowChildren", "right");
     libs.setProp(_el$29, "onactivate", self => {
       let TextEntry = self.FindChildTraverse("DemoTextEntry");
       FireEvent(props.eventName, TextEntry.text);
@@ -1187,11 +1200,11 @@ const DemoSelectionButton = props => {
       get id() {
         return props.eventName;
       },
+      "class": "DemoButton HotKeyValid ToggleSelection",
       get text() {
         return props.text;
       }
     }, null);
-    libs.setProp(_el$36, "className", "DemoButton HotKeyValid ToggleSelection");
     libs.setProp(_el$36, "onactivate", () => {
       ToggleSelection(props.eventName);
     });
@@ -1200,9 +1213,7 @@ const DemoSelectionButton = props => {
       width: "10px",
       height: "16px",
       align: "right center",
-      style: {
-        marginRight: "4px"
-      }
+      marginRight: "4px"
     }));
     libs.effect(_p$ => {
       const _v$15 = props.eventName,
@@ -1283,6 +1294,11 @@ const SelectionContainer = props => {
         get id() {
           return local.eventName;
         },
+        get ["class"]() {
+          return libs.classNames("SelectionContainer", {
+            LockWindow: lock()
+          });
+        },
         hittest: true,
         get width() {
           return size().width;
@@ -1302,43 +1318,39 @@ const SelectionContainer = props => {
         get text() {
           return local.title;
         }
-      }, _el$39),
-      _el$41 = libs.createElement("Panel", {}, _el$39),
-      _el$42 = libs.createElement("Panel", {
+      }, _el$39);
+      libs.createElement("Panel", {
+        "class": "FillWidth"
+      }, _el$39);
+      const _el$42 = libs.createElement("Panel", {
         id: "SelectionList",
-        get style() {
-          return {
-            overflow: local.canScroll ? "squish scroll" : "clip"
-          };
+        get overflow() {
+          return local.canScroll ? "squish scroll" : "clip";
         }
       }, _el$38);
     libs.setProp(_el$39, "onactivate", () => {});
     libs.setProp(_el$39, "onmouseover", self => dragStart(self));
     libs.setProp(_el$39, "onmouseout", self => dragable = false);
-    libs.setProp(_el$41, "className", "FillWidth");
     libs.insert(_el$39, (() => {
       const _c$ = libs.memo(() => local.hasFilter != false);
       return () => _c$() && (() => {
         const _el$43 = libs.createElement("Panel", {
-            id: "SelectionSearch"
+            id: "SelectionSearch",
+            "class": "SearchBox"
           }, null),
           _el$45 = libs.createElement("TextEntry", {
             id: "SelectionSearchTextEntry",
-            get style() {
-              return {
-                borderLeftWidth: hasToggleList() ? "0px" : "1px"
-              };
+            get borderLeftWidth() {
+              return hasToggleList() ? "0px" : "1px";
             },
             placeholder: "#DOTA_Search"
           }, _el$43);
-        libs.setProp(_el$43, "className", "SearchBox");
         libs.insert(_el$43, libs.createComponent(libs.Show, {
           get when() {
             return hasToggleList();
           },
           get children() {
             return libs.createComponent(EOM_DropDown, {
-              type: "",
               placeholder: "筛选",
               onChange: (index, item) => {
                 if (local.onToggleType) {
@@ -1387,9 +1399,7 @@ const SelectionContainer = props => {
             }
           }
         });
-        libs.effect(_$p => libs.setProp(_el$45, "style", {
-          borderLeftWidth: hasToggleList() ? "0px" : "1px"
-        }, _$p));
+        libs.effect(_$p => libs.setProp(_el$45, "borderLeftWidth", hasToggleList() ? "0px" : "1px", _$p));
         return _el$43;
       })();
     })(), null);
@@ -1397,25 +1407,26 @@ const SelectionContainer = props => {
       const _c$2 = libs.memo(() => local.hasRawMode != false);
       return () => _c$2() && (() => {
         const _el$47 = libs.createElement("Panel", {
+            "class": "CodeModeLabel",
             tooltipPosition: "top",
             height: "28px",
             verticalAlign: "center"
           }, null),
           _el$48 = libs.createElement("TextButton", {
+            fontSize: "20px",
+            width: "27px",
+            height: "27px",
+            marginTop: "2px",
             get text() {
               return rawMode() ? "汉" : "Aa";
             }
           }, _el$47);
-        libs.setProp(_el$47, "className", "CodeModeLabel");
         libs.setProp(_el$47, "tooltipPosition", "top");
         libs.setProp(_el$47, "height", "28px");
         libs.setProp(_el$47, "verticalAlign", "center");
-        libs.setProp(_el$48, "style", {
-          fontSize: "20px",
-          width: "27px",
-          height: "27px",
-          marginTop: "2px"
-        });
+        libs.setProp(_el$48, "width", "27px");
+        libs.setProp(_el$48, "height", "27px");
+        libs.setProp(_el$48, "marginTop", "2px");
         libs.setProp(_el$48, "onactivate", () => toggleRawMode());
         libs.effect(_$p => libs.setProp(_el$48, "text", rawMode() ? "汉" : "Aa", _$p));
         return _el$47;
@@ -1435,7 +1446,6 @@ const SelectionContainer = props => {
         get children() {
           return libs.createComponent(EOM_DropDown, {
             id: "ToggleSize",
-            type: "",
             onChange: (index, item) => {
               toggleSize(item.text.split("x"));
             },
@@ -1461,7 +1471,7 @@ const SelectionContainer = props => {
         verticalAlign: "center",
         tooltip: "锁定窗口",
         tooltipPosition: "top",
-        get className() {
+        get ["class"]() {
           return libs.classNames("LockIconButton", {
             Unlock: !lock()
           });
@@ -1498,15 +1508,13 @@ const SelectionContainer = props => {
         _v$19 = size().width,
         _v$20 = size().height,
         _v$21 = local.title,
-        _v$22 = {
-          overflow: local.canScroll ? "squish scroll" : "clip"
-        };
+        _v$22 = local.canScroll ? "squish scroll" : "clip";
       _v$17 !== _p$._v$17 && (_p$._v$17 = libs.setProp(_el$37, "id", _v$17, _p$._v$17));
-      _v$18 !== _p$._v$18 && (_p$._v$18 = libs.setProp(_el$37, "className", _v$18, _p$._v$18));
+      _v$18 !== _p$._v$18 && (_p$._v$18 = libs.setProp(_el$37, "class", _v$18, _p$._v$18));
       _v$19 !== _p$._v$19 && (_p$._v$19 = libs.setProp(_el$37, "width", _v$19, _p$._v$19));
       _v$20 !== _p$._v$20 && (_p$._v$20 = libs.setProp(_el$37, "height", _v$20, _p$._v$20));
       _v$21 !== _p$._v$21 && (_p$._v$21 = libs.setProp(_el$40, "text", _v$21, _p$._v$21));
-      _v$22 !== _p$._v$22 && (_p$._v$22 = libs.setProp(_el$42, "style", _v$22, _p$._v$22));
+      _v$22 !== _p$._v$22 && (_p$._v$22 = libs.setProp(_el$42, "overflow", _v$22, _p$._v$22));
       return _p$;
     }, {
       _v$17: undefined,
@@ -1557,12 +1565,12 @@ const EOM_DebugTool_TextPicker = props => {
     onToggleType: text => setToggleType(text),
     get children() {
       const _el$53 = libs.createElement("Panel", {
+        "class": "EOM_DebugTool_TextPicker",
         flowChildren: "right-wrap",
         width: "100%",
         height: "100%",
         scroll: "y"
       }, null);
-      libs.setProp(_el$53, "className", "EOM_DebugTool_TextPicker");
       libs.setProp(_el$53, "flowChildren", "right-wrap");
       libs.setProp(_el$53, "width", "100%");
       libs.setProp(_el$53, "height", "100%");
@@ -1573,11 +1581,11 @@ const EOM_DebugTool_TextPicker = props => {
         },
         children: (itemName, index) => (() => {
           const _el$54 = libs.createElement("TextButton", {
+            "class": "EOM_DebugTool_TextPickerItem",
             get text() {
               return rawMode() ? itemName : "#" + itemName;
             }
           }, null);
-          libs.setProp(_el$54, "className", "EOM_DebugTool_TextPickerItem");
           libs.setProp(_el$54, "onactivate", self => FireEvent(props.eventName, itemName, props.extraEventParams));
           libs.effect(_p$ => {
             const _v$23 = visiable(itemName),
@@ -1668,82 +1676,7 @@ const EOM_UnitInfo = props => {
   });
   const Update = () => {
     const entIndex = Players.GetLocalPlayerPortraitUnit();
-    if (entIndex != -1 && panel?.FindAncestor("EOM_UnitInfo")?.BHasClass("Show")) {
-      const position = Entities.GetAbsOrigin(entIndex);
-      const forward = Entities.GetForward(entIndex);
-      const healthPct = Entities.GetHealth(entIndex) / Entities.GetMaxHealth(entIndex);
-      const minHealth = Entities.IsAlive(entIndex) ? 1 : 0;
-      const maxHealth = toFiniteNumber(Entities.GetUnitData(entIndex, "GetHealth"));
-      const healthLabel = FormatNumber(Math.max(minHealth, Math.floor(healthPct * maxHealth)));
-      const maxHealthLabel = FormatNumber(Math.floor(maxHealth));
-      setUnitInfo({
-        entIndex: entIndex,
-        name: Entities.GetUnitName(entIndex),
-        className: Entities.GetClassNameAsCStr(entIndex),
-        position: `${position[0].toFixed(0)}, ${position[1].toFixed(0)}, ${position[2].toFixed(0)}`,
-        forward: `${forward[0].toFixed(3)}, ${forward[1].toFixed(3)}, ${forward[2].toFixed(3)}`,
-        health: healthLabel,
-        maxHealth: maxHealthLabel,
-        mana: Entities.GetMana(entIndex),
-        maxMana: Entities.GetMaxMana(entIndex),
-        attack: FormatNumber(Entities.GetAttackDamage(entIndex)),
-        attackrange: FormatNumber(Entities.GetAttackRange(entIndex)),
-        outgoingPhysical: Round(Entities.GetUnitData(entIndex, "GetOutgoingPhysicalDamagePercent"), 3) + "%",
-        outgoingMagical: Round(Entities.GetUnitData(entIndex, "GetOutgoingMagicalDamagePercent"), 3) + "%",
-        critChance: Round(Entities.GetUnitData(entIndex, "GetCriticalStrikeChance"), 3) + "%",
-        critDamage: Round(Entities.GetUnitData(entIndex, "GetCriticalStrikeDamage"), 3) + "%",
-        armor: FormatNumber(Entities.GetArmor(entIndex)),
-        reducePct: Round(Entities.GetUnitData(entIndex, "GetIncomingDamagePercent"), 3) + "%",
-        attackSpeed: Round(Entities.GetAttackSpeed(entIndex) * 100),
-        baseAttackTime: Entities.GetBaseAttackTime(entIndex).toFixed(2),
-        movespeed: `${Entities.GetMoveSpeed(entIndex).toFixed(0)} (${Entities.HasFlyMovementCapability(entIndex) ? "飞行" : "地面"})`,
-        cooldown: `${Entities.GetCooldownReduction(entIndex).toFixed(1)}%`,
-        hullRadius: Entities.GetHullRadius(entIndex),
-        vision: `${Entities.GetDayTimeVisionRange(entIndex)} (白天) / ${Entities.GetNightTimeVisionRange(entIndex)} (黑夜)`,
-        modifiers: [...Array(Entities.GetNumBuffs(entIndex))].map((_, index) => {
-          return Buffs.GetName(entIndex, Entities.GetBuff(entIndex, index)) + "," + Buffs.GetStackCount(entIndex, Entities.GetBuff(entIndex, index));
-        }),
-        abilities: [...Array(Entities.GetAbilityCount(entIndex))].map((_, index) => {
-          return Entities.GetAbility(entIndex, index);
-        }),
-        isHero: Entities.IsHero(entIndex),
-        str: FormatNumber(Entities.GetStrength(entIndex)),
-        agi: FormatNumber(Entities.GetAgility(entIndex)),
-        int: FormatNumber(Entities.GetIntellect(entIndex)),
-        lifesteal: FormatNumber(Entities.GetUnitData(entIndex, "GetLifestealChance") ?? 0),
-        phylifesteal: FormatNumber(Entities.GetUnitData(entIndex, "GetPhysicalLifesteal") ?? 0),
-        maglifesteal: FormatNumber(Entities.GetUnitData(entIndex, "GetMagicalLifesteal") ?? 0),
-        goldPct: FormatNumber(Entities.GetUnitData(entIndex, "GetPlayerGoldPct") ?? 0),
-        scorePct: FormatNumber(Entities.GetUnitData(entIndex, "GetPlayerScorePct") ?? 0),
-        respawn: FormatNumber(Entities.GetUnitData(entIndex, "GetRespawnTime") ?? 0),
-        AttackPerKill: FormatNumber(Entities.GetUnitData(entIndex, "GetAttackPerKill") ?? 0),
-        PowerPerKill: FormatNumber(Entities.GetUnitData(entIndex, "GetPowerPerKill") ?? 0),
-        HealthPerKill: FormatNumber(Entities.GetUnitData(entIndex, "GetHealthPerKill") ?? 0),
-        StrPerKill: FormatNumber(Entities.GetUnitData(entIndex, "GetStrPerKill") ?? 0),
-        AgiPerKill: FormatNumber(Entities.GetUnitData(entIndex, "GetAgiPerKill") ?? 0),
-        IntPerKill: FormatNumber(Entities.GetUnitData(entIndex, "GetIntPerKill") ?? 0),
-        AttackPerSec: FormatNumber(Entities.GetUnitData(entIndex, "GetAttackPerSec") ?? 0),
-        PowerPerSec: FormatNumber(Entities.GetUnitData(entIndex, "GetPowerPerSec") ?? 0),
-        HealthPerSec: FormatNumber(Entities.GetUnitData(entIndex, "GetHealthPerSec") ?? 0),
-        StrPerSec: FormatNumber(Entities.GetUnitData(entIndex, "GetStrPerSec") ?? 0),
-        AgiPerSec: FormatNumber(Entities.GetUnitData(entIndex, "GetAgiPerSec") ?? 0),
-        IntPerSec: FormatNumber(Entities.GetUnitData(entIndex, "GetIntPerSec") ?? 0),
-        AttackPerAttack: FormatNumber(Entities.GetUnitData(entIndex, "GetAttackPerAttack") ?? 0),
-        PowerPerAttack: FormatNumber(Entities.GetUnitData(entIndex, "GetPowerPerAttack") ?? 0),
-        HealthPerAttack: FormatNumber(Entities.GetUnitData(entIndex, "GetHealthPerAttack") ?? 0),
-        StrPerAttack: FormatNumber(Entities.GetUnitData(entIndex, "GetStrPerAttack") ?? 0),
-        AgiPerAttack: FormatNumber(Entities.GetUnitData(entIndex, "GetAgiPerAttack") ?? 0),
-        IntPerAttack: FormatNumber(Entities.GetUnitData(entIndex, "GetIntPerAttack") ?? 0),
-        physicalPerMin: FormatNumber(Entities.GetUnitData(entIndex, "GetPhysicalDamagePerMin") ?? 0),
-        magicalPerMin: FormatNumber(Entities.GetUnitData(entIndex, "GetMagicalDamagePerMin") ?? 0),
-        critDamagePerMin: FormatNumber(Entities.GetUnitData(entIndex, "GetCritDamagePerMin") ?? 0),
-        summonPct: FormatNumber(Entities.GetUnitData(entIndex, "GetSummonedDamage") ?? 0),
-        monster: FormatNumber(Entities.GetUnitData(entIndex, "GetPlayerGoldMonsterBonus") ?? 0),
-        dropLucky: FormatNumber(Entities.GetUnitData(entIndex, "GetPlayerServiceDropLucky") ?? 0),
-        rarityLucky: FormatNumber(Entities.GetUnitData(entIndex, "GetPlayerServiceRarityLucky") ?? 0),
-        devouredList: getNetTableKey("unit", entIndex.toString())?.devoured_items ?? []
-      });
-    }
+    if (entIndex != -1 && panel?.FindAncestor("EOM_UnitInfo")?.BHasClass("Show")) ;
   };
   const onDragStart = (source, dragCallbacks) => {
     const displayPanel = $.CreatePanel("Image", source, "DragPanel", {
@@ -3193,9 +3126,7 @@ function Demo() {
     });
   });
   return libs.createComponent(libs.Show, {
-    get when() {
-      return setting()?.is_in_tools_mode == 1 || demoSetting()?.ding;
-    },
+    when: true,
     get children() {
       return libs.createComponent(EOM_DebugTool, {
         direction: "left",
@@ -3399,5 +3330,4 @@ function Demo() {
     }
   });
 }
-print(GameUI.CustomUIConfig().HeroesKv);
 libs.render(() => libs.createComponent(Demo, {}), $.GetContextPanel());

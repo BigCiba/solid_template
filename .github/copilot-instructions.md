@@ -102,14 +102,15 @@ Used in `context_menus.tsx` for popup positioning system with smart viewport col
 
 **Reusable Component Pattern:**
 Components in `src/components/` (e.g., `EOMDesign/Input/EOM_Button/`) follow standard Solid.js patterns:
-- Use `useSimpleProps()` helper from `src/utils/component-helpers.ts` to simplify props handling
+- Use `useSimpleProps()` helper from `src/components/EOMDesign/EOMDesign.ts` to simplify props handling
 - Pattern combines: default values (mergeProps) + property splitting (splitProps) + class merging (classNames)
+- **Automatically filters empty/undefined values** from class arrays to prevent Panorama engine errors
 - Example usage:
 ```typescript
 const { local, others } = useSimpleProps(props, {
   defaultValues: { color: "Purple", size: "Normal" },
   localKeys: ["color", "size", "icon", "children"] as const,
-  componentClass: "EOM_Button"  // Auto-merges with props.class
+  componentClass: ["EOM_Button", props.loading && "Loading", `color-${props.color}`]  // Empty values auto-filtered
 });
 return <Button {...others}>{local.icon}{local.children}</Button>;
 ```
@@ -229,3 +230,21 @@ Rollup plugins use `this.addWatchFile()` to track:
 - Verify `render()` is called at top level with correct panel target
 - Look for build errors in color-coded console output
 - Confirm output files exist in `content/{addon_name}/panorama/`
+
+**Panorama Property Alias Errors:**
+- Error: `Cannot set a property alias to undefined, only a base property`
+- Cause: Passing `undefined` or empty strings in class arrays to Panorama properties
+- Solution: `useSimpleProps` automatically filters empty values from `componentClass` arrays
+- Error: `Cannot assign to read only property 'type' of object`
+- Cause: Trying to set readonly properties like `type`, `paneltype`, `id` via spread operator
+- Solution: `useSimpleProps` automatically filters readonly properties from spread operations
+- Example fix:
+```typescript
+// ✅ Correct - empty values and readonly props auto-filtered by useSimpleProps
+componentClass: ["EOM_Button", props.loading && "Loading", `color-${props.color}`]
+
+// ❌ Wrong - manual filtering needed if not using helper
+componentClass: ["EOM_Button", props.loading ? "Loading" : "", `color-${props.color}`].filter(Boolean)
+```
+- Avoid setting CSS alias properties (align, margin, padding, border) to null/undefined
+- Avoid spreading props that contain readonly properties (type, paneltype, id, layoutfile)

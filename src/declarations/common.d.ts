@@ -1,6 +1,3 @@
-/// <reference path="../../node_modules/solid-panorama-polyfill/console.d.ts" />
-/// <reference path="../../node_modules/solid-panorama-polyfill/timers.d.ts" />
-
 declare interface VCSSStyleDeclaration {
 	imgShadow: string | null;
 }

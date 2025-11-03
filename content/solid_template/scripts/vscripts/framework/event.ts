@@ -1,4 +1,8 @@
+declare var GameEventListenerIDs: EventListenerID[];
+declare var CustomUIEventListenerIDs: CustomGameEventListenerID[];
 
+GameEventListenerIDs ??= [];
+CustomUIEventListenerIDs ??= [];
 /**
  * 注册游戏事件
  * @param eventName 事件
@@ -79,4 +83,30 @@ function StopCustomUIEvent(iListenerID: CustomGameEventListenerID) {
 		}
 	}
 	CustomGameEventManager.UnregisterListener(iListenerID);
+}
+
+declare interface CustomNetTableDeclarations {
+	request_0: Record<string, { result: string, nowStep: number, maxStep: number; }>;
+	request_1: Record<string, { result: string, nowStep: number, maxStep: number; }>;
+	request_2: Record<string, { result: string, nowStep: number, maxStep: number; }>;
+	request_3: Record<string, { result: string, nowStep: number, maxStep: number; }>;
+}
+/**
+ * 注册请求事件，可以从js端的请求，来获取lua的server/client端的数据
+ * @param sEvent
+ * @param func
+ * @param context
+ */
+function RequestEvent<EventName extends keyof ServerRequestEventDeclarations, RequestParams extends ServerRequestEventDeclarations[EventName]["params"], RequestResults extends ServerRequestEventDeclarations[EventName]["results"], TContext extends {}>(sEvent: EventName, func: (this: TContext, tEvents: RequestParams & { PlayerID: PlayerID, queueIndex: string; }) => RequestResults | void, context: TContext): void;
+function RequestEvent<EventName extends keyof ServerRequestEventDeclarations, RequestParams extends ServerRequestEventDeclarations[EventName]["params"], RequestResults extends ServerRequestEventDeclarations[EventName]["results"]>(sEvent: EventName, func: (tEvents: RequestParams & { PlayerID: PlayerID, queueIndex: string; }) => RequestResults | void, context?: undefined): void;
+function RequestEvent<EventName extends keyof ClientRequestEventDeclarations, RequestParams extends ClientRequestEventDeclarations[EventName]["params"], RequestResults extends ClientRequestEventDeclarations[EventName]["results"], TContext extends {}>(sEvent: EventName, func: (this: TContext, tEvents: RequestParams & { PlayerID: PlayerID; }) => RequestResults, context: TContext): void;
+function RequestEvent<EventName extends keyof ClientRequestEventDeclarations, RequestParams extends ClientRequestEventDeclarations[EventName]["params"], RequestResults extends ClientRequestEventDeclarations[EventName]["results"]>(sEvent: EventName, func: (tEvents: RequestParams & { PlayerID: PlayerID; }) => RequestResults, context?: undefined): void;
+function RequestEvent(eventName: any, listener: any, context: any) {
+	if (Request != undefined) {
+		if (IsServer()) {
+			Request.RegisterServerEvent(eventName, listener, context);
+		} else {
+			Request.RegisterClientEvent(eventName, listener, context);
+		}
+	}
 }

@@ -1,9 +1,11 @@
 // 加载加密模块
 pcall(require, "encrypt");
 
-require("enums");
-require("module");
-require("utils");
+require("framework/enums");
+require("framework/utils");
+require("framework/module");
+require("framework/event");
+require("framework/nettable");
 
 // require("base");
 // require("constant");
@@ -11,7 +13,8 @@ require("utils");
 // require("globals");
 // require("kv");
 // require("request");
-require("settings");
+require("framework/settings");
+require("override");
 // require("abilities");
 // require("modifiers");
 // if (IsServer()) {

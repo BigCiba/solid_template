@@ -241,6 +241,68 @@ function TableReplace(mainTable: AnyTable, table: AnyTable) {
 }
 
 /**
+ * 获取表里随机一个值
+ * @param t 表
+ * @returns 随机值
+ */
+function RandomValue<T>(t: T[] | Record<string | number, T>): T | undefined {
+	let keys = Object.keys(t);
+	if (keys.length > 0) {
+		let i = math.random(0, keys.length - 1);
+		let k: any = keys[i];
+		return t[k];
+	}
+	return undefined;
+}
+/**
+ * 获取表里随机
+ * @param t 表
+ * @param num 数量
+ * @returns 随机值
+ */
+function RandomElements<T>(a: T[], num: number = 1): T[] | undefined {
+	if (num < 1) return;
+	a.sort(() => math.random() - 0.5);
+	return a.slice(0, num);
+}
+
+/**
+ * 获取数组里随机一个值
+ * @param a 数组
+ * @returns 值
+ */
+function GetRandomElement<T>(a: T[]): T | undefined {
+	if (a.length > 0) {
+		return a[math.random(0, a.length - 1)];
+	}
+	return undefined;
+}
+
+/**
+ * 从表里寻找值的键
+ * @param t
+ * @param v
+ * @returns 找得到的键
+ */
+function TableFindKey(t: any[], v: any): number | undefined;
+function TableFindKey<T>(t: T, v: any): keyof T | undefined {
+	for (const key in t) {
+		const _v = t[key];
+		if (v == _v) {
+			return key;
+		}
+	}
+}
+
+function TableCount(t: object) {
+	let n = 0;
+	for (const [_] of pairs(t)) {
+		n++;
+	}
+	return n;
+}
+
+/**
  * 四舍五入，s为小数点几位
  * @param fNumber 数
  * @param prec 进度
@@ -283,6 +345,80 @@ function Rotation2D(vVector: Vector, radian: number, isDegree: boolean = false):
 	let fCos = math.cos(radian);
 	let fSin = math.sin(radian);
 	return Vmul(Vector(vUnitVector2D.x * fCos - vUnitVector2D.y * fSin, vUnitVector2D.x * fSin + vUnitVector2D.y * fCos, vUnitVector2D.z), fLength2D);
+}
+
+function Deg2Rad(deg: number) {
+	return deg * (Math.PI / 180);
+}
+
+function Rad2Deg(rad: number) {
+	return rad * (180 / Math.PI);
+}
+
+/**
+ * 限定数值区间
+ * @param n 数
+ * @param a 最小值
+ * @param b 最大值
+ * @returns 小于最小值返回最小值，大于最大值返回最大值，否则返回自己
+ */
+function Clamp(val: number, min: number, max: number) {
+	if (val > max) {
+		val = max;
+	} else if (val < min) {
+		val = min;
+	}
+	return val;
+}
+
+function Lerp(t: number, a: number, b: number) {
+	return a + t * (b - a);
+}
+
+function VectorDistanceSq(v1: Vector, v2: Vector) {
+	return (v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y) + (v1.z - v2.z) * (v1.z - v2.z);
+}
+
+function VectorDistance(v1: Vector, v2: Vector) {
+	return Math.sqrt(VectorDistanceSq(v1, v2));
+}
+
+/**
+ * 向量值在[0，1]上的线性插值。跟另一个全局函数LerpVectors功能一样
+ * @param t
+ * @param a
+ * @param b
+ * @returns
+ */
+function VectorLerp(t: number, a: Vector, b: Vector) {
+	return Vector(Lerp(t, a.x, b.x), Lerp(t, a.y, b.y), Lerp(t, a.z, b.z));
+}
+
+/**
+ * 是否是零向量
+ * @param v
+ * @returns
+ */
+function VectorIsZero(v: Vector) {
+	return (v.x == 0.0) && (v.y == 0.0) && (v.z == 0.0);
+}
+
+function RemapVal(v: number, a: number, b: number, c: number, d: number) {
+	if (a == b) {
+		return (v >= b) ? d : c;
+	}
+
+	return c + (d - c) * (v - a) / (b - a);
+}
+
+function RemapValClamped(v: number, a: number, b: number, c: number, d: number) {
+	if (a == b) {
+		return (v >= b) ? d : c;
+	}
+
+	let t = (v - a) / (b - a);
+	t = Clamp(t, 0.0, 1.0);
+	return c + (d - c) * t;
 }
 
 /**

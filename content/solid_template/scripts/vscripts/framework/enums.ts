@@ -5,6 +5,5 @@ const vec3_top = Vector(0, 1, 0);
 const vec3_bottom = Vector(0, -1, 0);
 
 enum AddModifierFlag {
-	CALC_STATUS_RESISTANCE = 1 << 0, // 计算状态抗性
-	IGNORE_DEATH = 1 << 1, // 无视死亡
+	IGNORE_DEATH = 1 << 0, // 无视死亡
 }

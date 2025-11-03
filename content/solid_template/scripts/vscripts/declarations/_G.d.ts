@@ -14,8 +14,6 @@ declare var ApplyDamage_Engine: typeof ApplyDamage;
  */
 declare var PSEUDO_RANDOM_C: number[];
 declare var PUIErrorEventListenerID: EventListenerID;
-declare var GameEventListenerIDs: EventListenerID[];
-declare var CustomUIEventListenerIDs: CustomGameEventListenerID[];
 declare var TimerEventListenerIDs: string[];
 
 /**

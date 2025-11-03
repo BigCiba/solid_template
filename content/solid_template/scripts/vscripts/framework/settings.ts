@@ -1,4 +1,4 @@
-import { reloadable } from "./lib/tstl-utils";
+import { reloadable } from "../lib/tstl-utils";
 
 @reloadable
 class MSettings extends CModule {

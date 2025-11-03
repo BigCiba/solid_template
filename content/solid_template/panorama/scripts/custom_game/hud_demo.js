@@ -2,7 +2,6 @@
 
 var libs = require('./libs.js');
 var EOM_Button = require('./EOM_Button.js');
-var EOM_Breadcrumb = require('./EOM_Breadcrumb.js');
 
 const EOM_Icon = props => {
   const merged = libs.mergeProps({
@@ -260,6 +259,71 @@ const EOM_TextEntry = props => {
       }
     }), true);
     libs.insert(_el$, () => local.children);
+    return _el$;
+  })();
+};
+
+const EOM_Breadcrumb = props => {
+  const merged = libs.mergeProps({
+    list: [],
+    defaultSelected: 0,
+    activateType: "onactivate",
+    group: "EOM_Breadcrumb" + Math.random()
+  }, props, {
+    class: libs.classNames("EOM_Breadcrumb", props.class)
+  });
+  const [local, others] = libs.splitProps(merged, ["children", "list", "defaultSelected", "selected", "group", "activateType"]);
+  const {
+    defaultSelected,
+    list,
+    group,
+    selected,
+    activateType
+  } = local;
+  const [selectedIndex, setSelectedIndex] = libs.createSignal(defaultSelected != undefined ? Math.min(local.list.length - 1, Math.max(0, defaultSelected - 1)) : undefined);
+  const onHover = index => {
+    if (activateType == "onhover") {
+      onSelect(index);
+    }
+  };
+  const onSelect = index => {
+    setSelectedIndex(index);
+    if (props.onChange) {
+      props.onChange(index, list[index]);
+    }
+  };
+  return (() => {
+    const _el$ = libs.createElement("Panel", others, null);
+    libs.spread(_el$, others, true);
+    libs.insert(_el$, libs.createComponent(libs.For, {
+      get each() {
+        return local.list;
+      },
+      children: (name, index) => [libs.memo((() => {
+        const _c$ = libs.memo(() => index() > 0);
+        return () => _c$() && (() => {
+          const _el$3 = libs.createElement("Label", {
+            text: "/"
+          }, null);
+          libs.setProp(_el$3, "className", "EOM_BreadcrumbSeparator");
+          return _el$3;
+        })();
+      })()), (() => {
+        const _el$2 = libs.createElement("TabButton", {
+          get selected() {
+            return selected !== undefined ? selected - 1 === index() : selectedIndex() === index();
+          },
+          group: group,
+          text: name
+        }, null);
+        libs.setProp(_el$2, "group", group);
+        libs.setProp(_el$2, "text", name);
+        libs.setProp(_el$2, "onactivate", () => onSelect(index()));
+        libs.setProp(_el$2, "onmouseover", () => onHover(index()));
+        libs.effect(_$p => libs.setProp(_el$2, "selected", selected !== undefined ? selected - 1 === index() : selectedIndex() === index(), _$p));
+        return _el$2;
+      })()]
+    }));
     return _el$;
   })();
 };
@@ -572,7 +636,7 @@ const EOM_DebugTool = props => {
             return props.tabList != undefined && props.tabList.length > 0;
           },
           get children() {
-            return libs.createComponent(EOM_Breadcrumb.EOM_Breadcrumb, {
+            return libs.createComponent(EOM_Breadcrumb, {
               "class": "CategoryHeader",
               get list() {
                 return props.tabList;
@@ -1002,7 +1066,7 @@ function EOM_DebugTool_Category(props) {
         return libs.createComponent(libs.For, {
           get each() {
             return Array.from({
-              length: childs.length / col()
+              length: Math.ceil(childs.length / col())
             });
           },
           children: (child, rowIndex) => (() => {
@@ -1750,7 +1814,7 @@ const EOM_UnitInfo = props => {
       typeof _ref$ === "function" ? libs.use(_ref$, _el$62) : panel = _el$62;
       libs.setProp(_el$62, "width", "100%");
       libs.setProp(_el$62, "height", "100%");
-      libs.insert(_el$62, libs.createComponent(EOM_Breadcrumb.EOM_Breadcrumb, {
+      libs.insert(_el$62, libs.createComponent(EOM_Breadcrumb, {
         list: ["实体信息", "Modifier", "技能", "吞噬物品"],
         onChange: (index, name) => {
           setTabIndex(index);
@@ -2777,7 +2841,7 @@ const EOM_DebugTool_AbilityPicker = props => {
       libs.setProp(_el$, "margin", "-6px");
       libs.setProp(_el$, "backgroundColor", "#00000066");
       libs.setProp(_el$, "flowChildren", "down");
-      libs.insert(_el$, libs.createComponent(EOM_Breadcrumb.EOM_Breadcrumb, {
+      libs.insert(_el$, libs.createComponent(EOM_Breadcrumb, {
         list: ["ALL", "0", "1", "2", "3", "4", "5"],
         marginLeft: "6px",
         marginTop: "10px",
@@ -2930,7 +2994,7 @@ const EOM_DebugTool_ItemPicker = props => {
       libs.setProp(_el$, "margin", "-6px");
       libs.setProp(_el$, "backgroundColor", "#00000066");
       libs.setProp(_el$, "flowChildren", "down");
-      libs.insert(_el$, libs.createComponent(EOM_Breadcrumb.EOM_Breadcrumb, {
+      libs.insert(_el$, libs.createComponent(EOM_Breadcrumb, {
         list: ["ALL", "1级", "2级", "3级", "4级", "5级", "6级", "7级"],
         marginLeft: "6px",
         marginTop: "10px",

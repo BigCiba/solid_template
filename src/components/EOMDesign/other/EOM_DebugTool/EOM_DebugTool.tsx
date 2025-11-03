@@ -366,7 +366,7 @@ export function EOM_DebugTool_Category(props: {
 			</Panel>
 			<Panel class="CategoryButtonContainer">
 				<Show when={!(props.layout ?? false)} fallback={props.children}>
-					<For each={Array.from({ length: childs.length / col() })}>
+					<For each={Array.from({ length: Math.ceil(childs.length / col()) })}>
 						{(child, rowIndex) => <Panel class="Row">
 							<For each={Array.from({ length: col() })}>
 								{(_, idx) => {

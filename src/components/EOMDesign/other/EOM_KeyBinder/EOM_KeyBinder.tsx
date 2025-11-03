@@ -350,15 +350,15 @@ export const EOM_KeyBinder: ParentComponent<EOM_KeyBinderProps> = (props) => {
 			tooltip={local.tooltip}
 			{...others} >
 			<Show when={typeof local.text == "string"}>
-				<Label id="title" text={local.text as string} className="BindingRowLabel" html={true} />
+				<Label id="title" text={local.text as string} class="BindingRowLabel" html={true} />
 			</Show>
 			<Panel id="LabelFXContainer">
 				<Panel id="BindingLabelContainer" >
-					<Label id="mod" text="" className="BindingRowButton" />
-					<Label id="dash" text="-" className="BindingRowButton" />
-					<Label id="value" text={GetLocalization("#" + keyName()) == "#" + keyName() ? keyName() : ("#" + keyName())} className="BindingRowButton" />
+					<Label id="mod" text="" class="BindingRowButton" />
+					<Label id="dash" text="-" class="BindingRowButton" />
+					<Label id="value" text={GetLocalization("#" + keyName()) == "#" + keyName() ? keyName() : ("#" + keyName())} class="BindingRowButton" />
 				</Panel>
-				<Button className="ClearKeybinding" onactivate={self => OnClear(self)} />
+				<Button class="ClearKeybinding" onactivate={self => OnClear(self)} />
 			</Panel>
 
 		</Panel>

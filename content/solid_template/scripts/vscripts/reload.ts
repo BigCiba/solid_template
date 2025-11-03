@@ -1,4 +1,9 @@
-if (Activated) {
+/**
+ * Reloads all scripts and clears event listeners
+ */
+
+declare var GameModeActivated: boolean;
+if (GameModeActivated) {
 	GameEventListenerIDs.forEach((a) => {
 		StopListeningToGameEvent(a);
 	});
@@ -24,6 +29,8 @@ if (Activated) {
 			print("Reload Scripts");
 		}
 	}
+} else {
+	GameModeActivated = true;
 }
 
 function table_size(t: any, tRecord: Record<any, any> = {}) {

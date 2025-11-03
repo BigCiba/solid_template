@@ -24,6 +24,7 @@ const EOM_Icon = props => {
 };
 
 let menuRoot;
+let timer;
 const createDropDownContainer = panel => {
   while (panel.GetParent() != undefined) {
     panel = panel.GetParent();
@@ -47,7 +48,7 @@ function doUniqueString(str) {
   if (GameUI.CustomUIConfig()._Record_UniqueString == undefined) {
     GameUI.CustomUIConfig()._Record_UniqueString = 0;
   }
-  let result = "_" + Math.random().toString().substring(3, 3) + GameUI.CustomUIConfig()._Record_UniqueString + "_" + str;
+  let result = "_" + Math.random().toString().substring(2, 8) + GameUI.CustomUIConfig()._Record_UniqueString + "_" + str;
   GameUI.CustomUIConfig()._Record_UniqueString++;
   return result;
 }
@@ -75,7 +76,7 @@ const EOM_DropDown = props => {
   });
   libs.onCleanup(() => {
     if (myMenu && myMenu.IsValid()) {
-      libs.render(() => [], myMenu);
+      myMenu.DeleteAsync(0);
     }
   });
   const onChange = (childIndex, c) => {
@@ -103,7 +104,7 @@ const EOM_DropDown = props => {
     if (myMenu == undefined && selfRef) {
       myMenu = $.CreatePanel("Panel", selfRef, `${local.id}_DropDownMenu`);
       myMenu.AddClass("EOM_DropDownMenu");
-      myMenu.visible = true;
+      myMenu.visible = false;
       const childrens = libs.runWithOwner(owner, () => {
         return libs.children(() => local.children).toArray();
       });
@@ -127,7 +128,7 @@ const EOM_DropDown = props => {
                 }
                 if (c && c.id == "EOM_DropDown_Clear" && index == childIndex) {
                   bClear = true;
-                  c.visible == false;
+                  c.visible = false;
                   onClear();
                 }
               }
@@ -143,7 +144,6 @@ const EOM_DropDown = props => {
       if (menuRoot != undefined) {
         myMenu.SetParent(menuRoot);
       }
-      myMenu.visible = false;
     }
   };
   const toggleMenu = (pBtn, state) => {
@@ -151,35 +151,46 @@ const EOM_DropDown = props => {
       createDropDown(pBtn);
     }
     if (pBtn && myMenu?.IsValid()) {
-      myMenu.visible = state == undefined ? !myMenu.visible : state;
+      const shouldShow = state == undefined ? !myMenu.visible : state;
       if (menuRoot != undefined) {
-        menuRoot.visible = myMenu.visible;
+        menuRoot.visible = shouldShow;
       }
-      myMenu.SetHasClass("EOM_DropDownMenuShow", myMenu.visible);
-      if (myMenu.visible) {
-        myMenu.SetFocus();
-        $.Schedule(0.06, () => {
-          if (pBtn && myMenu) {
-            let minWidth = Math.max(myMenu.actuallayoutwidth, pBtn.actuallayoutwidth) / myMenu.actualuiscale_x;
-            myMenu.style.minWidth = minWidth + "px";
-            const childItems = myMenu.FindChildrenWithClassTraverse("EOM_DropDownMenuItem");
-            if (childItems && childItems.length > 0) {
-              childItems.forEach(item => {
-                item.style.width = minWidth - 4 + "px";
-              });
+      if (shouldShow) {
+        timer = setInterval(() => {
+          if (myMenu && myMenu.IsValid() && shouldShow) {
+            if (myMenu.actuallayoutwidth > 0) {
+              let minWidth = Math.max(myMenu.actuallayoutwidth, pBtn.actuallayoutwidth) / myMenu.actualuiscale_x;
+              myMenu.style.minWidth = minWidth + "px";
+              const childItems = myMenu.FindChildrenWithClassTraverse("EOM_DropDownMenuItem");
+              if (childItems && childItems.length > 0) {
+                childItems.forEach(item => {
+                  item.style.width = minWidth - 4 + "px";
+                });
+              }
+              clearInterval(timer);
             }
-            let vPos = pBtn.GetPositionWithinWindow();
-            let menuPosition = local.menuPosition;
-            let x = vPos.x;
-            let y = Math.max(0, menuPosition == "bottom" ? vPos.y + pBtn.actuallayoutheight + 2 : vPos.y - myMenu.actuallayoutheight - 2);
-            let maxHeight = Math.max(0, (menuPosition == "bottom" ? Game.GetScreenHeight() - y : vPos.y) - 8);
-            myMenu.style.maxHeight = maxHeight / myMenu.actualuiscale_y + "px";
-            if (myMenu.actuallayoutheight > maxHeight) {
-              y = Math.max(0, menuPosition == "bottom" ? y : vPos.y - maxHeight);
-            }
-            myMenu.SetPositionInPixels(x / myMenu.actualuiscale_x, y / myMenu.actualuiscale_y, 0);
+          } else {
+            clearInterval(timer);
           }
-        });
+        }, 0);
+        if (pBtn && myMenu && myMenu.IsValid()) {
+          let vPos = pBtn.GetPositionWithinWindow();
+          let menuPosition = local.menuPosition;
+          let x = vPos.x;
+          let y = Math.max(0, menuPosition == "bottom" ? vPos.y + pBtn.actuallayoutheight + 2 : vPos.y - myMenu.actuallayoutheight - 2);
+          let maxHeight = Math.max(0, (menuPosition == "bottom" ? Game.GetScreenHeight() - y : vPos.y) - 8);
+          myMenu.style.maxHeight = `${maxHeight / myMenu.actualuiscale_y}px`;
+          if (myMenu.actuallayoutheight > maxHeight) {
+            y = Math.max(0, menuPosition == "bottom" ? y : vPos.y - maxHeight);
+          }
+          myMenu.SetPositionInPixels(x / myMenu.actualuiscale_x, y / myMenu.actualuiscale_y, 0);
+          myMenu.visible = true;
+          myMenu.SetHasClass("EOM_DropDownMenuShow", true);
+          myMenu.SetFocus();
+        }
+      } else {
+        myMenu.visible = false;
+        myMenu.SetHasClass("EOM_DropDownMenuShow", false);
       }
     }
   };
@@ -192,7 +203,7 @@ const EOM_DropDown = props => {
       _el$2 = libs.createElement("Label", {
         id: "EOM_DropDown_placeholder",
         get text() {
-          return local.index == undefined && local.placeholder ? local.placeholder : "";
+          return local.placeholder && (local.index === undefined || local.index < 0) ? local.placeholder : "";
         }
       }, _el$);
       libs.createElement("Image", {
@@ -210,7 +221,7 @@ const EOM_DropDown = props => {
       }
     }), true);
     libs.insert(_el$, () => local.children, _el$2);
-    libs.effect(_$p => libs.setProp(_el$2, "text", local.index == undefined && local.placeholder ? local.placeholder : "", _$p));
+    libs.effect(_$p => libs.setProp(_el$2, "text", local.placeholder && (local.index === undefined || local.index < 0) ? local.placeholder : "", _$p));
     return _el$;
   })();
 };
@@ -301,13 +312,10 @@ const EOM_Breadcrumb = props => {
       },
       children: (name, index) => [libs.memo((() => {
         const _c$ = libs.memo(() => index() > 0);
-        return () => _c$() && (() => {
-          const _el$3 = libs.createElement("Label", {
-            text: "/"
-          }, null);
-          libs.setProp(_el$3, "className", "EOM_BreadcrumbSeparator");
-          return _el$3;
-        })();
+        return () => _c$() && libs.createElement("Label", {
+          "class": "EOM_BreadcrumbSeparator",
+          text: "/"
+        }, null);
       })()), (() => {
         const _el$2 = libs.createElement("TabButton", {
           get selected() {
@@ -497,22 +505,27 @@ const EOM_KeyBinder = props => {
       }, _el$),
       _el$4 = libs.createElement("Panel", {
         id: "BindingLabelContainer"
-      }, _el$3),
-      _el$5 = libs.createElement("Label", {
+      }, _el$3);
+      libs.createElement("Label", {
         id: "mod",
-        text: ""
-      }, _el$4),
-      _el$6 = libs.createElement("Label", {
+        text: "",
+        "class": "BindingRowButton"
+      }, _el$4);
+      libs.createElement("Label", {
         id: "dash",
-        text: "-"
-      }, _el$4),
-      _el$7 = libs.createElement("Label", {
+        text: "-",
+        "class": "BindingRowButton"
+      }, _el$4);
+      const _el$7 = libs.createElement("Label", {
         id: "value",
         get text() {
           return libs.memo(() => GetLocalization("#" + keyName()) == "#" + keyName())() ? keyName() : "#" + keyName();
-        }
+        },
+        "class": "BindingRowButton"
       }, _el$4),
-      _el$8 = libs.createElement("Button", {}, _el$3);
+      _el$8 = libs.createElement("Button", {
+        "class": "ClearKeybinding"
+      }, _el$3);
     const _ref$ = panel;
     typeof _ref$ === "function" ? libs.use(_ref$, _el$) : panel = _el$;
     libs.setProp(_el$, "onactivate", self => OnActivate(self));
@@ -535,17 +548,13 @@ const EOM_KeyBinder = props => {
           get text() {
             return local.text;
           },
+          "class": "BindingRowLabel",
           html: true
         }, null);
-        libs.setProp(_el$2, "className", "BindingRowLabel");
         libs.effect(_$p => libs.setProp(_el$2, "text", local.text, _$p));
         return _el$2;
       }
     }), _el$3);
-    libs.setProp(_el$5, "className", "BindingRowButton");
-    libs.setProp(_el$6, "className", "BindingRowButton");
-    libs.setProp(_el$7, "className", "BindingRowButton");
-    libs.setProp(_el$8, "className", "ClearKeybinding");
     libs.setProp(_el$8, "onactivate", self => OnClear(self));
     libs.effect(_$p => libs.setProp(_el$7, "text", libs.memo(() => GetLocalization("#" + keyName()) == "#" + keyName())() ? keyName() : "#" + keyName(), _$p));
     return _el$;
@@ -2832,11 +2841,13 @@ const EOM_DebugTool_AbilityPicker = props => {
           flowChildren: "down"
         }, null),
         _el$2 = libs.createElement("Panel", {
+          "class": "EOM_DebugTool_AbilityPicker",
           marginTop: "10px",
           flowChildren: "right-wrap",
           width: "100%",
           scroll: "y"
         }, _el$);
+      libs.setProp(_el$, "width", "100%");
       libs.setProp(_el$, "height", "100%");
       libs.setProp(_el$, "margin", "-6px");
       libs.setProp(_el$, "backgroundColor", "#00000066");
@@ -2847,7 +2858,6 @@ const EOM_DebugTool_AbilityPicker = props => {
         marginTop: "10px",
         onChange: (index, itemName) => setRarity(itemName)
       }), _el$2);
-      libs.setProp(_el$2, "className", "EOM_DebugTool_AbilityPicker");
       libs.setProp(_el$2, "marginTop", "10px");
       libs.setProp(_el$2, "flowChildren", "right-wrap");
       libs.setProp(_el$2, "width", "100%");
@@ -2861,7 +2871,7 @@ const EOM_DebugTool_AbilityPicker = props => {
             get visible() {
               return visible(abilityname);
             },
-            className: "EOM_DebugTool_AbilityPickerItem",
+            "class": "EOM_DebugTool_AbilityPickerItem",
             width: "64px",
             flowChildren: "down",
             onactivate: self => FireEvent(local.eventName, abilityname),
@@ -2880,11 +2890,11 @@ const EOM_DebugTool_AbilityPicker = props => {
                 return _el$3;
               })(), (() => {
                 const _el$4 = libs.createElement("Label", {
+                  "class": "EOM_DebugTool_AbilityPickerItemName",
                   get text() {
                     return rawMode() ? abilityname : "#DOTA_Tooltip_ability_" + abilityname;
                   }
                 }, null);
-                libs.setProp(_el$4, "className", "EOM_DebugTool_AbilityPickerItemName");
                 libs.effect(_$p => libs.setProp(_el$4, "text", rawMode() ? abilityname : "#DOTA_Tooltip_ability_" + abilityname, _$p));
                 return _el$4;
               })()];
@@ -2985,11 +2995,13 @@ const EOM_DebugTool_ItemPicker = props => {
           flowChildren: "down"
         }, null),
         _el$2 = libs.createElement("Panel", {
+          "class": "EOM_DebugTool_AbilityPicker",
           marginTop: "10px",
           flowChildren: "right-wrap",
           width: "100%",
           scroll: "y"
         }, _el$);
+      libs.setProp(_el$, "width", "100%");
       libs.setProp(_el$, "height", "100%");
       libs.setProp(_el$, "margin", "-6px");
       libs.setProp(_el$, "backgroundColor", "#00000066");
@@ -3000,7 +3012,6 @@ const EOM_DebugTool_ItemPicker = props => {
         marginTop: "10px",
         onChange: index => setRarity(index)
       }), _el$2);
-      libs.setProp(_el$2, "className", "EOM_DebugTool_AbilityPicker");
       libs.setProp(_el$2, "marginTop", "10px");
       libs.setProp(_el$2, "flowChildren", "right-wrap");
       libs.setProp(_el$2, "width", "100%");
@@ -3013,7 +3024,7 @@ const EOM_DebugTool_ItemPicker = props => {
           get visible() {
             return visiable(abilityname);
           },
-          className: "EOM_DebugTool_AbilityPickerItem",
+          "class": "EOM_DebugTool_AbilityPickerItem",
           width: "64px",
           flowChildren: "down",
           onactivate: self => FireEvent(local.eventName, abilityname),
@@ -3041,11 +3052,11 @@ const EOM_DebugTool_ItemPicker = props => {
               return _el$3;
             })(), (() => {
               const _el$4 = libs.createElement("Label", {
+                "class": "EOM_DebugTool_AbilityPickerItemName",
                 get text() {
                   return rawMode() ? abilityname : "#" + abilityname;
                 }
               }, null);
-              libs.setProp(_el$4, "className", "EOM_DebugTool_AbilityPickerItemName");
               libs.effect(_$p => libs.setProp(_el$4, "text", rawMode() ? abilityname : "#" + abilityname, _$p));
               return _el$4;
             })()];

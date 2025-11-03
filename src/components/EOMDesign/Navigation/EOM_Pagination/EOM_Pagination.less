@@ -1,62 +1,88 @@
-.EOM_Pagination {
+.EOM_Pagination
+{
 	flow-children: right;
 
-	.EOM_Pagination_Button {
-		width: 32px;
-		height: 32px;
-		vertical-align: center;
-		transition-property: background-color, opacity, saturation;
-		transition-duration: 0.1s;
+	.PageButton
+	{
+		width: 38px;
+		height: 38px;
 
-		&:disabled {
-			opacity: 0.2;
-			saturation: 0;
+		&.Selected
+		{
+			background-image: url("file://{images}/custom_game/eom_design/icon/p_paging.png");
+			background-size: 100%;
+
+			.BG
+			{
+				background-color: #00000000;
+			}
+
+			Label
+			{
+				color: #4F4F4F;
+			}
 		}
 
-		&:not(:disabled):hover {
-			background-color: gradient(radial, 50% 50%, 0% 0%, 75% 75%, color-stop(0.0, #7e8f9322), color-stop(0.5, #7e8f9322), color-stop(0.6, #00000000));
-			border-radius: 50%;
-		}
-
-		&:not(:disabled):active,
-		&:not(:disabled):selected {
-			background-color: gradient(radial, 50% 50%, 0% 0%, 75% 75%, color-stop(0.0, #9db1b766), color-stop(0.5, #9db1b766), color-stop(0.6, #00000000));
-			border-radius: 50%;
-		}
-
-		Label {
-			font-size: 20px;
-			color: white;
+		.BG
+		{
 			align: center center;
+			width: 28px;
+			height: 28px;
+			background-color: #00000066;
+			border-radius: 3px;
 		}
-	}
 
-
-	.EOM_Pagination_LeftArrow {
-		visibility: collapse;
-		background-image: url("s2r://panorama/images/control_icons/arrow_min_left_psd.vtex");
-		background-size: 8px 14px;
-		background-position: 50% 50%;
-		background-repeat: no-repeat;
-	}
-
-	.EOM_Pagination_RightArrow {
-		visibility: collapse;
-		background-image: url("s2r://panorama/images/control_icons/arrow_min_right_psd.vtex");
-		background-size: 8px 14px;
-		background-position: 50% 50%;
-		background-repeat: no-repeat;
-	}
-
-	&.ShowArrow {
-
-		.EOM_Pagination_LeftArrow,
-		.EOM_Pagination_RightArrow {
-			visibility: visible;
+		Label
+		{
+			align: center center;
+			font-size: 18px;
+			color: #D9EFFF;
+			width: 100%;
+			text-align: center;
 		}
+
+		// background-color: #00000066;
 	}
 
-	.EOM_Pagination_JumpExtry {
+	.PageLeft
+	{
+
+		.PageArrow
+		{
+			align: center center;
+			width: 12px;
+			height: 18px;
+			background-image: url("file://{images}/custom_game/eom_design/icon/p_next.png");
+			background-size: 100%;
+			transform: rotateZ(180deg);
+		}
+
+		&:disabled
+		{
+			.PageArrow
+			{
+				opacity: 0.2;
+			}
+		}
+
+	}
+
+	.PageRight
+	{
+		.PageArrow
+		{
+			align: center center;
+			width: 12px;
+			height: 18px;
+			background-image: url("file://{images}/custom_game/eom_design/icon/p_next.png");
+			background-size: 100%;
+		}
+
+	}
+
+
+	.EOM_Pagination_JumpExtry
+	{
 		background-image: url("file://{images}/eom_design/popup/rectangle_1.png");
 		background-size: 100%;
 		height: 32px;
@@ -66,7 +92,8 @@
 		// padding-left: 26px;
 		// padding-right: 26px;
 
-		TextEntry {
+		TextEntry
+		{
 			align: center center;
 			background-color: none;
 			font-size: 20px;
@@ -82,13 +109,15 @@
 			text-overflow: shrink;
 			white-space: normal;
 
-			#PlaceholderText {
+			#PlaceholderText
+			{
 				font-size: 20px;
 			}
 		}
 	}
 
-	.EOM_Pagination_JumpLabel {
+	.EOM_Pagination_JumpLabel
+	{
 		font-size: 20px;
 		color: white;
 		vertical-align: center;

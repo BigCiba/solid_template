@@ -53,7 +53,7 @@
 		"@babel/types": "^7.27.1",
 		"@bigciba/babel-plugin-jsx-panorama-expressions": "^0.3.2",
 		"@bigciba/babel-preset-solid-panorama": "^0.1.5",
-		"@bigciba/solid-panorama-runtime": "^0.6.5",
+		"@bigciba/solid-panorama-runtime": "^0.6.6",
 		"@moddota/dota-lua-types": "^4.36.0",
 		"@moddota/panorama-types": "^1.38.1",
 		"@rollup/plugin-alias": "^4.0.4",

@@ -5,6 +5,6 @@ Convars.SetBool("dota_combine_models", false);
 
 require("requires");
 
-if (!Activated) {
+if (!GameModeActivated) {
 	CModule.initialize();
 }

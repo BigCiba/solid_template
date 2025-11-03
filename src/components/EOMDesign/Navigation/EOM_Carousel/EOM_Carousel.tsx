@@ -1,9 +1,8 @@
 import classNames from "classnames";
 import { For, ParentComponent, createSignal, mergeProps, onMount, splitProps } from "solid-js";
-import { EOMProps, EOM_Attribute } from "../../EOMDesign";
 import "./EOM_Carousel.less";
 
-interface EOM_CarouselAttribute extends EOM_Attribute {
+interface EOM_CarouselAttribute extends PanelAttributes {
 	/** 自动滚动 */
 	autoplay?: boolean;
 	/** 自动滚动间隔 */
@@ -24,7 +23,7 @@ export const EOM_Carousel: ParentComponent<EOM_CarouselAttribute> = (props) => {
 		autoplayInterval: 5,
 		easing: "linear",
 		effect: "fade",
-	}, props);
+	}, props, { class: classNames("EOM_Carousel", props.effect) });
 	const [local, others] = splitProps(merged, ["autoplay", "autoplayInterval", "easing", "effect", "onChange"]);
 	const [selectedIndex, setSelectedIndex] = createSignal(1);
 	const [count, setCount] = createSignal(0);
@@ -45,7 +44,7 @@ export const EOM_Carousel: ParentComponent<EOM_CarouselAttribute> = (props) => {
 	};
 
 	return (
-		<Panel {...EOMProps(props, { className: classNames("EOM_Carousel", local.effect) })} onload={self => {
+		<Panel {...others} onload={self => {
 			if (LoadData(self, "bReload") == undefined) {
 				autoPlay(self);
 				SaveData(self, "bReload", "true");
@@ -53,15 +52,11 @@ export const EOM_Carousel: ParentComponent<EOM_CarouselAttribute> = (props) => {
 		}}>
 
 			<For each={children}>
-				{(child, index) => {
-					return (
-						<Panel id={"EOM_CarouselChild_" + index()} className={classNames("EOM_CarouselChild", { Show: selectedIndex() == index() + 1 })}>
-							{child}
-						</Panel>
-					);
-				}}
+				{(child, index) => <Panel id={"EOM_CarouselChild_" + index()} class={classNames("EOM_CarouselChild", { Show: selectedIndex() == index() + 1 })}>
+					{child}
+				</Panel>}
 			</For>
-			<Panel className="EOM_CarouselNav">
+			<Panel class="EOM_CarouselNav">
 				{/* <EOM_Pagination showArrow={false} pageCount={count} showJumpButton={false} page={selectedIndex} onChange={(page) => {
 					this.setState({ selectedIndex: page });
 				}} /> */}

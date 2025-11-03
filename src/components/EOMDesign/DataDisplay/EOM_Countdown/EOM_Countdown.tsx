@@ -1,4 +1,5 @@
-import { ParentComponent, mergeProps, onCleanup, onMount, splitProps } from "solid-js";
+import { ParentComponent, Show, mergeProps, onCleanup, onMount, splitProps } from "solid-js";
+import "./EOM_Countdown.less";
 
 export interface EOM_CountdownAttribute extends PanelAttributes {
 	endTime: number,
@@ -16,11 +17,13 @@ export interface EOM_CountdownAttribute extends PanelAttributes {
 	};
 	/** 最大时间限制 */
 	short?: boolean;
+	/** 是否有图标 */
+	icon?: boolean;
 }
 
 export const EOM_Countdown: ParentComponent<EOM_CountdownAttribute> = (props) => {
-	const merged = mergeProps({ updateInterval: 1, timeDialogVariable: "countdown_time", text: "#countdown_time", onlyCoundown: true, short: false }, props, { class: "EOM_Countdown" });
-	const [local, others] = splitProps(merged, ["endTime", "updateInterval", "timeDialogVariable", "text", "onlyCoundown", "limitTime", "short"]);
+	const merged = mergeProps({ updateInterval: 1, timeDialogVariable: "countdown_time", text: "{day}d {hour}h {min}m", onlyCoundown: true, short: false }, props, { class: "EOM_Countdown" });
+	const [local, others] = splitProps(merged, ["endTime", "updateInterval", "timeDialogVariable", "icon", "text", "onlyCoundown", "limitTime", "short"]);
 	let ref: LabelPanel | undefined;
 	const refresh = () => {
 		const diff = local.onlyCoundown ? Math.floor((local.endTime - Date.now() / 1000)) : Math.floor((Math.abs(local.endTime - Date.now() / 1000))); // 差值，单位为秒
@@ -77,6 +80,9 @@ export const EOM_Countdown: ParentComponent<EOM_CountdownAttribute> = (props) =>
 	});
 	return (
 		<Panel {...others} >
+			<Show when={local.icon}>
+				<Image class="EOM_CountdownIcon" />
+			</Show>
 			<Label ref={ref} />
 		</Panel>
 	);

@@ -20,7 +20,7 @@ export const Service_AddToken = () => {
 	});
 	return (
 		<Panel id="Service_AddToken" flowChildren="right" onactivate={() => AddToken()}>
-			<TextButton className="DemoButton HotKeyValid FireEvent" text={itemID() == "" ? "后端物品ID" : GetLocalization("#" + itemID())} onactivate={() => ToggleSelection("ServiceAddItem")} >
+			<TextButton class="DemoButton HotKeyValid FireEvent" text={itemID() == "" ? "后端物品ID" : GetLocalization("#" + itemID())} onactivate={() => ToggleSelection("ServiceAddItem")} >
 				<EOM_Icon type="ArrowSolidRight" width="10px" height="16px" align="right center" style={{ marginRight: "4px" }} />
 			</TextButton>
 			<TextEntry ref={refEntry} id="Service_TextEntry" placeholder="数量" textmode="numeric"

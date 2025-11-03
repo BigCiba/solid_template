@@ -88,13 +88,11 @@ const EOM_IconButton = props => {
     class: libs.classNames("EOM_IconButton", props.class)
   });
   const [local, others] = libs.splitProps(merged, ["children", "icon"]);
-  return (() => {
-    const _el$5 = libs.createElement("Button", others, null);
-    libs.spread(_el$5, others, true);
-    libs.insert(_el$5, () => local.icon, null);
-    libs.insert(_el$5, () => local.children, null);
-    return _el$5;
-  })();
+  return libs.createComponent(EOM_BaseButton, libs.mergeProps$1(others, {
+    get children() {
+      return [libs.memo(() => local.icon), libs.memo(() => local.children)];
+    }
+  }));
 };
 
 exports.EOM_BaseButton = EOM_BaseButton;

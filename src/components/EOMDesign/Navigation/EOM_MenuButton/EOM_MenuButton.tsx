@@ -37,12 +37,12 @@ export const EOM_MenuButtons: ParentComponent<EOM_MenuButtonsAttribute> = (props
 		});
 	});
 	return (
-		<Panel id="LeftTopMain" className={classNames("InitHide", { InitAnimation: !local.collapse })} hittest={false}>
+		<Panel id="LeftTopMain" class={classNames("InitHide", { InitAnimation: !local.collapse })} hittest={false}>
 			<Panel id="EOM_MenuButtons">
 				<For each={local.list}>
 					{(name, index) => {
 						return (
-							<Button id={"EOM_MenuButtons_" + name} className={classNames("EOM_MenuButton", { IsActive: selectName() == name })} onactivate={self => {
+							<Button id={"EOM_MenuButtons_" + name} class={classNames("EOM_MenuButton", { IsActive: selectName() == name })} onactivate={self => {
 								if (local.onToggle) {
 									setSubscribeEnable(false);
 									local.onToggle(name, selectName() == name ? false : true);
@@ -50,8 +50,8 @@ export const EOM_MenuButtons: ParentComponent<EOM_MenuButtonsAttribute> = (props
 								}
 								setSelectName(selectName() == name ? "" : name);
 							}} >
-								<EOM_Image id={`${name}Icon`} className="LeftTopButtonIcon" backgroundImage={getImagePath("icon/" + name + ".png")} />
-								<EOM_Image id={`${name}Icon`} className="LeftTopButtonIcon" backgroundImage={getImagePath("icon/" + name + ".png")} />
+								<EOM_Image id={`${name}Icon`} class="LeftTopButtonIcon" backgroundImage={getImagePath("icon/" + name + ".png")} />
+								<EOM_Image id={`${name}Icon`} class="LeftTopButtonIcon" backgroundImage={getImagePath("icon/" + name + ".png")} />
 								<Label text={"#MenuButton_" + name} />
 							</Button>
 						);
@@ -87,9 +87,9 @@ export const EOM_MenuButton: ParentComponent<EOM_MenuButtonAttribute & PanelAttr
 	const { menuName, icon } = local;
 	return (
 		<TabButton selected={selected()} {...EOMProps(others, { className: "EOM_MenuButton" })} >
-			<Label className="EOM_MenuLabel" text={"#" + menuName} />
+			<Label class="EOM_MenuLabel" text={"#" + menuName} />
 			{hasMark() &&
-				<Image className="EOM_MenuExclamationMark" />
+				<Image class="EOM_MenuExclamationMark" />
 			}
 			{icon}
 		</TabButton>

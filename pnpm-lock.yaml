@@ -30,8 +30,8 @@ importers:
         specifier: ^0.1.5
         version: 0.1.5
       '@bigciba/solid-panorama-runtime':
-        specifier: ^0.6.5
-        version: 0.6.5(typescript@5.9.3)
+        specifier: ^0.6.6
+        version: 0.6.6(typescript@5.9.3)
       '@moddota/dota-lua-types':
         specifier: ^4.36.0
         version: 4.37.0(@typescript-to-lua/language-extensions@1.19.0)(typescript@5.9.3)
@@ -661,8 +661,8 @@ packages:
     resolution: {integrity: sha512-jLUqp/9VbcWj2NlQMzQ/V/NkJQmAEdgH9Ypj6DY/BpcFcgyyhXDnloiCANIzgVyPWCZ+wJ/xDYzfx/oesR7aPw==}
     engines: {node: '>=16.0.0'}
 
-  '@bigciba/solid-panorama-runtime@0.6.5':
-    resolution: {integrity: sha512-YkS0OwImjPAY7jI5tl5AIlBAKnfQYVZ9+WsRaDTCus78K0Kr3FzOf8Pq/NsvjP59X9eVVZ8pVge+l3rK++WZRg==}
+  '@bigciba/solid-panorama-runtime@0.6.6':
+    resolution: {integrity: sha512-NzwSNPTj5lUQEh7Hz+WLjxUtXAoz4e4mkJcY5XbdlNPSCAYmhV7KzZcFMH0OpA1MeG9ZSCc3N3C300D9nbEvNA==}
     engines: {node: '>=16.0.0'}
 
   '@cspotcode/source-map-support@0.8.1':
@@ -2733,7 +2733,7 @@ snapshots:
 
   '@bigciba/babel-preset-solid-panorama@0.1.5': {}
 
-  '@bigciba/solid-panorama-runtime@0.6.5(typescript@5.9.3)':
+  '@bigciba/solid-panorama-runtime@0.6.6(typescript@5.9.3)':
     dependencies:
       '@moddota/panorama-types': 1.38.1(typescript@5.9.3)
       solid-js: 1.9.9

@@ -63,15 +63,15 @@ export const EOM_DebugTool_AbilityPicker: ParentComponent<{
 			onChangeRawMode={rawMode => setRawMode(rawMode)}
 			canScroll={false}
 		>
-			<Panel width={"100%"} height="100%" margin="-6px" backgroundColor="#00000066" flowChildren="down">
+			<Panel width="100%" height="100%" margin="-6px" backgroundColor="#00000066" flowChildren="down">
 				<EOM_Breadcrumb list={["ALL", "0", "1", "2", "3", "4", "5"]} marginLeft="6px" marginTop="10px" onChange={(index, itemName) => setRarity(itemName)} />
-				<Panel className="EOM_DebugTool_AbilityPicker" marginTop="10px" flowChildren="right-wrap" width="100%" scroll="y" >
+				<Panel class="EOM_DebugTool_AbilityPicker" marginTop="10px" flowChildren="right-wrap" width="100%" scroll="y" >
 					<For each={local.itemNames}>
 						{(abilityname, index) => {
 							return (
-								<EOM_BaseButton visible={visible(abilityname)} className="EOM_DebugTool_AbilityPickerItem" width="64px" flowChildren="down" onactivate={self => FireEvent(local.eventName, abilityname)} onmouseover={p => CustomUIConfig.ShowAbilityTooltip<AbilityTooltip>(p, { abilityname: abilityname, onlycurrentlevelvalue: false })} onmouseout={p => CustomUIConfig.HideAbilityTooltip(p)}>
+								<EOM_BaseButton visible={visible(abilityname)} class="EOM_DebugTool_AbilityPickerItem" width="64px" flowChildren="down" onactivate={self => FireEvent(local.eventName, abilityname)} onmouseover={p => CustomUIConfig.ShowAbilityTooltip<AbilityTooltip>(p, { abilityname: abilityname, onlycurrentlevelvalue: false })} onmouseout={p => CustomUIConfig.HideAbilityTooltip(p)}>
 									<DOTAAbilityImage abilityname={abilityname} showtooltip={false} />
-									<Label className="EOM_DebugTool_AbilityPickerItemName" text={rawMode() ? abilityname : "#DOTA_Tooltip_ability_" + abilityname} />
+									<Label class="EOM_DebugTool_AbilityPickerItemName" text={rawMode() ? abilityname : "#DOTA_Tooltip_ability_" + abilityname} />
 								</EOM_BaseButton>
 							);
 						}}

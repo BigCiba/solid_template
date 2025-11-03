@@ -73,9 +73,9 @@ export const EOM_IconButton: ParentComponent<EOM_IconAttribute> = (props) => {
 	const merged = mergeProps(props, { class: classNames("EOM_IconButton", props.class) });
 	const [local, others] = splitProps(merged, ["children", "icon"]);
 	return (
-		<Button {...others}>
+		<EOM_BaseButton {...others}>
 			{local.icon}
 			{local.children}
-		</Button>
+		</EOM_BaseButton>
 	);
 };

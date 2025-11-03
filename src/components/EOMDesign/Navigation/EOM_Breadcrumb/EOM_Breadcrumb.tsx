@@ -39,7 +39,7 @@ export const EOM_Breadcrumb: ParentComponent<EOM_BreadcrumbAttribute> = (props) 
 			<For each={local.list}>
 				{(name, index) => (
 					<>
-						{index() > 0 && <Label className="EOM_BreadcrumbSeparator" text="/" />}
+						{index() > 0 && <Label class="EOM_BreadcrumbSeparator" text="/" />}
 						<TabButton
 							selected={selected !== undefined ? selected - 1 === index() : selectedIndex() === index()}
 							group={group}

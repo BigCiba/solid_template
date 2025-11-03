@@ -1,129 +1,8 @@
 .EOM_Currency
 {
-	margin: 0px 14px;
 	vertical-align: bottom;
 	tooltip-position: bottom;
 	flow-children: down;
-
-	&.Default
-	{
-		width: 146px;
-
-		.EOM_Feedback
-		{
-			horizontal-align: center;
-
-			Label
-			{
-				font-size: 10px;
-				color: #3AC7DB;
-				text-decoration: underline;
-
-			}
-
-			&:hover
-			{
-				brightness: 2.0;
-			}
-
-			&:active
-			{
-				brightness: 0.5;
-				sound: "ui_generic_button_click";
-			}
-		}
-
-		.EOM_CurrencyContainer
-		{
-			vertical-align: bottom;
-
-			tooltip-position: bottom;
-
-			.EOM_CurrencyIconBG
-			{
-				vertical-align: center;
-				width: 28px;
-				height: 28px;
-			}
-
-			.EOM_CurrencyIcon
-			{
-				align: center center;
-				width: 26px;
-				height: 26px;
-				background-size: 100%;
-			}
-
-			.EOM_CurrencyLabelContainer
-			{
-				vertical-align: center;
-				width: 138px;
-				height: 26px;
-				margin-left: 14px;
-				margin-right: 13px;
-				background-color: #060D14;
-				border: 1px solid #394860;
-				// background-image: url("file://{images}/custom_game/store/money_bg.png");
-				// background-size: 100%;
-				z-index: -1;
-
-				Label
-				{
-					vertical-align: center;
-					margin-left: 23px;
-					font-size: 16px;
-					color: #FAE9AE;
-					text-overflow: shrink;
-					width: 84px;
-				}
-			}
-
-			.EOM_CurrencyRecharge
-			{
-				width: 26px;
-				height: 26px;
-				horizontal-align: right;
-
-				.EOM_Image
-				{
-					width: 100%;
-					height: 100%;
-				}
-			}
-		}
-	}
-}
-
-.m.Tui7
-{
-	.EOM_CurrencyContainer
-	{
-		.EOM_CurrencyRecharge
-		{
-			.EOM_Image
-			{
-				background-image: url("file://{images}/custom_game/eom_design/icon/Tui7/btn_add.png");
-			}
-		}
-	}
-}
-
-.EOM_Currency.P2
-{
-	.EOM_CurrencyContainer
-	{
-		.EOM_CurrencyRecharge
-		{
-			.EOM_Image
-			{
-				background-image: url("file://{images}/custom_game/eom_design/icon/P2/btn_add.png");
-			}
-		}
-	}
-}
-
-.EOM_Currency.C4
-{
 	width: 180px;
 	margin: 0px 6px;
 
@@ -137,10 +16,8 @@
 			width: 40px;
 			height: 40px;
 
-			.EOM_Image
-			{
-				background-image: url("file://{images}/custom_game/eom_design/icon/C4/btn_store_add.png");
-			}
+			background-image: url("file://{images}/custom_game/eom_design/icon/btn_store_add.png");
+			background-size: 100%;
 		}
 
 		.EOM_CurrencyLabelContainer
@@ -174,7 +51,7 @@
 			width: 40px;
 			height: 40px;
 			background-size: 100%;
-			background-image: url("file://{images}/custom_game/store/new/currency_icon_bg.png");
+			background-image: url("file://{images}/custom_game/eom_design/icon-/currency_icon_bg.png");
 		}
 
 		.EOM_CurrencyIcon
@@ -182,94 +59,6 @@
 			width: 35px;
 			height: 35px;
 			background-size: 100%;
-		}
-	}
-}
-
-
-.EOM_Currency.Tui12
-{
-	.EOM_Feedback
-	{
-		horizontal-align: center;
-
-		Label
-		{
-			font-size: 10px;
-			color: #3AC7DB;
-			text-decoration: underline;
-
-		}
-
-		&:hover
-		{
-			brightness: 2.0;
-		}
-
-		&:active
-		{
-			brightness: 0.5;
-			sound: "ui_generic_button_click";
-		}
-	}
-
-	.EOM_CurrencyContainer
-	{
-		vertical-align: bottom;
-
-		tooltip-position: bottom;
-
-
-		.EOM_CurrencyIconBG
-		{
-			vertical-align: center;
-			width: 40px;
-			height: 40px;
-		}
-
-		.EOM_CurrencyIcon
-		{
-			align: center center;
-			width: 40px;
-			height: 40px;
-			background-size: 100%;
-		}
-
-		.EOM_CurrencyLabelContainer
-		{
-			vertical-align: center;
-			width: 174px;
-			height: 33px;
-			margin-left: 9px;
-			background-image: url("file://{images}/custom_game/eom_design/common/Tui12/money_bar.png");
-			background-size: 100%;
-			z-index: -1;
-
-			Label
-			{
-				vertical-align: center;
-				margin-left: 42px;
-				font-size: 20px;
-				color: #AEA383;
-				text-overflow: shrink;
-				width: 94px;
-			}
-		}
-
-		.EOM_CurrencyRecharge
-		{
-			align: right center;
-			y: 1px;
-			width: 34px;
-			margin-right: 2px;
-			height: 32px;
-
-			.EOM_Image
-			{
-				width: 100%;
-				height: 100%;
-				background-image: url("file://{images}/custom_game/eom_design/common/Tui12/money_add.png");
-			}
 		}
 	}
 }

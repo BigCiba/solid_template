@@ -5,6 +5,7 @@ import "./EOM_DropDown.less";
 
 /** 找到最顶层 */
 let menuRoot: Panel;
+let timer: number;
 
 const createDropDownContainer = (panel: Panel) => {
 	// const layoutFile = panel.layoutfile;
@@ -47,7 +48,7 @@ function doUniqueString(str: string) {
 	if (GameUI.CustomUIConfig()._Record_UniqueString == undefined) {
 		GameUI.CustomUIConfig()._Record_UniqueString = 0;
 	}
-	let result = "_" + Math.random().toString().substring(3, 3) + GameUI.CustomUIConfig()._Record_UniqueString + "_" + str;
+	let result = "_" + Math.random().toString().substring(2, 8) + GameUI.CustomUIConfig()._Record_UniqueString + "_" + str;
 	GameUI.CustomUIConfig()._Record_UniqueString++;
 	return result;
 }
@@ -69,9 +70,10 @@ export const EOM_DropDown: ParentComponent<EOM_DropDownProp> = (props) => {
 		}
 	});
 
+	// ✅ 应该完全删除
 	onCleanup(() => {
 		if (myMenu && myMenu.IsValid()) {
-			render(() => <></>, myMenu);
+			myMenu.DeleteAsync(0);
 		}
 	});
 
@@ -103,7 +105,8 @@ export const EOM_DropDown: ParentComponent<EOM_DropDownProp> = (props) => {
 		if (myMenu == undefined && selfRef) {
 			myMenu = $.CreatePanel("Panel", selfRef, `${local.id}_DropDownMenu`);
 			myMenu.AddClass("EOM_DropDownMenu");
-			myMenu.visible = true;
+			// ✅ 修改：初始创建时保持隐藏，等待位置计算
+			myMenu.visible = false;
 
 			const childrens = runWithOwner(owner, () => {
 				return children(() => local.children).toArray();
@@ -130,7 +133,7 @@ export const EOM_DropDown: ParentComponent<EOM_DropDownProp> = (props) => {
 								}
 								if (c && c.id == "EOM_DropDown_Clear" && index == childIndex) {
 									bClear = true;
-									c.visible == false;
+									c.visible = false;
 									onClear();
 								}
 							}
@@ -146,7 +149,8 @@ export const EOM_DropDown: ParentComponent<EOM_DropDownProp> = (props) => {
 			if (menuRoot != undefined) {
 				myMenu.SetParent(menuRoot);
 			}
-			myMenu.visible = false;
+			// ✅ 移除这行：不在这里设置 visible
+			// myMenu.visible = false;
 		}
 	};
 
@@ -155,44 +159,61 @@ export const EOM_DropDown: ParentComponent<EOM_DropDownProp> = (props) => {
 			createDropDown(pBtn);
 		}
 		if (pBtn && myMenu?.IsValid()) {
-			myMenu.visible = state == undefined ? !myMenu.visible : state;
+			const shouldShow = state == undefined ? !myMenu.visible : state;
+
+			// ✅ 修改：先更新 menuRoot 状态，但菜单本身保持隐藏直到位置计算完成
 			if (menuRoot != undefined) {
-				menuRoot.visible = myMenu.visible;
+				menuRoot.visible = shouldShow;
 			}
-			myMenu.SetHasClass("EOM_DropDownMenuShow", myMenu.visible);
-			if (myMenu.visible) {
-				myMenu.SetFocus();
-				$.Schedule(0.06, () => {
-					if (pBtn && myMenu) {
-						let minWidth = Math.max(myMenu.actuallayoutwidth, pBtn.actuallayoutwidth) / myMenu.actualuiscale_x;
-						myMenu.style.minWidth = minWidth + "px";
-						const childItems = myMenu.FindChildrenWithClassTraverse("EOM_DropDownMenuItem");
-						if (childItems && childItems.length > 0) {
-							childItems.forEach(item => {
-								item.style.width = (minWidth - 4 /* border的宽度 */) + "px";
-							});
-						}
 
-						let vPos = pBtn.GetPositionWithinWindow();
-						let menuPosition = local.menuPosition;
-						let x = vPos.x;
-						let y = Math.max(0, menuPosition == "bottom"
-							? vPos.y + pBtn.actuallayoutheight + 2
-							: vPos.y - myMenu.actuallayoutheight - 2
-						);
-						let maxHeight = Math.max(0, (menuPosition == "bottom" ? Game.GetScreenHeight() - y : vPos.y) - 8);
-						myMenu.style.maxHeight = (maxHeight / myMenu.actualuiscale_y) + "px";
-						if (myMenu.actuallayoutheight > maxHeight) {
-							y = Math.max(0, menuPosition == "bottom" ? y : vPos.y - maxHeight);
+			if (shouldShow) {
+				// ✅ 更新位置
+				timer = setInterval(() => {
+					if (myMenu && myMenu.IsValid() && shouldShow) {
+						if (myMenu.actuallayoutwidth > 0) {
+							let minWidth = Math.max(myMenu.actuallayoutwidth, pBtn.actuallayoutwidth) / myMenu.actualuiscale_x;
+							myMenu.style.minWidth = minWidth + "px";
+							const childItems = myMenu.FindChildrenWithClassTraverse("EOM_DropDownMenuItem");
+							if (childItems && childItems.length > 0) {
+								childItems.forEach(item => {
+									item.style.width = (minWidth - 4 /* border的宽度 */) + "px";
+								});
+							}
+							clearInterval(timer);
 						}
-
-						myMenu.SetPositionInPixels(
-							x / myMenu.actualuiscale_x,
-							y / myMenu.actualuiscale_y,
-							0
-						);
+					} else {
+						clearInterval(timer);
 					}
-				});
+				}, 0); // 延迟到下一帧，确保布局更新完成
+				if (pBtn && myMenu && myMenu.IsValid()) {
+					let vPos = pBtn.GetPositionWithinWindow();
+					let menuPosition = local.menuPosition;
+					let x = vPos.x;
+					let y = Math.max(0, menuPosition == "bottom"
+						? vPos.y + pBtn.actuallayoutheight + 2
+						: vPos.y - myMenu.actuallayoutheight - 2
+					);
+					let maxHeight = Math.max(0, (menuPosition == "bottom" ? Game.GetScreenHeight() - y : vPos.y) - 8);
+					myMenu.style.maxHeight = `${maxHeight / myMenu.actualuiscale_y}px`;
+					if (myMenu.actuallayoutheight > maxHeight) {
+						y = Math.max(0, menuPosition == "bottom" ? y : vPos.y - maxHeight);
+					}
+
+					myMenu.SetPositionInPixels(
+						x / myMenu.actualuiscale_x,
+						y / myMenu.actualuiscale_y,
+						0
+					);
+
+					// ✅ 位置计算完成后再显示和聚焦
+					myMenu.visible = true;
+					myMenu.SetHasClass("EOM_DropDownMenuShow", true);
+					myMenu.SetFocus();
+				}
+			} else {
+				// 隐藏菜单
+				myMenu.visible = false;
+				myMenu.SetHasClass("EOM_DropDownMenuShow", false);
 			}
 		}
 	};
@@ -204,7 +225,7 @@ export const EOM_DropDown: ParentComponent<EOM_DropDownProp> = (props) => {
 			}}
 		>
 			{local.children}
-			<Label id="EOM_DropDown_placeholder" text={(local.index == undefined && local.placeholder) ? local.placeholder : ""} />
+			<Label id="EOM_DropDown_placeholder" text={local.placeholder && (local.index === undefined || local.index < 0) ? local.placeholder : ""} />
 			<Image id="EOM_DropDown_arrow" />
 		</Button>
 	);

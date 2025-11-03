@@ -13,10 +13,6 @@ declare var ApplyDamage_Engine: typeof ApplyDamage;
  * PRD的C值表
  */
 declare var PSEUDO_RANDOM_C: number[];
-/**
- * 是否以激活
- */
-declare var Activated: boolean;
 declare var PUIErrorEventListenerID: EventListenerID;
 declare var GameEventListenerIDs: EventListenerID[];
 declare var CustomUIEventListenerIDs: CustomGameEventListenerID[];
@@ -26,11 +22,6 @@ declare var TimerEventListenerIDs: string[];
  * modifier事件储存表
  */
 declare var tModifierEvents: Partial<Record<modifierfunction | EOMModifierEvents, CDOTA_Modifier_Lua[]>> | undefined;
-
-/**
- * 模块组
- */
-declare var MODULES: CModule[];
 
 /**
  * modifier事件系统马甲

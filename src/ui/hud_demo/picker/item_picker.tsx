@@ -101,14 +101,14 @@ export const EOM_DebugTool_ItemPicker: ParentComponent<{
 			onChangeRawMode={rawMode => setRawMode(rawMode)}
 			canScroll={false}
 		>
-			<Panel width={"100%"} height="100%" margin="-6px" backgroundColor="#00000066" flowChildren="down">
+			<Panel width="100%" height="100%" margin="-6px" backgroundColor="#00000066" flowChildren="down">
 				<EOM_Breadcrumb list={["ALL", "1级", "2级", "3级", "4级", "5级", "6级", "7级"]} marginLeft="6px" marginTop="10px" onChange={(index) => setRarity(index)} />
-				<Panel className="EOM_DebugTool_AbilityPicker" marginTop="10px" flowChildren="right-wrap" width="100%" scroll="y" >
+				<Panel class="EOM_DebugTool_AbilityPicker" marginTop="10px" flowChildren="right-wrap" width="100%" scroll="y" >
 					<For each={local.itemNames}>
 						{(abilityname, index) =>
 							<EOM_BaseButton
 								visible={visiable(abilityname)}
-								className="EOM_DebugTool_AbilityPickerItem"
+								class="EOM_DebugTool_AbilityPickerItem"
 								width="64px"
 								flowChildren="down"
 								onactivate={self => FireEvent(local.eventName, abilityname)}
@@ -123,7 +123,7 @@ export const EOM_DebugTool_ItemPicker: ParentComponent<{
 								}}
 							>
 								<DOTAItemImage itemname={abilityname} showtooltip={false} />
-								<Label className="EOM_DebugTool_AbilityPickerItemName" text={rawMode() ? abilityname : ("#" + abilityname)} />
+								<Label class="EOM_DebugTool_AbilityPickerItemName" text={rawMode() ? abilityname : ("#" + abilityname)} />
 							</EOM_BaseButton>}
 					</For>
 				</Panel>

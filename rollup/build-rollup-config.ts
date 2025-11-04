@@ -193,7 +193,7 @@ export default function GetRollupWatchOptions(rootPath: string, packageInfo: Pac
 			// }),
 			commonjs(),
 			nodeResolve({ extensions: ['.tsx', '.ts', '.js', '.jsx'] }),
-			compatiblePanorama(),
+			compatiblePanorama({ addonName }),
 			rollupPluginXML({
 				inputFiles,
 				dir: layoutDir,

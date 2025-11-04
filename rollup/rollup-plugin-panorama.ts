@@ -11,7 +11,13 @@ const xmlFile = `<root>
     </Panel>
 </root>
 `;
-export default function compatiblePanorama(options?: {}): Plugin {
+
+interface CompatiblePanoramaOptions {
+    addonName: string;
+}
+
+export default function compatiblePanorama(options: CompatiblePanoramaOptions): Plugin {
+    const { addonName } = options;
     const exportsPositionsearch = `'use strict';`;
     return {
         name: 'compatible-panorama',
@@ -21,7 +27,7 @@ export default function compatiblePanorama(options?: {}): Plugin {
                 // 给模块创建xml文件
                 const xmlPath = join(
                     __dirname,
-                    `../content/solid_template/panorama/layout/custom_game/${chunk.fileName.replace(
+                    `../content/${addonName}/panorama/layout/custom_game/${chunk.fileName.replace(
                         '.js',
                         '.xml'
                     )}`

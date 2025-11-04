@@ -5,6 +5,9 @@ import * as rollup from 'rollup';
 import GetRollupWatchOptions from './build-rollup-config';
 import { dirExists, fileColor, normalizedPath, Panorama, ReadAddonName, ReadPackage, Tooltip } from './utils';
 
+// 导入 tsconfig 生成器
+const { generateSrcTsConfig } = require('../node_scripts/generate-tsconfig');
+
 const rootPath = normalizedPath(path.join(__dirname, '../src'));
 
 /**
@@ -72,6 +75,13 @@ export default async function TaskPUI() {
     const addonName = await ReadAddonName();
     if (addonName) {
         if (await dirExists(`./content/${addonName}`)) {
+            // 生成 src 的 tsconfig.json（确保配置是最新的）
+            try {
+                generateSrcTsConfig();
+            } catch (error) {
+                console.error('❌ 生成 src tsconfig.json 失败:', error);
+            }
+
             copySolidCore(addonName);
             StartRollup();
         } else {

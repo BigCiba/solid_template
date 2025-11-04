@@ -2,12 +2,24 @@ const chokidar = require('chokidar');
 const path = require('path');
 const fs = require('fs-extra');
 const { spawn } = require('child_process');
+const { getAddonPaths } = require('./get-addon-name');
+const { generateVScriptsTsConfig } = require('./generate-tsconfig');
 
-const ROOT_DIR = path.resolve(__dirname, '..');
-const SOURCE_DIR = path.join(ROOT_DIR, 'content/solid_template/scripts/vscripts');
-const OUTPUT_DIR = path.join(ROOT_DIR, 'game/solid_template/scripts/vscripts');
+const paths = getAddonPaths();
+const ROOT_DIR = paths.root;
+const SOURCE_DIR = paths.contentScripts;
+const OUTPUT_DIR = paths.gameScripts;
 
 console.log('🔍 Starting TSTL watch with auto-cleanup...');
+
+// 先生成 tsconfig.json（确保配置是最新的）
+try {
+	generateVScriptsTsConfig();
+} catch (error) {
+	console.error('❌ Failed to generate tsconfig.json:', error);
+	process.exit(1);
+}
+
 console.log(`📂 Source: ${SOURCE_DIR}`);
 console.log(`📂 Output: ${OUTPUT_DIR}`);
 

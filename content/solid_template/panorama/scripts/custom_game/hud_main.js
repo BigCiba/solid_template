@@ -5,9 +5,12 @@ var libs = require('./libs.js');
 function HudMain() {
   return (() => {
     const _el$ = libs.createElement("Panel", {
-      align: "center center",
-      flowChildren: "down"
-    }, null);
+        align: "center center",
+        flowChildren: "down"
+      }, null);
+      libs.createElement("Label", {
+        text: "Hello, HUD Main!"
+      }, _el$);
     libs.setProp(_el$, "align", "center center");
     libs.setProp(_el$, "flowChildren", "down");
     return _el$;

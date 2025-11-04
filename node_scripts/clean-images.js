@@ -1,10 +1,12 @@
 const path = require('path');
 const fs = require('fs-extra');
 const glob = require('glob');
+const { getAddonPaths } = require('./get-addon-name');
 
-const ROOT_DIR = path.resolve(__dirname, '..');
-const CONTENT_IMAGES_DIR = path.join(ROOT_DIR, 'content/solid_template/panorama/images/custom_game');
-const GAME_IMAGES_DIR = path.join(ROOT_DIR, 'game/solid_template/panorama/images/custom_game');
+const paths = getAddonPaths();
+const ROOT_DIR = paths.root;
+const CONTENT_IMAGES_DIR = paths.contentImages;
+const GAME_IMAGES_DIR = paths.gameImages;
 
 console.log('🔍 Checking for orphaned compiled images...');
 console.log(`📂 Source: ${CONTENT_IMAGES_DIR}`);

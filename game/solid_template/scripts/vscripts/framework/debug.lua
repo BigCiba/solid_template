@@ -1,10 +1,14 @@
 local ____lualib = require("lualib_bundle")
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["4"] = 2,["5"] = 2,["7"] = 3,["8"] = 4,["9"] = 5,["10"] = 6,["11"] = 7,["12"] = 7,["13"] = 7,["14"] = 7,["15"] = 8,["16"] = 9,["17"] = 10,["18"] = 11,["19"] = 12,["20"] = 12,["21"] = 12,["22"] = 12,["23"] = 13,["24"] = 14,["25"] = 15,["26"] = 15,["27"] = 15,["28"] = 15,["29"] = 14,["30"] = 8,["31"] = 18,["32"] = 5,["34"] = 23,["35"] = 24,["36"] = 25,["37"] = 26,["39"] = 28,["40"] = 28,["41"] = 28,["42"] = 29,["43"] = 30,["44"] = 31,["45"] = 32,["46"] = 33,["47"] = 33,["48"] = 33,["49"] = 33,["50"] = 34,["51"] = 35,["52"] = 36,["53"] = 36,["54"] = 36,["55"] = 36,["56"] = 35,["58"] = 28,["59"] = 28,["60"] = 28});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 1,["8"] = 4,["9"] = 4,["11"] = 5,["12"] = 6,["13"] = 7,["14"] = 8,["15"] = 9,["16"] = 9,["17"] = 9,["18"] = 9,["19"] = 10,["20"] = 11,["21"] = 12,["22"] = 13,["23"] = 14,["24"] = 14,["25"] = 14,["26"] = 14,["27"] = 15,["28"] = 16,["29"] = 17,["30"] = 17,["31"] = 17,["32"] = 17,["33"] = 16,["34"] = 10,["35"] = 20,["36"] = 7,["38"] = 25,["39"] = 26,["40"] = 27,["41"] = 28,["43"] = 30,["44"] = 30,["45"] = 30,["46"] = 31,["47"] = 32,["48"] = 33,["49"] = 34,["50"] = 35,["51"] = 35,["52"] = 35,["53"] = 35,["54"] = 36,["55"] = 37,["56"] = 38,["57"] = 38,["58"] = 38,["59"] = 38,["60"] = 37,["62"] = 30,["63"] = 30,["64"] = 30});
+local ____exports = {}
+local _____config = require("_config")
+local DEBUG_TAG_PUI = _____config.DEBUG_TAG_PUI
+local GetDebugTag = _____config.GetDebugTag
 if old_debug_traceback == nil then
     old_debug_traceback = debug.traceback
 end
-tc = IsServer() and "solid_template_debug" or "solid_template_client_debug"
+local tc = GetDebugTag(nil)
 if old_debug_traceback ~= nil then
     debug.traceback = function(____error, ...)
         local a = old_debug_traceback(____error, ...)
@@ -40,7 +44,7 @@ if IsClient() then
         "pui_error_msg",
         function(data)
             if not IsInToolsMode() then
-                local params = {tc = "solid_template_pui_debug", t = "error", d = data.error}
+                local params = {tc = DEBUG_TAG_PUI, t = "error", d = data.error}
                 local handle = CreateHTTPRequestScriptVM("PUT", "http://111.231.89.227:8080/tag")
                 handle:SetHTTPRequestHeaderValue("Content-Type", "application/json;charset=utf-8")
                 handle:SetHTTPRequestRawPostBody(
@@ -59,3 +63,4 @@ if IsClient() then
         nil
     )
 end
+return ____exports

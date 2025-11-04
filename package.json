@@ -36,12 +36,13 @@
 		]
 	},
 	"scripts": {
+		"generate:config": "node ./node_scripts/generate-tsconfig.js",
 		"build:polyfill": "ts-node rollup/build-polyfill.ts",
 		"build:solid": "ts-node -r ./rollup/build-write-file.ts ./rollup/build.ts",
 		"dev:solid": "ts-node -r ./rollup/build-write-file.ts ./rollup/build.ts --watch",
-		"build:vscripts": "tstl --project content/solid_template/scripts/vscripts/tsconfig.json",
+		"build:vscripts": "node ./node_scripts/build-vscripts.js",
 		"dev:vscripts": "node ./node_scripts/watch-vscripts.js",
-		"dev:vscripts:basic": "tstl --project content/solid_template/scripts/vscripts/tsconfig.json --watch",
+		"dev:vscripts:basic": "node ./node_scripts/build-vscripts.js --watch",
 		"encrypt:vscripts": "node ./node_scripts/encrypt-custom-game.js",
 		"clean:images": "node ./node_scripts/clean-images.js"
 	},

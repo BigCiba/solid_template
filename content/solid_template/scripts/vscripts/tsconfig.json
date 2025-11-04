@@ -15,11 +15,11 @@
 		"strictPropertyInitialization": false,
 		"incremental": true,
 		"skipLibCheck": true,
-		"strict": true,
+		"strict": true
 	},
 	"tstl": {
 		"luaTarget": "JIT",
-		"sourceMapTraceback": true,
+		"sourceMapTraceback": true
 	},
 	"include": [
 		".",

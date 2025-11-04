@@ -1,8 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+const { getAddonPaths } = require('./get-addon-name');
+
+const paths = getAddonPaths();
 
 // 定义文件夹路径和目标文件名
-const outputFileName = 'content/solid_template/scripts/vscripts/precache_auto.ts';
+const outputFileName = path.join('content', paths.addonName, 'scripts', 'vscripts', 'precache_auto.ts');
 
 // 存储已经存在的vcpf字符串
 const vcpfStrings = new Set();
@@ -21,14 +24,14 @@ const particleBlackList = [
 ];
 const particleFiles = [
 	"./solid/src/ui",
-	"./content/solid_template/scripts/vscripts",
-	"./game/solid_template/scripts/npc",
+	path.join("./content", paths.addonName, "scripts", "vscripts"),
+	path.join("./game", paths.addonName, "scripts", "npc"),
 ];
 const modelfile = [
-	// "./game/solid_template/scripts/npc/kv/gameplay/cosmetics.kv"
-	"./game/solid_template/scripts/npc/kv/units/heroes.kv",
-	"./game/solid_template/scripts/npc/dropped_items.txt",
-	"./game/solid_template/scripts/npc",
+	// path.join("./game", paths.addonName, "scripts", "npc", "kv", "gameplay", "cosmetics.kv")
+	path.join("./game", paths.addonName, "scripts", "npc", "kv", "units", "heroes.kv"),
+	path.join("./game", paths.addonName, "scripts", "npc", "dropped_items.txt"),
+	path.join("./game", paths.addonName, "scripts", "npc"),
 ];
 const defaultPrecacheModelList = [
 	"\"models/props_gameplay/salve.vmdl\"",
@@ -157,11 +160,11 @@ function extractItemsGameById(rawData, itemId) {
 	}
 }
 
-const itemsGamePath = "./game/solid_template/scripts/npc/items_game.kv";
+const itemsGamePath = path.join("./game", paths.addonName, "scripts", "npc", "items_game.kv");
 // wearablesID读取文件
 const itemsGameIDFiles = [
-	// "./game/solid_template/scripts/npc/kv/gameplay/cosmetics.kv",
-	// "./game/solid_template/scripts/npc/kv/units/npc_common.kv",
+	// path.join("./game", paths.addonName, "scripts", "npc", "kv", "gameplay", "cosmetics.kv"),
+	// path.join("./game", paths.addonName, "scripts", "npc", "kv", "units", "npc_common.kv"),
 ];
 // 提取items_game.kv会用到的饰品id
 // const itemsGameIDs = new Set();

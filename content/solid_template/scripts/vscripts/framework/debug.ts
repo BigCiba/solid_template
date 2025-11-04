@@ -1,6 +1,8 @@
+import { DEBUG_TAG_PUI, GetDebugTag } from "../_config";
+
 declare var old_debug_traceback: typeof debug.traceback;
 old_debug_traceback ??= debug.traceback;
-const tc = IsServer() ? "solid_template_debug" : "solid_template_client_debug";
+const tc = GetDebugTag();
 if (old_debug_traceback !== undefined) {
 	debug.traceback = (error: any, ...args: any[]) => {
 		let a = old_debug_traceback(error, ...args);
@@ -27,7 +29,7 @@ if (IsClient()) {
 	}
 	PUIErrorEventListenerID = ListenToGameEvent("pui_error_msg", (data) => {
 		if (!IsInToolsMode()) {
-			const params = { tc: "solid_template_pui_debug", t: "error", d: data.error };
+			const params = { tc: DEBUG_TAG_PUI, t: "error", d: data.error };
 			const handle = CreateHTTPRequestScriptVM("PUT", "http://111.231.89.227:8080/tag");
 			handle.SetHTTPRequestHeaderValue("Content-Type", "application/json;charset=utf-8");
 			handle.SetHTTPRequestRawPostBody("application/json", json.encode(params));

@@ -1,6 +1,5 @@
 import { BaseAbility, registerAbility } from "../lib/dota_ts_adapter";
 
-
 @registerAbility()
 export class arcane_bolt_ss extends BaseAbility {
 	OnSpellStart(): void {

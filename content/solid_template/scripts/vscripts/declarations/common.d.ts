@@ -7,11 +7,6 @@ declare interface CEntityPointer {
 	IsNull(): boolean;
 }
 
-declare interface CBaseEntity {
-	bIsNotFirstSpawn: boolean | undefined;
-	_tOverrideData: Record<any, any>;
-	_saveData_?: Table;
-}
 declare interface CDOTA_Item {
 	_devourType_?: DevourType;
 	_created_?: boolean;
@@ -53,49 +48,6 @@ declare interface CDOTA_BaseNPC {
 	ForceTeleportLoot?: boolean;
 	_IsReincarnating?: boolean;
 }
-
-declare interface CScriptParticleManager {
-	/** @both */
-	SetParticleControlEnt(
-		particle: ParticleID,
-		controlPoint: number,
-		unit: CBaseEntity,
-		particleAttach: ParticleAttachment_t,
-		attachment: string | undefined,
-		offset: Vector,
-		lockOrientation: boolean,
-	): void;
-}
-
-declare interface CScriptKeyValues {
-	/**
-	 * Reads a spawn key.
-	 *
-	 * @both
-	 */
-	GetValue<T>(arg1: string): T | undefined;
-	__kind__: 'instance';
-}
-
-/**
- * A function to re-lookup a function by name every time.
- *
- * @both
- */
-declare function Dynamic_Wrap<
-	T extends object,
-	K extends {
-		[P in keyof T]: ((...args: any[]) => any) extends T[P] // At least one of union's values is a function
-		? [T[P]] extends [((this: infer TThis, ...args: any[]) => any) | null | undefined] // Box type to make it not distributive
-		? {} extends TThis // Has no specified this
-		? P
-		: TThis extends T // Has this specified as T
-		? P
-		: never
-		: never
-		: never;
-	}[keyof T]
->(context: T, name: K): T[K];
 
 /**尺寸，[XSize, YSize] */
 declare type SIZE = [number, number];

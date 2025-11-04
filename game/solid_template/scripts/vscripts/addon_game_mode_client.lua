@@ -4,6 +4,6 @@ __TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["4"] = 3,["5"] = 4,["6"] 
 SendToConsole("dota_combine_models 0")
 Convars:SetBool("dota_combine_models", false)
 require("requires")
-if not Activated then
+if not GameModeActivated then
     CModule:initialize()
 end

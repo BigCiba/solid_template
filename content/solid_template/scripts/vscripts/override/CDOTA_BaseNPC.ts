@@ -1,3 +1,5 @@
+/** @noSelfInFile */
+
 //********************************************************************************
 // Both
 //********************************************************************************
@@ -27,6 +29,8 @@ declare interface CDOTA_BaseNPC {
 	/** @private */
 	AddNewModifier_Engine: typeof CDOTA_BaseNPC.AddNewModifier;
 	GetAttachmentPosition(attachmentName: string): Vector;
+	/** 执行指令 */
+	ExecuteOrder(iOrder: dotaunitorder_t, ...arg: any): void;
 }
 if (IsServer()) {
 	CDOTA_BaseNPC.EmitSound_Engine ??= CDOTA_BaseNPC.EmitSound;
@@ -82,5 +86,35 @@ if (IsServer()) {
 			}
 		}
 		return this.AddNewModifier_Engine(caster, ability, modifierName, modifierTable);
+	};
+	CDOTA_BaseNPC.ExecuteOrder = function (iOrder: dotaunitorder_t, ...arg: any) {
+		let hAbility: CDOTA_Ability_Lua | undefined;
+		let hTarget: CDOTA_BaseNPC | undefined;
+		let vPosition: Vector | undefined;
+		const tPositionOrder = [dotaunitorder_t.DOTA_UNIT_ORDER_MOVE_TO_POSITION, dotaunitorder_t.DOTA_UNIT_ORDER_ATTACK_MOVE];
+		const tTargetOrder = [dotaunitorder_t.DOTA_UNIT_ORDER_MOVE_TO_TARGET, dotaunitorder_t.DOTA_UNIT_ORDER_ATTACK_TARGET];
+		const tAbilityOrder = [dotaunitorder_t.DOTA_UNIT_ORDER_CAST_POSITION, dotaunitorder_t.DOTA_UNIT_ORDER_CAST_TARGET, dotaunitorder_t.DOTA_UNIT_ORDER_CAST_TARGET_TREE, dotaunitorder_t.DOTA_UNIT_ORDER_CAST_NO_TARGET, dotaunitorder_t.DOTA_UNIT_ORDER_CAST_TOGGLE];
+		if (TableFindKey(tPositionOrder, iOrder) != undefined) {
+			vPosition = arg[1];
+		} else if (TableFindKey(tTargetOrder, iOrder) != undefined) {
+			hTarget = arg[1];
+		} else if (TableFindKey(tAbilityOrder, iOrder) != undefined) {
+			if (iOrder == dotaunitorder_t.DOTA_UNIT_ORDER_CAST_POSITION) {
+				hAbility = arg[1];
+				vPosition = arg[2];
+			} else if (iOrder == dotaunitorder_t.DOTA_UNIT_ORDER_CAST_NO_TARGET || iOrder == dotaunitorder_t.DOTA_UNIT_ORDER_CAST_TOGGLE) {
+				hAbility = arg[1];
+			} else {
+				hAbility = arg[1];
+				hTarget = arg[2];
+			}
+		}
+		ExecuteOrderFromTable({
+			UnitIndex: this.entindex(),
+			OrderType: iOrder,
+			TargetIndex: IsValid(hTarget) ? hTarget.entindex() : undefined,
+			AbilityIndex: IsValid(hAbility) ? hAbility.entindex() : undefined,
+			Position: vPosition,
+		});
 	};
 }

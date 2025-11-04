@@ -3,18 +3,9 @@ declare type Polygon<T extends Vector | Point = Vector> = T[];
 declare type RectVector = { min: Vector, max: Vector; };
 declare type KV = Record<string, any>;
 
-declare var old_debug_traceback: typeof debug.traceback;
-declare var print_Engine: typeof print;
-declare var pairs_Engine: typeof pairs;
-declare var ipairs_Engine: typeof ipairs;
 declare var CreateUnitByName_Engine: typeof CreateUnitByName;
 declare var ApplyDamage_Engine: typeof ApplyDamage;
-/**
- * PRD的C值表
- */
-declare var PSEUDO_RANDOM_C: number[];
-declare var PUIErrorEventListenerID: EventListenerID;
-declare var TimerEventListenerIDs: string[];
+
 
 /**
  * modifier事件储存表
@@ -85,6 +76,45 @@ declare const Vmul: LuaMultiplication<Vector, Vector | number, Vector>;
  * Vector相除
  */
 declare const Vdiv: LuaDivision<Vector, Vector | number, Vector>;
+
+/**
+ * A function to re-lookup a function by name every time.
+ *
+ * @both
+ */
+declare function Dynamic_Wrap<
+	T extends object,
+	K extends {
+		[P in keyof T]: ((...args: any[]) => any) extends T[P] // At least one of union's values is a function
+		? [T[P]] extends [((this: infer TThis, ...args: any[]) => any) | null | undefined] // Box type to make it not distributive
+		? {} extends TThis // Has no specified this
+		? P
+		: TThis extends T // Has this specified as T
+		? P
+		: never
+		: never
+		: never;
+	}[keyof T]
+>(context: T, name: K): T[K];
+
+declare interface CScriptKeyValues {
+	/**
+	 * Reads a spawn key.
+	 *
+	 * @both
+	 */
+	GetValue<T>(arg1: string): T | undefined;
+	__kind__: 'instance';
+}
+
+declare interface CEntityPointer {
+	/**
+	 * Has underlying C++ entity object been deleted?
+	 *
+	 * @both
+	 */
+	IsNull(): boolean;
+}
 
 /**@noSelf */
 declare function CreateUnitFromTable(options: Record<string, any>, location: Vector): CDOTA_BaseNPC;

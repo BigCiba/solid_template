@@ -47,105 +47,108 @@ DOTABaseAbility.LoadData = function (key, defaultValue) {
 //********************************************************************************
 // Server
 //********************************************************************************
-CDOTABaseAbility.IsAbilityReady = function () {
-	const hCaster = this.GetCaster();
-	const iBehavior = this.GetBehaviorInt();
+if (IsServer()) {
 
-	if (!IsValid(hCaster)) {
-		return false;
-	}
+	CDOTABaseAbility.IsAbilityReady = function () {
+		const hCaster = this.GetCaster();
+		const iBehavior = this.GetBehaviorInt();
 
-	if (!(hCaster.IsAlive() || (iBehavior & DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_UNRESTRICTED) == DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_UNRESTRICTED)) {
-		return false;
-	}
+		if (!IsValid(hCaster)) {
+			return false;
+		}
 
-	const hAbility = hCaster.GetCurrentActiveAbility();
-	if (IsValid(hAbility) && hAbility.IsInAbilityPhase()) {
-		return false;
-	}
+		if (!(hCaster.IsAlive() || (iBehavior & DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_UNRESTRICTED) == DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_UNRESTRICTED)) {
+			return false;
+		}
 
-	if (this.GetLevel() <= 0) {
-		return false;
-	}
+		const hAbility = hCaster.GetCurrentActiveAbility();
+		if (IsValid(hAbility) && hAbility.IsInAbilityPhase()) {
+			return false;
+		}
 
-	if (this.IsHidden()) {
-		return false;
-	}
+		if (this.GetLevel() <= 0) {
+			return false;
+		}
 
-	if (!this.IsActivated()) {
-		return false;
-	}
+		if (this.IsHidden()) {
+			return false;
+		}
 
-	if (!this.IsCooldownReady()) {
-		return false;
-	}
+		if (!this.IsActivated()) {
+			return false;
+		}
 
-	if (!this.IsOwnersManaEnough()) {
-		return false;
-	}
+		if (!this.IsCooldownReady()) {
+			return false;
+		}
 
-	if (!this.IsOwnersGoldEnough(hCaster.GetPlayerOwnerID())) {
-		return false;
-	}
+		if (!this.IsOwnersManaEnough()) {
+			return false;
+		}
 
-	if (hCaster.IsHexed() || hCaster.IsCommandRestricted()) {
-		return false;
-	}
+		if (!this.IsOwnersGoldEnough(hCaster.GetPlayerOwnerID())) {
+			return false;
+		}
 
-	if ((iBehavior & DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE) != DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE && hCaster.IsStunned()) {
-		return false;
-	}
+		if (hCaster.IsHexed() || hCaster.IsCommandRestricted()) {
+			return false;
+		}
 
-	if (!this.IsItem() && !this.IsPassive() && hCaster.IsSilenced()) {
-		return false;
-	}
+		if ((iBehavior & DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE) != DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE && hCaster.IsStunned()) {
+			return false;
+		}
 
-	if (!this.IsItem() && this.IsPassive() && hCaster.PassivesDisabled()) {
-		return false;
-	}
+		if (!this.IsItem() && !this.IsPassive() && hCaster.IsSilenced()) {
+			return false;
+		}
 
-	if (this.IsItem() && !this.IsPassive() && hCaster.IsMuted()) {
-		return false;
-	}
+		if (!this.IsItem() && this.IsPassive() && hCaster.PassivesDisabled()) {
+			return false;
+		}
 
-	if ((iBehavior & (DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL + DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_IMMEDIATE)) !== (DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL + DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_IMMEDIATE) && hCaster.IsChanneling()) {
-		return false;
-	}
+		if (this.IsItem() && !this.IsPassive() && hCaster.IsMuted()) {
+			return false;
+		}
 
-	if (!this.IsFullyCastable()) {
-		return false;
-	}
+		if ((iBehavior & (DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL + DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_IMMEDIATE)) !== (DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL + DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_IMMEDIATE) && hCaster.IsChanneling()) {
+			return false;
+		}
 
-	return true;
-};
+		if (!this.IsFullyCastable()) {
+			return false;
+		}
 
-CDOTABaseAbility.CanProcsCast = function () {
-	if (!IsValid(this)) {
-		return false;
-	}
-	if (!this.IsAbility()) {
-		return false;
-	}
-	if (this.IsItem()) {
-		return false;
-	}
-	if (this.IsPassive()) {
-		return false;
-	}
-	if (this.IsToggle()) {
-		return false;
-	}
-	if (!this.ProcsMagicStick()) {
-		return false;
-	}
-	return true;
-};
+		return true;
+	};
 
-CDOTABaseAbility.ReduceCooldown = function (reduce: number) {
-	const remaining = this.GetCooldownTimeRemaining();
-	this.EndCooldown();
-	if (remaining > reduce) {
-		this.StartCooldown(remaining - reduce);
-	}
-	this.RefreshCharges();
-};
+	CDOTABaseAbility.CanProcsCast = function () {
+		if (!IsValid(this)) {
+			return false;
+		}
+		if (!this.IsAbility()) {
+			return false;
+		}
+		if (this.IsItem()) {
+			return false;
+		}
+		if (this.IsPassive()) {
+			return false;
+		}
+		if (this.IsToggle()) {
+			return false;
+		}
+		if (!this.ProcsMagicStick()) {
+			return false;
+		}
+		return true;
+	};
+
+	CDOTABaseAbility.ReduceCooldown = function (reduce: number) {
+		const remaining = this.GetCooldownTimeRemaining();
+		this.EndCooldown();
+		if (remaining > reduce) {
+			this.StartCooldown(remaining - reduce);
+		}
+		this.RefreshCharges();
+	};
+}

@@ -87,49 +87,53 @@ BaseEntity.StopTimer = function (sContextName: any) {
 // Server
 //********************************************************************************
 
-CBaseEntity.StartThink = function (interval: number, name?: string, callback?: (name: string) => void) {
-	if (IsServer()) {
-		const timerName = name ?? this.GetName();
-		if (this._ThinkList == undefined) {
-			this._ThinkList = {};
-		}
-		// 传入-1停止计时器
-		if (interval == -1) {
-			if (this._ThinkList[timerName]) {
+if (IsServer()) {
+	CBaseEntity.StartThink = function (interval: number, name?: string, callback?: (name: string) => void) {
+		if (IsServer()) {
+			const timerName = name ?? this.GetName();
+			if (this._ThinkList == undefined) {
+				this._ThinkList = {};
+			}
+			// 传入-1停止计时器
+			if (interval == -1) {
+				if (this._ThinkList[timerName]) {
+					Timer.StopTimer(this._ThinkList[timerName]);
+					// @ts-ignore
+					this._ThinkList[timerName] = undefined;
+				}
+				return;
+			}
+			// 停止同名计时器
+			if (this._ThinkList[timerName] != undefined) {
 				Timer.StopTimer(this._ThinkList[timerName]);
-				// @ts-ignore
-				this._ThinkList[timerName] = undefined;
 			}
-			return;
+			const index = Timer.StartIntervalThink(this, interval, () => {
+				if (callback != undefined) {
+					callback(timerName);
+				}
+				if (this.OnThink != undefined) {
+					this.OnThink(timerName);
+				}
+			});
+			this._ThinkList[timerName] = index;
 		}
-		// 停止同名计时器
-		if (this._ThinkList[timerName] != undefined) {
-			Timer.StopTimer(this._ThinkList[timerName]);
-		}
-		const index = Timer.StartIntervalThink(this, interval, () => {
-			if (callback != undefined) {
-				callback(timerName);
-			}
-			if (this.OnThink != undefined) {
-				this.OnThink(timerName);
-			}
-		});
-		this._ThinkList[timerName] = index;
-	}
-};
+	};
+}
 
 //********************************************************************************
 // Client
 //********************************************************************************
 
-C_BaseEntity.GameTimer = function (sContextName: any, fInterval: any, funcThink: any) {
-	if (funcThink == undefined) {
-		funcThink = fInterval;
-		fInterval = sContextName;
-		sContextName = DoUniqueString("GameTimer");
-	}
-	return this.Timer(sContextName, fInterval, funcThink);
-};
-C_BaseEntity.StopTimer = function (sContextName: any) {
-	this.SetContextThink(sContextName, undefined, -1);
-};
+if (IsClient()) {
+	C_BaseEntity.GameTimer = function (sContextName: any, fInterval: any, funcThink: any) {
+		if (funcThink == undefined) {
+			funcThink = fInterval;
+			fInterval = sContextName;
+			sContextName = DoUniqueString("GameTimer");
+		}
+		return this.Timer(sContextName, fInterval, funcThink);
+	};
+	C_BaseEntity.StopTimer = function (sContextName: any) {
+		this.SetContextThink(sContextName, undefined, -1);
+	};
+}

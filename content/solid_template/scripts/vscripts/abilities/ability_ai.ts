@@ -53,7 +53,7 @@ export class EOMAbilityAI extends EOMAbility {
 	_StartThink() {
 		this._StopThink();
 		const hCaster = this.GetCaster();
-		if (HasState(hCaster, EOMModifierStates.MODIFIER_STATE_AI_DISABLED)) {
+		if (HasState(hCaster, EOMModifierState.AI_DISABLED)) {
 			return AI_TIMER_TICK_TIME;
 		}
 		if (this.behavior == DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_NO_TARGET) {

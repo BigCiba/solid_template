@@ -36,12 +36,12 @@
 		]
 	},
 	"scripts": {
+		"generate:precache": "node ./node_scripts/generate-precache.js",
 		"generate:config": "node ./node_scripts/generate-tsconfig.js",
+		"generate:properties": "node ./node_scripts/generate-properties.js",
 		"build:polyfill": "ts-node rollup/build-polyfill.ts",
-		"build:solid": "ts-node -r ./rollup/build-write-file.ts ./rollup/build.ts",
 		"dev:solid": "ts-node -r ./rollup/build-write-file.ts ./rollup/build.ts --watch",
-		"build:vscripts": "node ./node_scripts/build-vscripts.js",
-		"dev:vscripts": "node ./node_scripts/watch-vscripts.js",
+		"dev:vscripts": "npm run generate:precache && node ./node_scripts/watch-vscripts.js",
 		"dev:vscripts:basic": "node ./node_scripts/build-vscripts.js --watch",
 		"encrypt:vscripts": "node ./node_scripts/encrypt-custom-game.js",
 		"clean:images": "node ./node_scripts/clean-images.js"

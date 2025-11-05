@@ -4,9 +4,7 @@
 declare var Modules: CModule[];
 
 /** 基础模块功能 */
-if (_G.Modules == undefined) {
-	_G.Modules = [];
-}
+Modules ??= [];
 class CModule {
 	isModule: boolean = true;
 	init(reload: boolean) { };

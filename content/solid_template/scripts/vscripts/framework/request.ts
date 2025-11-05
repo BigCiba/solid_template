@@ -148,6 +148,4 @@ class MRequest extends CModule {
 declare global {
 	var Request: MRequest;
 }
-if (_G.Request == undefined) {
-	_G.Request = new MRequest();
-}
+Request ??= new MRequest();

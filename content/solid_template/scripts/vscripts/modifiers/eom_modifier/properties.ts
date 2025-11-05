@@ -468,14 +468,8 @@ function GetAttributeMap(attribute: string) {
 
 const EOM_UPDATE_HEALTH_PROPERTY: Partial<Record<EOMModifierFunction, boolean>> = {
 	[EOMModifierFunction.EOM_MODIFIER_PROPERTY_HEALTH]: true,
-	[EOMModifierFunction.EOM_MODIFIER_PROPERTY_HEALTH_STATS]: true,
-	[EOMModifierFunction.EOM_MODIFIER_PROPERTY_HEALTH_PERCENTAGE]: true,
-	[EOMModifierFunction.EOM_MODIFIER_PROPERTY_HEALTH_PERCENTAGE_MULTIPLE]: true,
 };
 const EOM_UPDATE_MANA_PROPERTY: Partial<Record<EOMModifierFunction, boolean>> = {
-	[EOMModifierFunction.EOM_MODIFIER_PROPERTY_MANA]: true,
-	[EOMModifierFunction.EOM_MODIFIER_PROPERTY_MANA_STATS]: true,
-	[EOMModifierFunction.EOM_MODIFIER_PROPERTY_MANA_PERCENTAGE]: true,
 };
 
 //----------------------------------------------------------------------------------------------------

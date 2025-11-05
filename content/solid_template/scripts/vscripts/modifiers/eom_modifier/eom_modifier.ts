@@ -275,7 +275,7 @@ export const registerEOMModifier = (param?: Partial<easyModifierReturn>) => {
 
 export interface EOMModifier extends CDOTA_Modifier_Lua {
 	EDeclareEvents(): Partial<Record<modifierfunction | EOMModifierEvents, [(CDOTA_BaseNPC | -1)?, (CDOTA_BaseNPC | -1)?]>>;
-	ECheckState(): Partial<Record<EOMModifierStates, boolean>>;
+	ECheckState(): Partial<Record<EOMModifierState, boolean>>;
 	GetAbilitySpecialValue(): void;
 	StaticProperty(): Partial<Record<EOMModifierFunction, any>>;
 	DeclareProperty(): Partial<Record<EOMModifierFunction, DeclarePropertyFunction>>;

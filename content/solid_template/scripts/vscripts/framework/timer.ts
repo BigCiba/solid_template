@@ -125,6 +125,4 @@ declare global {
 	var Timer: CTimer;
 }
 
-if (_G.Timer == undefined) {
-	_G.Timer = new CTimer();
-}
+Timer ??= new CTimer();

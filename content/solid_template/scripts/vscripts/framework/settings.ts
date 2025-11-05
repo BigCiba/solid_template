@@ -100,6 +100,4 @@ class MSettings extends CModule {
 declare global {
 	var Settings: MSettings;
 }
-if (_G.Settings == undefined) {
-	_G.Settings = new MSettings();
-}
+Settings ??= new MSettings();

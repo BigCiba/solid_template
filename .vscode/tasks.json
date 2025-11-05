@@ -1,0 +1,53 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"hide": true,
+			"script": "dev:solid",
+			"group": "build",
+			"presentation": {
+				"group": "watchers"
+			},
+			"problemMatcher": [],
+			"detail": "运行webpack监控任务",
+			"options": {
+				"statusbar": {
+					"label": "$(wrench) UI开发",
+				}
+			}
+		},
+		{
+			"type": "npm",
+			"hide": true,
+			"script": "dev:vscripts",
+			"group": "build",
+			"presentation": {
+				"group": "watchers"
+			},
+			"problemMatcher": [],
+			"detail": "运行vscripts监控任务",
+			"options": {
+				"statusbar": {
+					"label": "$(wrench) vscripts开发",
+				}
+			}
+		},
+		{
+			"label": "$(wrench) 开发",
+			"dependsOn": [
+				"npm: dev:solid",
+				"npm: dev:vscripts",
+			],
+			"problemMatcher": [],
+		},
+		{
+			"label": "$(send) 生成属性表",
+			"dependsOn": [
+				"npm: generate:properties",
+			],
+			"problemMatcher": [],
+			"detail": "将properties.kv生成sheet_properties.ts",
+		},
+	]
+}

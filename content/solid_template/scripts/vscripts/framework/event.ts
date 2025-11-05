@@ -7,7 +7,6 @@ declare global {
 		test: {};
 	}
 }
-
 @reloadable
 class MEvent extends CModule {
 	eventList: Record<number, Function>;
@@ -68,6 +67,4 @@ class MEvent extends CModule {
 		});
 	}
 }
-if (_G.Event == undefined) {
-	_G.Event = new MEvent();
-}
+Event ??= new MEvent();

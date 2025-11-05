@@ -40,7 +40,7 @@ end
 function EOMAbilityAI.prototype._StartThink(self)
     self:_StopThink()
     local hCaster = self:GetCaster()
-    if HasState(hCaster, EOMModifierStates.MODIFIER_STATE_AI_DISABLED) then
+    if HasState(hCaster, EOMModifierState.AI_DISABLED) then
         return AI_TIMER_TICK_TIME
     end
     if self.behavior == DOTA_ABILITY_BEHAVIOR_NO_TARGET then

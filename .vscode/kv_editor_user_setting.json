@@ -1,0 +1,38 @@
+{
+  "files": {
+    "content/solid_template/scripts/vscripts/modifiers/eom_modifier/properties.kv": {
+      "columnWidths": {
+        "check_value": 179,
+        "generate_function": 147,
+        "id": 240
+      },
+      "localizedMode": true,
+      "columnDescriptions": {
+        "check_value": {
+          "label": "每次返回值时进行的操作"
+        },
+        "generate_function": {
+          "label": "自动生成获取函数"
+        },
+        "localization": {
+          "label": "本地化"
+        },
+        "localization_desc": {
+          "label": "本地化描述"
+        },
+        "multiple": {
+          "label": "倍乘"
+        },
+        "settle": {
+          "label": "特殊运算"
+        },
+        "string": {
+          "label": "字符"
+        },
+        "type": {
+          "label": "类型"
+        }
+      }
+    }
+  }
+}

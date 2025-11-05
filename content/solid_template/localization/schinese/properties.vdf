@@ -1,0 +1,9 @@
+"lang"
+{
+	"Language"		"Schinese"
+	"Tokens"
+	{
+		"dota_ability_attribute_health" "$health"
+		"dota_ability_attribute_attack" "$attack"
+	}
+}

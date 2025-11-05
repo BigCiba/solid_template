@@ -1,0 +1,69 @@
+{
+  "files": {
+    "content/solid_template/scripts/vscripts/modifiers/eom_modifier/properties.kv": {
+      "columnOptions": {
+        "check_value": [
+          {
+            "value": "PCVC_DamageAdjust"
+          },
+          {
+            "value": "PCVC_DamageBarrier"
+          },
+          {
+            "value": "math.abs"
+          },
+          {
+            "value": "PCVC_NonLethal"
+          },
+          {
+            "value": "PCVC_StaticLoot"
+          }
+        ],
+        "type": [
+          {
+            "value": "NONE",
+            "label": "无"
+          },
+          {
+            "value": "PLAYER",
+            "label": "玩家属性"
+          },
+          {
+            "value": "TEAM",
+            "label": "队伍"
+          },
+          {
+            "value": "TEAM_HERO",
+            "label": "队伍英雄"
+          }
+        ],
+        "settle": [
+          {
+            "value": "CompoundIncreaseSimple"
+          },
+          {
+            "value": "CompoundIncrease"
+          },
+          {
+            "value": "CompoundDecreaseSimple"
+          },
+          {
+            "value": "CompoundDecrease"
+          },
+          {
+            "value": "MaximumSimple"
+          },
+          {
+            "value": "Minimum"
+          },
+          {
+            "value": "FirstSimple"
+          },
+          {
+            "value": "First"
+          }
+        ]
+      }
+    }
+  }
+}

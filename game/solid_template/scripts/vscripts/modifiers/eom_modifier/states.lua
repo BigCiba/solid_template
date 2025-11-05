@@ -1,31 +1,15 @@
 local ____lualib = require("lualib_bundle")
 local __TS__ArraySort = ____lualib.__TS__ArraySort
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["6"] = 5,["7"] = 5,["8"] = 5,["9"] = 5,["10"] = 5,["11"] = 5,["12"] = 5,["13"] = 5,["14"] = 5,["15"] = 5,["16"] = 5,["17"] = 5,["18"] = 5,["19"] = 5,["20"] = 5,["21"] = 5,["22"] = 5,["23"] = 5,["24"] = 5,["25"] = 5,["26"] = 5,["27"] = 5,["28"] = 5,["29"] = 23,["30"] = 24,["31"] = 24,["33"] = 25,["34"] = 25,["36"] = 26,["37"] = 28,["38"] = 28,["40"] = 29,["41"] = 31,["42"] = 33,["43"] = 33,["44"] = 33,["45"] = 34,["46"] = 35,["47"] = 36,["48"] = 33,["49"] = 33,["50"] = 39,["51"] = 23,["52"] = 41,["53"] = 42,["54"] = 42,["56"] = 43,["57"] = 45,["58"] = 45,["60"] = 46,["61"] = 48,["62"] = 49,["64"] = 52,["65"] = 41,["66"] = 55,["67"] = 56,["68"] = 56,["70"] = 58,["71"] = 58,["73"] = 59,["74"] = 61,["75"] = 62,["76"] = 63,["77"] = 65,["78"] = 66,["79"] = 67,["82"] = 70,["85"] = 74,["86"] = 55,["91"] = 82,["92"] = 83,["93"] = 82,["98"] = 99,["99"] = 100,["100"] = 99});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["6"] = 5,["7"] = 5,["8"] = 5,["9"] = 5,["10"] = 5,["11"] = 5,["12"] = 5,["13"] = 12,["14"] = 13,["15"] = 13,["17"] = 14,["18"] = 14,["20"] = 15,["21"] = 17,["22"] = 17,["24"] = 18,["25"] = 20,["26"] = 22,["27"] = 22,["28"] = 22,["29"] = 23,["30"] = 24,["31"] = 25,["32"] = 22,["33"] = 22,["34"] = 28,["35"] = 12,["36"] = 30,["37"] = 31,["38"] = 31,["40"] = 32,["41"] = 34,["42"] = 34,["44"] = 35,["45"] = 37,["46"] = 38,["48"] = 41,["49"] = 30,["50"] = 44,["51"] = 45,["52"] = 45,["54"] = 47,["55"] = 47,["57"] = 48,["58"] = 50,["59"] = 51,["60"] = 52,["61"] = 54,["62"] = 55,["63"] = 56,["66"] = 59,["69"] = 63,["70"] = 44});
 --- EOMModifier状态
-EOMModifierStates = EOMModifierStates or ({})
-EOMModifierStates.MODIFIER_STATE_NO_HEALTH_BAR = 65
-EOMModifierStates[EOMModifierStates.MODIFIER_STATE_NO_HEALTH_BAR] = "MODIFIER_STATE_NO_HEALTH_BAR"
-EOMModifierStates.MODIFIER_STATE_CUSTOM_HEALTH_BAR = 66
-EOMModifierStates[EOMModifierStates.MODIFIER_STATE_CUSTOM_HEALTH_BAR] = "MODIFIER_STATE_CUSTOM_HEALTH_BAR"
-EOMModifierStates.MODIFIER_STATE_ARMOR_REDUCTION_IMMUNE = 67
-EOMModifierStates[EOMModifierStates.MODIFIER_STATE_ARMOR_REDUCTION_IMMUNE] = "MODIFIER_STATE_ARMOR_REDUCTION_IMMUNE"
-EOMModifierStates.MODIFIER_STATE_NO_ATTRIBUTE = 68
-EOMModifierStates[EOMModifierStates.MODIFIER_STATE_NO_ATTRIBUTE] = "MODIFIER_STATE_NO_ATTRIBUTE"
-EOMModifierStates.MODIFIER_STATE_AI_DISABLED = 69
-EOMModifierStates[EOMModifierStates.MODIFIER_STATE_AI_DISABLED] = "MODIFIER_STATE_AI_DISABLED"
-EOMModifierStates.MODIFIER_STATE_DASH_DISABLE = 70
-EOMModifierStates[EOMModifierStates.MODIFIER_STATE_DASH_DISABLE] = "MODIFIER_STATE_DASH_DISABLE"
-EOMModifierStates.MODIFIER_STATE_TELEPORT_DISABLE = 71
-EOMModifierStates[EOMModifierStates.MODIFIER_STATE_TELEPORT_DISABLE] = "MODIFIER_STATE_TELEPORT_DISABLE"
-EOMModifierStates.MODIFIER_STATE_DAMAGE_IMMUNE = 72
-EOMModifierStates[EOMModifierStates.MODIFIER_STATE_DAMAGE_IMMUNE] = "MODIFIER_STATE_DAMAGE_IMMUNE"
-EOMModifierStates.MODIFIER_STATE_BLEEDING_DEEPEN = 73
-EOMModifierStates[EOMModifierStates.MODIFIER_STATE_BLEEDING_DEEPEN] = "MODIFIER_STATE_BLEEDING_DEEPEN"
-EOMModifierStates.MODIFIER_STATE_HEALTHY = 74
-EOMModifierStates[EOMModifierStates.MODIFIER_STATE_HEALTHY] = "MODIFIER_STATE_HEALTHY"
-EOMModifierStates.MODIFIER_STATE_INJURED = 75
-EOMModifierStates[EOMModifierStates.MODIFIER_STATE_INJURED] = "MODIFIER_STATE_INJURED"
+EOMModifierState = EOMModifierState or ({})
+EOMModifierState.NO_HEALTH_BAR = 65
+EOMModifierState[EOMModifierState.NO_HEALTH_BAR] = "NO_HEALTH_BAR"
+EOMModifierState.CUSTOM_HEALTH_BAR = 66
+EOMModifierState[EOMModifierState.CUSTOM_HEALTH_BAR] = "CUSTOM_HEALTH_BAR"
+EOMModifierState.AI_DISABLED = 67
+EOMModifierState[EOMModifierState.AI_DISABLED] = "AI_DISABLED"
 function RegisterModifierState(hModifier)
     if not IsValid(nil, hModifier) then
         return false
@@ -83,18 +67,4 @@ function HasState(parent, iState)
         end
     end
     return false
-end
---- 是否没有血条
--- 
--- @param hUnit
--- @returns
-function HasNoHealthBar(hUnit)
-    return HasState(hUnit, EOMModifierStates.MODIFIER_STATE_NO_HEALTH_BAR)
-end
---- 是否免疫减甲
--- 
--- @param hUnit
--- @returns
-function HasArmorReductionImmune(hUnit)
-    return HasState(hUnit, EOMModifierStates.MODIFIER_STATE_ARMOR_REDUCTION_IMMUNE)
 end

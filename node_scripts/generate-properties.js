@@ -194,13 +194,13 @@ function loadPropertiesFromKV() {
 	EOMModifierFunctionCheckValueCallback += `\n}`;
 	lang += `\n	}\n}`;
 
-	const sheet_properties = `/** @noSelfInFile */\n${EOMModifierFunction}\n${ATTRIBUTE_MAP}\n${ATTRIBUTE_MULTIPLE_MAP}\n${EOMModifierFunctionSettleCallback}\n${EOMModifierFunctionType}\n${EOMModifierFunctionCheckValueCallback}\n${generate_function}`;
+	const vscript_properties = `/** @noSelfInFile */\n${EOMModifierFunction}\n${ATTRIBUTE_MAP}\n${ATTRIBUTE_MULTIPLE_MAP}\n${EOMModifierFunctionSettleCallback}\n${EOMModifierFunctionType}\n${EOMModifierFunctionCheckValueCallback}\n${generate_function}`;
 
 	// 使用动态路径
 	const dirPath = path.join(ROOT_DIR, `content/${PROJECT_NAME}/scripts/vscripts/modifiers/eom_modifier`);
 	fs.mkdirSync(dirPath, { recursive: true });
-	fs.writeFileSync(path.join(dirPath, 'sheet_properties.ts'), sheet_properties);
-	console.log(`✅ 生成文件: ${path.join(dirPath, 'sheet_properties.ts')}`);
+	fs.writeFileSync(path.join(dirPath, 'properties.ts'), vscript_properties);
+	console.log(`✅ 生成文件: ${path.join(dirPath, 'properties.ts')}`);
 
 	const demoTsPath = path.join(ROOT_DIR, 'src/ui/hud_demo');
 	fs.mkdirSync(demoTsPath, { recursive: true });

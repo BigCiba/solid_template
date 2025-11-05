@@ -47,7 +47,7 @@
 				"npm: generate:properties",
 			],
 			"problemMatcher": [],
-			"detail": "将properties.kv生成sheet_properties.ts",
+			"detail": "将properties.kv生成properties.ts",
 		},
 	]
 }

@@ -47,6 +47,13 @@ declare interface CustomNetTableDeclarations {
 	request_2: Record<string, { result: string, nowStep: number, maxStep: number; }>;
 	request_3: Record<string, { result: string, nowStep: number, maxStep: number; }>;
 	service: Table;
+	property_system: {
+		init: {
+			version: number;
+			time: number;
+		};
+		properties: Record<string, any>;
+	};
 }
 declare interface PlayerDataType {
 	info: {

@@ -99,6 +99,8 @@ class CTimer extends CModule {
 	}
 
 	// 暂停
+	GameTimer(fInterval: number, funcThink: () => any, _?: any): string;
+	GameTimer(sContextName: string, fInterval: number, funcThink: () => any): string;
 	GameTimer(entity: any, fInterval: any, funcThink: () => number | void) {
 		if (funcThink == undefined) {
 			funcThink = fInterval;

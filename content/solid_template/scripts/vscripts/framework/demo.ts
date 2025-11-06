@@ -123,12 +123,20 @@ class CDemo extends CModule {
 	}
 	Standby(data: DemoEvents) {
 		// 注册属性
-		PropertySystem.RegisterProperty({
-			id: 'bonus_damage',
-			scope: PropertyScope.UNIT,
-			valueType: PropertyValueType.NUMBER,
-			aggregation: AggregationStrategy.SUM,
-		});
+		// PropertySystem.RegisterProperty({
+		// 	id: 'attack_damage',
+		// 	scope: PropertyScope.UNIT,
+		// 	valueType: PropertyValueType.NUMBER,
+		// 	aggregation: AggregationStrategy.SUM,
+		// });
+		PropertySystem.AddStaticProperty(
+			PropertyScope.UNIT,
+			data.unit!.GetEntityIndex(),
+			"attack_damage",
+			"item_sword_1234",  // sourceId
+			50
+		);
+		this.print(PropertySystem.GetPropertyValueFromNetTable(PropertyScope.UNIT, data.unit!.GetEntityIndex(), "attack_damage"));
 	}
 
 	//----------------------英雄----------------------

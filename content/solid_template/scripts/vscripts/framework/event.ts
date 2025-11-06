@@ -330,15 +330,15 @@ class MEvent extends CModule {
 }
 
 // 注册调试命令
-if (!IsDedicatedServer()) {
-	Convars.RegisterCommand("event_debug", () => {
-		Event.DebugPrint();
-	}, "Print event system debug info", 0);
+// if (!IsDedicatedServer()) {
+// 	Convars.RegisterCommand("event_debug", () => {
+// 		Event.DebugPrint();
+// 	}, "Print event system debug info", 0);
 
-	Convars.RegisterCommand("event_stats", () => {
-		const stats = Event.GetMemoryStats();
-		print(`Event Types: ${stats.eventTypes}`);
-		print(`Total Listeners: ${stats.listeners}`);
-		print(`Avg Listeners/Type: ${stats.avgListenersPerType.toFixed(2)}`);
-	}, "Print event system statistics", 0);
-}
+// 	Convars.RegisterCommand("event_stats", () => {
+// 		const stats = Event.GetMemoryStats();
+// 		print(`Event Types: ${stats.eventTypes}`);
+// 		print(`Total Listeners: ${stats.listeners}`);
+// 		print(`Avg Listeners/Type: ${stats.avgListenersPerType.toFixed(2)}`);
+// 	}, "Print event system statistics", 0);
+// }

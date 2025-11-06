@@ -5,8 +5,8 @@ local Map = ____lualib.Map
 local __TS__New = ____lualib.__TS__New
 local Set = ____lualib.Set
 local __TS__ObjectAssign = ____lualib.__TS__ObjectAssign
-local __TS__Iterator = ____lualib.__TS__Iterator
 local __TS__ArrayFindIndex = ____lualib.__TS__ArrayFindIndex
+local __TS__Iterator = ____lualib.__TS__Iterator
 local __TS__ArraySplice = ____lualib.__TS__ArraySplice
 local __TS__ArrayFind = ____lualib.__TS__ArrayFind
 local __TS__ArraySort = ____lualib.__TS__ArraySort
@@ -15,41 +15,13 @@ local __TS__StringSplit = ____lualib.__TS__StringSplit
 local __TS__ArraySlice = ____lualib.__TS__ArraySlice
 local __TS__ParseInt = ____lualib.__TS__ParseInt
 local __TS__NumberToFixed = ____lualib.__TS__NumberToFixed
+local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["22"] = 24,["23"] = 24,["24"] = 24,["25"] = 24,["26"] = 24,["28"] = 32,["29"] = 32,["30"] = 32,["31"] = 32,["32"] = 32,["33"] = 32,["34"] = 32,["35"] = 32,["36"] = 32,["38"] = 44,["39"] = 44,["40"] = 44,["41"] = 44,["42"] = 44,["43"] = 44,["44"] = 44,["45"] = 44,["46"] = 44,["47"] = 44,["48"] = 44,["49"] = 44,["50"] = 44,["51"] = 44,["52"] = 44,["53"] = 135,["54"] = 135,["55"] = 135,["57"] = 135,["58"] = 137,["59"] = 138,["60"] = 139,["61"] = 142,["62"] = 135,["63"] = 144,["64"] = 145,["65"] = 146,["66"] = 148,["67"] = 149,["68"] = 150,["69"] = 151,["71"] = 154,["73"] = 156,["75"] = 144,["76"] = 160,["77"] = 161,["78"] = 160,["79"] = 164,["80"] = 165,["81"] = 164,["82"] = 170,["83"] = 171,["84"] = 172,["85"] = 172,["86"] = 172,["87"] = 172,["88"] = 172,["89"] = 172,["90"] = 172,["91"] = 172,["93"] = 170,["94"] = 191,["95"] = 193,["96"] = 194,["97"] = 195,["98"] = 195,["99"] = 195,["101"] = 196,["102"] = 197,["103"] = 197,["104"] = 197,["106"] = 192,["107"] = 192,["108"] = 192,["109"] = 192,["110"] = 192,["111"] = 192,["112"] = 192,["113"] = 201,["114"] = 202,["115"] = 191,["116"] = 206,["117"] = 207,["118"] = 208,["120"] = 206,["121"] = 215,["122"] = 221,["123"] = 221,["125"] = 222,["126"] = 222,["128"] = 224,["129"] = 225,["130"] = 226,["131"] = 226,["133"] = 228,["134"] = 229,["135"] = 231,["136"] = 232,["137"] = 233,["139"] = 236,["140"] = 236,["141"] = 236,["142"] = 236,["143"] = 236,["144"] = 242,["145"] = 244,["146"] = 245,["148"] = 248,["149"] = 248,["150"] = 249,["151"] = 215,["152"] = 253,["153"] = 254,["156"] = 256,["157"] = 257,["159"] = 259,["160"] = 259,["161"] = 260,["164"] = 253,["165"] = 265,["166"] = 266,["169"] = 268,["170"] = 269,["171"] = 270,["174"] = 272,["175"] = 273,["176"] = 275,["179"] = 277,["180"] = 277,["181"] = 277,["182"] = 277,["183"] = 278,["184"] = 279,["185"] = 281,["186"] = 282,["187"] = 283,["189"] = 285,["191"] = 288,["192"] = 289,["195"] = 265,["196"] = 295,["197"] = 301,["198"] = 301,["200"] = 302,["201"] = 302,["203"] = 304,["204"] = 305,["205"] = 306,["206"] = 306,["208"] = 308,["209"] = 309,["210"] = 311,["211"] = 311,["213"] = 313,["214"] = 313,["215"] = 313,["216"] = 313,["217"] = 314,["218"] = 315,["219"] = 316,["220"] = 318,["221"] = 319,["223"] = 322,["225"] = 325,["226"] = 295,["227"] = 329,["228"] = 330,["229"] = 331,["230"] = 331,["232"] = 333,["233"] = 334,["234"] = 336,["235"] = 336,["236"] = 337,["237"] = 338,["238"] = 338,["240"] = 341,["241"] = 329,["242"] = 344,["243"] = 345,["244"] = 346,["247"] = 348,["248"] = 349,["249"] = 351,["250"] = 352,["254"] = 357,["255"] = 357,["256"] = 358,["257"] = 359,["259"] = 357,["262"] = 363,["263"] = 364,["264"] = 365,["267"] = 370,["268"] = 372,["269"] = 373,["271"] = 376,["272"] = 344,["273"] = 382,["274"] = 386,["275"] = 386,["277"] = 389,["278"] = 389,["280"] = 390,["281"] = 390,["283"] = 392,["284"] = 393,["285"] = 394,["286"] = 394,["288"] = 396,["289"] = 397,["290"] = 399,["291"] = 400,["292"] = 401,["294"] = 404,["295"] = 404,["296"] = 404,["297"] = 404,["298"] = 405,["299"] = 406,["300"] = 407,["302"] = 409,["303"] = 409,["304"] = 409,["305"] = 409,["306"] = 409,["307"] = 409,["309"] = 417,["310"] = 417,["311"] = 417,["312"] = 417,["313"] = 418,["314"] = 420,["315"] = 421,["317"] = 424,["318"] = 424,["319"] = 425,["320"] = 382,["321"] = 429,["322"] = 430,["325"] = 432,["326"] = 433,["328"] = 435,["329"] = 435,["330"] = 436,["333"] = 429,["334"] = 441,["335"] = 442,["338"] = 444,["339"] = 445,["340"] = 446,["343"] = 448,["344"] = 449,["345"] = 451,["348"] = 453,["349"] = 453,["350"] = 453,["351"] = 453,["352"] = 454,["353"] = 455,["354"] = 457,["355"] = 458,["357"] = 461,["358"] = 463,["359"] = 464,["362"] = 441,["363"] = 470,["364"] = 471,["365"] = 472,["366"] = 472,["368"] = 474,["369"] = 477,["370"] = 478,["371"] = 479,["372"] = 481,["373"] = 482,["374"] = 483,["375"] = 484,["376"] = 484,["377"] = 485,["378"] = 485,["379"] = 486,["383"] = 492,["384"] = 495,["385"] = 496,["386"] = 496,["387"] = 496,["388"] = 496,["389"] = 496,["390"] = 496,["391"] = 496,["392"] = 496,["394"] = 503,["395"] = 503,["396"] = 504,["397"] = 470,["398"] = 507,["399"] = 508,["400"] = 509,["401"] = 509,["403"] = 511,["404"] = 512,["405"] = 514,["406"] = 515,["409"] = 519,["410"] = 519,["411"] = 520,["412"] = 521,["414"] = 519,["417"] = 525,["418"] = 526,["419"] = 527,["421"] = 531,["422"] = 533,["425"] = 540,["428"] = 535,["429"] = 536,["430"] = 537,["438"] = 544,["439"] = 507,["440"] = 548,["441"] = 549,["442"] = 551,["443"] = 552,["445"] = 554,["447"] = 548,["448"] = 561,["449"] = 562,["450"] = 563,["451"] = 567,["452"] = 561,["453"] = 572,["454"] = 573,["455"] = 573,["456"] = 573,["457"] = 573,["458"] = 573,["459"] = 573,["460"] = 573,["461"] = 573,["462"] = 578,["463"] = 578,["464"] = 578,["465"] = 579,["466"] = 580,["467"] = 578,["468"] = 578,["469"] = 583,["470"] = 572,["471"] = 586,["472"] = 587,["475"] = 589,["476"] = 592,["477"] = 592,["478"] = 592,["479"] = 593,["480"] = 593,["481"] = 593,["482"] = 593,["483"] = 593,["484"] = 594,["485"] = 594,["486"] = 594,["487"] = 594,["488"] = 594,["489"] = 596,["490"] = 597,["491"] = 599,["492"] = 600,["493"] = 602,["494"] = 592,["495"] = 592,["496"] = 606,["498"] = 608,["499"] = 608,["500"] = 609,["501"] = 610,["502"] = 608,["505"] = 613,["506"] = 614,["507"] = 615,["508"] = 615,["509"] = 586,["510"] = 618,["511"] = 619,["512"] = 621,["513"] = 622,["514"] = 622,["515"] = 622,["516"] = 622,["517"] = 622,["518"] = 623,["519"] = 624,["520"] = 626,["521"] = 627,["523"] = 630,["524"] = 618,["525"] = 634,["526"] = 635,["529"] = 637,["530"] = 638,["533"] = 640,["534"] = 641,["535"] = 643,["536"] = 644,["537"] = 646,["538"] = 634,["539"] = 650,["540"] = 651,["541"] = 651,["543"] = 653,["544"] = 654,["545"] = 656,["546"] = 657,["548"] = 660,["549"] = 650,["550"] = 664,["551"] = 670,["552"] = 671,["555"] = 675,["556"] = 677,["557"] = 677,["558"] = 677,["559"] = 678,["560"] = 679,["561"] = 680,["562"] = 681,["564"] = 683,["565"] = 677,["566"] = 677,["567"] = 664,["568"] = 690,["569"] = 691,["572"] = 693,["573"] = 694,["574"] = 690,["575"] = 698,["576"] = 699,["579"] = 701,["580"] = 702,["581"] = 704,["582"] = 705,["583"] = 706,["585"] = 698,["586"] = 711,["587"] = 712,["590"] = 713,["591"] = 711,["592"] = 716,["593"] = 717,["594"] = 721,["595"] = 722,["596"] = 723,["597"] = 724,["598"] = 725,["599"] = 726,["600"] = 727,["602"] = 716,["603"] = 732,["604"] = 733,["605"] = 735,["606"] = 735,["607"] = 736,["609"] = 739,["610"] = 739,["611"] = 740,["613"] = 743,["614"] = 744,["616"] = 747,["617"] = 732,["618"] = 750,["619"] = 751,["620"] = 754,["621"] = 754,["622"] = 754,["624"] = 755,["625"] = 755,["626"] = 756,["627"] = 757,["628"] = 758,["630"] = 755,["633"] = 762,["634"] = 763,["635"] = 764,["638"] = 769,["639"] = 769,["640"] = 769,["642"] = 770,["643"] = 770,["644"] = 771,["645"] = 772,["646"] = 773,["648"] = 770,["651"] = 777,["652"] = 778,["655"] = 782,["656"] = 750,["657"] = 786,["658"] = 787,["659"] = 789,["660"] = 789,["661"] = 789,["662"] = 790,["663"] = 791,["664"] = 792,["667"] = 796,["668"] = 796,["669"] = 796,["670"] = 797,["671"] = 798,["672"] = 799,["675"] = 803,["676"] = 786,["677"] = 806,["678"] = 807,["679"] = 806,["680"] = 814,["681"] = 815,["682"] = 815,["683"] = 815,["684"] = 816,["685"] = 817,["686"] = 818,["687"] = 815,["688"] = 815,["689"] = 821,["690"] = 814,["691"] = 825,["692"] = 826,["693"] = 827,["694"] = 828,["695"] = 829,["696"] = 825,["697"] = 839,["698"] = 841,["699"] = 841,["700"] = 841,["701"] = 842,["702"] = 841,["703"] = 841,["704"] = 841,["705"] = 841,["706"] = 846,["707"] = 846,["708"] = 846,["709"] = 847,["710"] = 846,["711"] = 846,["712"] = 846,["713"] = 846,["714"] = 851,["715"] = 851,["716"] = 851,["717"] = 852,["718"] = 858,["719"] = 851,["720"] = 851,["721"] = 851,["722"] = 851,["723"] = 862,["724"] = 862,["725"] = 862,["726"] = 863,["727"] = 864,["728"] = 864,["729"] = 864,["730"] = 865,["732"] = 862,["733"] = 862,["734"] = 862,["735"] = 862,["736"] = 870,["737"] = 870,["738"] = 870,["739"] = 871,["740"] = 872,["741"] = 873,["742"] = 870,["743"] = 870,["744"] = 870,["745"] = 870,["746"] = 876,["747"] = 839,["748"] = 879,["749"] = 880,["750"] = 881,["751"] = 882,["752"] = 883,["753"] = 884,["754"] = 885,["755"] = 879,["756"] = 888,["757"] = 889,["758"] = 890,["759"] = 894,["760"] = 895,["761"] = 896,["762"] = 897,["763"] = 898,["764"] = 888,["765"] = 903,["766"] = 904,["767"] = 908,["768"] = 909,["769"] = 910,["770"] = 910,["771"] = 910,["772"] = 910,["773"] = 910,["774"] = 910,["775"] = 916,["777"] = 919,["778"] = 903,["779"] = 922,["780"] = 923,["781"] = 922,["782"] = 926,["783"] = 927,["784"] = 928,["785"] = 929,["787"] = 931,["788"] = 926,["789"] = 934,["790"] = 935,["791"] = 935,["793"] = 936,["794"] = 936,["796"] = 937,["797"] = 937,["799"] = 938,["800"] = 934,["801"] = 941,["802"] = 942,["803"] = 942,["805"] = 944,["806"] = 945,["807"] = 946,["808"] = 947,["809"] = 948,["810"] = 949,["812"] = 951,["814"] = 953,["816"] = 941,["817"] = 957,["819"] = 958,["820"] = 959,["822"] = 960,["824"] = 961,["826"] = 962,["828"] = 963,["830"] = 964,["832"] = 965,["834"] = 966,["836"] = 967,["838"] = 968,["840"] = 969,["842"] = 970,["844"] = 971,["846"] = 972,["847"] = 973,["849"] = 975,["852"] = 977,["855"] = 957,["856"] = 981,["858"] = 982,["859"] = 983,["861"] = 984,["863"] = 985,["865"] = 986,["867"] = 987,["869"] = 988,["871"] = 989,["873"] = 991,["876"] = 993,["879"] = 981,["880"] = 997,["881"] = 998,["882"] = 997,["883"] = 1001,["884"] = 1002,["885"] = 1003,["886"] = 1001,["887"] = 1006,["888"] = 1007,["889"] = 1006,["890"] = 1010,["891"] = 1011,["892"] = 1010,["893"] = 1033,["894"] = 1033,["896"] = 1035});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["22"] = 3,["23"] = 3,["24"] = 19,["25"] = 22,["26"] = 22,["27"] = 23,["29"] = 23,["30"] = 25,["31"] = 26,["32"] = 27,["33"] = 30,["34"] = 22,["35"] = 32,["36"] = 33,["37"] = 34,["38"] = 36,["39"] = 37,["40"] = 38,["41"] = 39,["43"] = 42,["45"] = 44,["47"] = 32,["48"] = 48,["49"] = 49,["50"] = 48,["51"] = 52,["52"] = 53,["53"] = 52,["54"] = 58,["55"] = 59,["56"] = 60,["57"] = 60,["58"] = 60,["59"] = 60,["60"] = 60,["61"] = 60,["62"] = 60,["63"] = 60,["65"] = 58,["66"] = 79,["67"] = 81,["68"] = 82,["69"] = 83,["70"] = 83,["71"] = 83,["73"] = 84,["74"] = 85,["75"] = 85,["76"] = 85,["78"] = 80,["79"] = 80,["80"] = 80,["81"] = 80,["82"] = 80,["83"] = 80,["84"] = 80,["85"] = 89,["86"] = 90,["87"] = 79,["88"] = 94,["89"] = 95,["90"] = 96,["92"] = 94,["93"] = 111,["94"] = 119,["95"] = 119,["97"] = 121,["98"] = 122,["99"] = 123,["100"] = 125,["101"] = 126,["102"] = 127,["104"] = 131,["105"] = 131,["106"] = 131,["107"] = 131,["108"] = 132,["109"] = 134,["110"] = 135,["112"] = 138,["113"] = 138,["114"] = 138,["115"] = 138,["116"] = 138,["117"] = 138,["119"] = 146,["120"] = 148,["121"] = 149,["123"] = 152,["124"] = 152,["125"] = 153,["126"] = 111,["127"] = 163,["128"] = 169,["129"] = 170,["131"] = 173,["132"] = 174,["133"] = 174,["134"] = 175,["135"] = 176,["138"] = 179,["140"] = 163,["141"] = 183,["142"] = 189,["143"] = 189,["145"] = 191,["146"] = 192,["147"] = 193,["148"] = 195,["149"] = 195,["151"] = 197,["152"] = 197,["153"] = 197,["154"] = 197,["155"] = 198,["156"] = 199,["157"] = 201,["158"] = 202,["159"] = 203,["161"] = 205,["163"] = 208,["164"] = 209,["166"] = 212,["168"] = 215,["169"] = 183,["170"] = 221,["171"] = 228,["172"] = 228,["174"] = 230,["175"] = 231,["176"] = 232,["177"] = 234,["178"] = 234,["180"] = 236,["181"] = 236,["182"] = 236,["183"] = 236,["184"] = 237,["185"] = 238,["186"] = 239,["187"] = 241,["188"] = 242,["190"] = 245,["192"] = 248,["193"] = 221,["194"] = 252,["195"] = 253,["196"] = 254,["197"] = 254,["199"] = 256,["200"] = 257,["201"] = 259,["202"] = 259,["203"] = 260,["204"] = 261,["205"] = 261,["207"] = 264,["208"] = 252,["209"] = 267,["210"] = 268,["211"] = 269,["214"] = 271,["215"] = 272,["216"] = 274,["217"] = 275,["220"] = 280,["221"] = 282,["222"] = 283,["224"] = 286,["225"] = 267,["226"] = 301,["227"] = 307,["228"] = 307,["230"] = 310,["231"] = 310,["233"] = 312,["234"] = 313,["235"] = 314,["236"] = 316,["237"] = 317,["238"] = 318,["240"] = 321,["241"] = 321,["242"] = 321,["243"] = 321,["244"] = 322,["245"] = 324,["246"] = 325,["247"] = 326,["249"] = 329,["250"] = 329,["251"] = 329,["252"] = 329,["253"] = 329,["254"] = 329,["255"] = 329,["257"] = 338,["258"] = 338,["259"] = 338,["260"] = 338,["261"] = 339,["262"] = 341,["263"] = 342,["265"] = 345,["266"] = 345,["267"] = 346,["268"] = 301,["269"] = 356,["270"] = 362,["271"] = 363,["273"] = 366,["274"] = 367,["275"] = 367,["276"] = 368,["277"] = 369,["280"] = 372,["282"] = 356,["283"] = 376,["284"] = 382,["285"] = 382,["287"] = 384,["288"] = 385,["289"] = 386,["290"] = 388,["291"] = 388,["293"] = 390,["294"] = 390,["295"] = 390,["296"] = 390,["297"] = 391,["298"] = 392,["299"] = 394,["300"] = 395,["302"] = 398,["303"] = 400,["304"] = 401,["306"] = 404,["308"] = 407,["309"] = 376,["310"] = 411,["311"] = 412,["312"] = 413,["313"] = 413,["315"] = 415,["316"] = 418,["317"] = 419,["318"] = 420,["319"] = 422,["320"] = 423,["321"] = 424,["322"] = 425,["323"] = 425,["324"] = 426,["325"] = 426,["326"] = 427,["330"] = 433,["331"] = 436,["332"] = 437,["333"] = 437,["334"] = 437,["335"] = 437,["336"] = 437,["337"] = 437,["338"] = 437,["339"] = 437,["341"] = 444,["342"] = 444,["343"] = 445,["344"] = 411,["345"] = 448,["346"] = 449,["347"] = 450,["348"] = 450,["350"] = 452,["351"] = 453,["352"] = 455,["353"] = 456,["355"] = 460,["356"] = 462,["359"] = 469,["362"] = 464,["363"] = 465,["364"] = 466,["372"] = 473,["373"] = 448,["374"] = 477,["375"] = 478,["376"] = 480,["377"] = 481,["379"] = 483,["381"] = 477,["382"] = 490,["383"] = 491,["384"] = 492,["385"] = 496,["386"] = 490,["387"] = 501,["388"] = 502,["389"] = 502,["390"] = 502,["391"] = 502,["392"] = 502,["393"] = 502,["394"] = 502,["395"] = 502,["396"] = 507,["397"] = 507,["398"] = 507,["399"] = 508,["400"] = 509,["401"] = 507,["402"] = 507,["403"] = 512,["404"] = 501,["405"] = 515,["406"] = 516,["409"] = 518,["410"] = 521,["411"] = 521,["412"] = 521,["413"] = 522,["414"] = 522,["415"] = 522,["416"] = 522,["417"] = 522,["418"] = 523,["419"] = 523,["420"] = 523,["421"] = 523,["422"] = 523,["423"] = 525,["424"] = 526,["425"] = 528,["426"] = 529,["427"] = 531,["428"] = 521,["429"] = 521,["430"] = 535,["432"] = 537,["433"] = 537,["434"] = 538,["435"] = 539,["436"] = 537,["439"] = 542,["440"] = 543,["441"] = 544,["442"] = 544,["443"] = 515,["444"] = 547,["445"] = 548,["446"] = 550,["447"] = 551,["448"] = 551,["449"] = 551,["450"] = 551,["451"] = 551,["452"] = 552,["453"] = 553,["454"] = 555,["455"] = 556,["457"] = 559,["458"] = 547,["459"] = 563,["460"] = 564,["463"] = 566,["464"] = 567,["467"] = 569,["468"] = 570,["469"] = 572,["470"] = 573,["471"] = 575,["472"] = 563,["473"] = 579,["474"] = 580,["475"] = 580,["477"] = 582,["478"] = 583,["479"] = 585,["480"] = 586,["482"] = 589,["483"] = 579,["484"] = 593,["485"] = 599,["486"] = 600,["489"] = 604,["490"] = 606,["491"] = 606,["492"] = 606,["493"] = 607,["494"] = 608,["495"] = 609,["496"] = 610,["498"] = 612,["499"] = 606,["500"] = 606,["501"] = 593,["502"] = 624,["503"] = 626,["504"] = 629,["505"] = 624,["506"] = 633,["507"] = 634,["510"] = 636,["511"] = 637,["512"] = 639,["513"] = 640,["514"] = 641,["516"] = 633,["517"] = 646,["518"] = 647,["521"] = 648,["522"] = 646,["523"] = 651,["524"] = 652,["525"] = 656,["526"] = 657,["527"] = 658,["528"] = 659,["529"] = 660,["530"] = 661,["531"] = 662,["533"] = 651,["534"] = 667,["535"] = 668,["536"] = 670,["537"] = 670,["538"] = 671,["540"] = 674,["541"] = 674,["542"] = 675,["544"] = 678,["545"] = 679,["547"] = 682,["548"] = 667,["549"] = 685,["550"] = 689,["551"] = 685,["552"] = 693,["553"] = 694,["554"] = 696,["555"] = 696,["556"] = 696,["557"] = 697,["558"] = 698,["559"] = 699,["562"] = 703,["563"] = 703,["564"] = 703,["565"] = 704,["566"] = 705,["567"] = 706,["570"] = 710,["571"] = 693,["572"] = 713,["573"] = 714,["574"] = 713,["575"] = 721,["576"] = 722,["577"] = 722,["578"] = 722,["579"] = 723,["580"] = 724,["581"] = 725,["582"] = 722,["583"] = 722,["584"] = 728,["585"] = 721,["586"] = 732,["587"] = 733,["588"] = 734,["589"] = 735,["590"] = 736,["591"] = 732,["592"] = 746,["593"] = 748,["594"] = 748,["595"] = 748,["596"] = 749,["597"] = 748,["598"] = 748,["599"] = 748,["600"] = 748,["601"] = 753,["602"] = 753,["603"] = 753,["604"] = 754,["605"] = 753,["606"] = 753,["607"] = 753,["608"] = 753,["609"] = 758,["610"] = 758,["611"] = 758,["612"] = 759,["613"] = 765,["614"] = 758,["615"] = 758,["616"] = 758,["617"] = 758,["618"] = 769,["619"] = 769,["620"] = 769,["621"] = 770,["622"] = 771,["623"] = 771,["624"] = 771,["625"] = 772,["627"] = 769,["628"] = 769,["629"] = 769,["630"] = 769,["631"] = 777,["632"] = 777,["633"] = 777,["634"] = 778,["635"] = 779,["636"] = 780,["637"] = 777,["638"] = 777,["639"] = 777,["640"] = 777,["641"] = 783,["642"] = 746,["643"] = 786,["644"] = 787,["645"] = 788,["646"] = 789,["647"] = 790,["648"] = 791,["649"] = 792,["650"] = 786,["651"] = 795,["652"] = 796,["653"] = 797,["654"] = 801,["655"] = 802,["656"] = 803,["657"] = 804,["658"] = 805,["659"] = 795,["660"] = 810,["661"] = 811,["662"] = 815,["663"] = 816,["664"] = 817,["665"] = 817,["666"] = 817,["667"] = 817,["668"] = 817,["669"] = 817,["670"] = 823,["672"] = 826,["673"] = 810,["674"] = 829,["675"] = 830,["676"] = 829,["677"] = 833,["678"] = 834,["679"] = 835,["680"] = 836,["682"] = 838,["683"] = 833,["684"] = 847,["685"] = 848,["686"] = 848,["688"] = 851,["689"] = 852,["690"] = 853,["692"] = 857,["693"] = 858,["694"] = 858,["695"] = 858,["696"] = 858,["698"] = 861,["699"] = 847,["700"] = 864,["702"] = 865,["703"] = 866,["705"] = 867,["707"] = 868,["709"] = 869,["711"] = 870,["713"] = 871,["715"] = 872,["717"] = 873,["719"] = 874,["721"] = 875,["723"] = 876,["725"] = 877,["727"] = 878,["729"] = 879,["730"] = 880,["732"] = 882,["735"] = 884,["738"] = 864,["739"] = 888,["741"] = 889,["742"] = 890,["744"] = 891,["746"] = 892,["748"] = 893,["750"] = 894,["752"] = 895,["754"] = 896,["756"] = 898,["759"] = 900,["762"] = 888,["763"] = 904,["764"] = 905,["765"] = 904,["766"] = 908,["767"] = 909,["768"] = 910,["769"] = 908,["770"] = 913,["771"] = 914,["772"] = 913,["773"] = 917,["774"] = 918,["775"] = 917,["776"] = 22,["777"] = 940,["778"] = 940});
 local ____exports = {}
---- 属性作用域类型
-local PropertyScope = PropertyScope or ({})
-PropertyScope.UNIT = 0
-PropertyScope[PropertyScope.UNIT] = "UNIT"
-PropertyScope.PLAYER = 1
-PropertyScope[PropertyScope.PLAYER] = "PLAYER"
---- 属性值类型
-local PropertyValueType = PropertyValueType or ({})
-PropertyValueType.NUMBER = 0
-PropertyValueType[PropertyValueType.NUMBER] = "NUMBER"
-PropertyValueType.PERCENTAGE = 1
-PropertyValueType[PropertyValueType.PERCENTAGE] = "PERCENTAGE"
-PropertyValueType.BOOLEAN = 2
-PropertyValueType[PropertyValueType.BOOLEAN] = "BOOLEAN"
-PropertyValueType.CUSTOM = 3
-PropertyValueType[PropertyValueType.CUSTOM] = "CUSTOM"
---- 聚合策略
-local AggregationStrategy = AggregationStrategy or ({})
-AggregationStrategy.SUM = 0
-AggregationStrategy[AggregationStrategy.SUM] = "SUM"
-AggregationStrategy.MULTIPLY = 1
-AggregationStrategy[AggregationStrategy.MULTIPLY] = "MULTIPLY"
-AggregationStrategy.MAX = 2
-AggregationStrategy[AggregationStrategy.MAX] = "MAX"
-AggregationStrategy.MIN = 3
-AggregationStrategy[AggregationStrategy.MIN] = "MIN"
-AggregationStrategy.FIRST = 4
-AggregationStrategy[AggregationStrategy.FIRST] = "FIRST"
-AggregationStrategy.LAST = 5
-AggregationStrategy[AggregationStrategy.LAST] = "LAST"
-AggregationStrategy.CUSTOM = 6
-AggregationStrategy[AggregationStrategy.CUSTOM] = "CUSTOM"
+local ____tstl_2Dutils = require("lib.tstl-utils")
+local reloadable = ____tstl_2Dutils.reloadable
+require("framework.property_system.property_system_types")
 local MPropertySystem = __TS__Class()
 MPropertySystem.name = "MPropertySystem"
 __TS__ClassExtends(MPropertySystem, CModule)
@@ -118,67 +90,67 @@ function MPropertySystem.prototype.RegisterProperties(self, configs)
         self:RegisterProperty(config)
     end
 end
-function MPropertySystem.prototype.AddStaticProperty(self, modifier, propertyId, value, key)
+function MPropertySystem.prototype.AddStaticProperty(self, scope, key, propertyId, sourceId, value, metadata)
     if not self:ValidateProperty(propertyId) then
         return false
     end
-    if not self:IsModifierValid(modifier) then
-        return false
-    end
     local config = self:GetConfig(propertyId)
-    local targetKey = self:ResolveKey(modifier, config.scope, key)
-    if targetKey == nil then
-        return false
-    end
-    local storage = self:GetStorage(config.scope, targetKey)
+    local storage = self:GetStorage(config.scope, key)
     local propertyList = storage.static:get(propertyId)
     if not propertyList then
         propertyList = {}
         storage.static:set(propertyId, propertyList)
     end
-    propertyList[#propertyList + 1] = {
-        modifier = modifier,
-        value = value,
-        addedTime = self:GetCurrentTime()
-    }
-    self:RecalculateStaticProperty(config.scope, targetKey, propertyId)
+    local existingIndex = __TS__ArrayFindIndex(
+        propertyList,
+        function(____, d) return d.sourceId == sourceId end
+    )
+    if existingIndex ~= -1 then
+        propertyList[existingIndex + 1].value = value
+        propertyList[existingIndex + 1].metadata = metadata
+    else
+        propertyList[#propertyList + 1] = {
+            sourceId = sourceId,
+            value = value,
+            addedTime = self:GetCurrentTime(),
+            metadata = metadata
+        }
+    end
+    self:RecalculateStaticProperty(config.scope, key, propertyId)
     if config.syncToClient then
-        self:MarkDirty(config.scope, targetKey, propertyId)
+        self:MarkDirty(config.scope, key, propertyId)
     end
     local ____PropertyData_stats_5, ____totalWrites_6 = PropertyData.stats, "totalWrites"
     ____PropertyData_stats_5[____totalWrites_6] = ____PropertyData_stats_5[____totalWrites_6] + 1
     return true
 end
-function MPropertySystem.prototype.RemoveStaticProperty(self, modifier, propertyId, key)
-    if not modifier then
-        return
-    end
+function MPropertySystem.prototype.RemoveStaticProperty(self, scope, key, sourceId, propertyId)
     if propertyId then
-        self:RemoveSingleStaticProperty(modifier, propertyId, key)
+        return self:RemoveSingleStaticProperty(scope, key, sourceId, propertyId)
     else
+        local removed = false
         for ____, ____value in __TS__Iterator(PropertyData.configs) do
             local pid = ____value[1]
-            self:RemoveSingleStaticProperty(modifier, pid, key)
+            if self:RemoveSingleStaticProperty(scope, key, sourceId, pid) then
+                removed = true
+            end
         end
+        return removed
     end
 end
-function MPropertySystem.prototype.RemoveSingleStaticProperty(self, modifier, propertyId, key)
+function MPropertySystem.prototype.RemoveSingleStaticProperty(self, scope, key, sourceId, propertyId)
     if not self:ValidateProperty(propertyId) then
-        return
+        return false
     end
     local config = self:GetConfig(propertyId)
-    local targetKey = self:ResolveKey(modifier, config.scope, key)
-    if targetKey == nil then
-        return
-    end
-    local storage = self:GetStorage(config.scope, targetKey)
+    local storage = self:GetStorage(config.scope, key)
     local propertyList = storage.static:get(propertyId)
     if not propertyList then
-        return
+        return false
     end
     local index = __TS__ArrayFindIndex(
         propertyList,
-        function(____, d) return d.modifier == modifier end
+        function(____, d) return d.sourceId == sourceId end
     )
     if index ~= -1 then
         __TS__ArraySplice(propertyList, index, 1)
@@ -186,39 +158,34 @@ function MPropertySystem.prototype.RemoveSingleStaticProperty(self, modifier, pr
             storage.static:delete(propertyId)
             storage.staticCache:delete(propertyId)
         else
-            self:RecalculateStaticProperty(config.scope, targetKey, propertyId)
+            self:RecalculateStaticProperty(config.scope, key, propertyId)
         end
         if config.syncToClient then
-            self:MarkDirty(config.scope, targetKey, propertyId)
+            self:MarkDirty(config.scope, key, propertyId)
         end
+        return true
     end
+    return false
 end
-function MPropertySystem.prototype.UpdateStaticPropertyValue(self, modifier, propertyId, newValue, key)
+function MPropertySystem.prototype.UpdateStaticPropertyValue(self, scope, key, propertyId, sourceId, newValue)
     if not self:ValidateProperty(propertyId) then
         return false
     end
-    if not self:IsModifierValid(modifier) then
-        return false
-    end
     local config = self:GetConfig(propertyId)
-    local targetKey = self:ResolveKey(modifier, config.scope, key)
-    if targetKey == nil then
-        return false
-    end
-    local storage = self:GetStorage(config.scope, targetKey)
+    local storage = self:GetStorage(config.scope, key)
     local propertyList = storage.static:get(propertyId)
     if not propertyList then
         return false
     end
     local data = __TS__ArrayFind(
         propertyList,
-        function(____, d) return d.modifier == modifier end
+        function(____, d) return d.sourceId == sourceId end
     )
     if data then
         data.value = newValue
-        self:RecalculateStaticProperty(config.scope, targetKey, propertyId)
+        self:RecalculateStaticProperty(config.scope, key, propertyId)
         if config.syncToClient then
-            self:MarkDirty(config.scope, targetKey, propertyId)
+            self:MarkDirty(config.scope, key, propertyId)
         end
         return true
     end
@@ -250,42 +217,21 @@ function MPropertySystem.prototype.RecalculateStaticProperty(self, scope, key, p
         storage.staticCache:delete(propertyId)
         return
     end
-    do
-        local i = #propertyList - 1
-        while i >= 0 do
-            if not self:IsModifierValid(propertyList[i + 1].modifier) then
-                __TS__ArraySplice(propertyList, i, 1)
-            end
-            i = i - 1
-        end
-    end
-    if #propertyList == 0 then
-        storage.static:delete(propertyId)
-        storage.staticCache:delete(propertyId)
-        return
-    end
     local result = self:GetAggregationInitialValue(config.aggregation, config.defaultValue or 0)
     for ____, data in ipairs(propertyList) do
         result = self:AggregateValues(config.aggregation, result, data.value, config.customAggregator)
     end
     storage.staticCache:set(propertyId, result)
 end
-function MPropertySystem.prototype.RegisterDynamicProperty(self, modifier, propertyId, callback, priority, key)
+function MPropertySystem.prototype.RegisterDynamicProperty(self, scope, key, propertyId, sourceId, callback, priority, metadata)
     if priority == nil then
         priority = 0
     end
     if not self:ValidateProperty(propertyId) then
         return false
     end
-    if not self:IsModifierValid(modifier) then
-        return false
-    end
     local config = self:GetConfig(propertyId)
-    local targetKey = self:ResolveKey(modifier, config.scope, key)
-    if targetKey == nil then
-        return false
-    end
-    local storage = self:GetStorage(config.scope, targetKey)
+    local storage = self:GetStorage(config.scope, key)
     local propertyList = storage.dynamic:get(propertyId)
     if not propertyList then
         propertyList = {}
@@ -293,17 +239,19 @@ function MPropertySystem.prototype.RegisterDynamicProperty(self, modifier, prope
     end
     local existingIndex = __TS__ArrayFindIndex(
         propertyList,
-        function(____, d) return d.modifier == modifier end
+        function(____, d) return d.sourceId == sourceId end
     )
     if existingIndex ~= -1 then
         propertyList[existingIndex + 1].callback = callback
         propertyList[existingIndex + 1].priority = priority
+        propertyList[existingIndex + 1].metadata = metadata
     else
         propertyList[#propertyList + 1] = {
-            modifier = modifier,
+            sourceId = sourceId,
             callback = callback,
             priority = priority,
-            addedTime = self:GetCurrentTime()
+            addedTime = self:GetCurrentTime(),
+            metadata = metadata
         }
     end
     __TS__ArraySort(
@@ -312,42 +260,39 @@ function MPropertySystem.prototype.RegisterDynamicProperty(self, modifier, prope
     )
     storage.runtimeCache:delete(propertyId)
     if config.syncToClient then
-        self:MarkDirty(config.scope, targetKey, propertyId)
+        self:MarkDirty(config.scope, key, propertyId)
     end
     local ____PropertyData_stats_11, ____totalWrites_12 = PropertyData.stats, "totalWrites"
     ____PropertyData_stats_11[____totalWrites_12] = ____PropertyData_stats_11[____totalWrites_12] + 1
     return true
 end
-function MPropertySystem.prototype.UnregisterDynamicProperty(self, modifier, propertyId, key)
-    if not modifier then
-        return
-    end
+function MPropertySystem.prototype.UnregisterDynamicProperty(self, scope, key, sourceId, propertyId)
     if propertyId then
-        self:UnregisterSingleDynamicProperty(modifier, propertyId, key)
+        return self:UnregisterSingleDynamicProperty(scope, key, sourceId, propertyId)
     else
+        local removed = false
         for ____, ____value in __TS__Iterator(PropertyData.configs) do
             local pid = ____value[1]
-            self:UnregisterSingleDynamicProperty(modifier, pid, key)
+            if self:UnregisterSingleDynamicProperty(scope, key, sourceId, pid) then
+                removed = true
+            end
         end
+        return removed
     end
 end
-function MPropertySystem.prototype.UnregisterSingleDynamicProperty(self, modifier, propertyId, key)
+function MPropertySystem.prototype.UnregisterSingleDynamicProperty(self, scope, key, sourceId, propertyId)
     if not self:ValidateProperty(propertyId) then
-        return
+        return false
     end
     local config = self:GetConfig(propertyId)
-    local targetKey = self:ResolveKey(modifier, config.scope, key)
-    if targetKey == nil then
-        return
-    end
-    local storage = self:GetStorage(config.scope, targetKey)
+    local storage = self:GetStorage(config.scope, key)
     local propertyList = storage.dynamic:get(propertyId)
     if not propertyList then
-        return
+        return false
     end
     local index = __TS__ArrayFindIndex(
         propertyList,
-        function(____, d) return d.modifier == modifier end
+        function(____, d) return d.sourceId == sourceId end
     )
     if index ~= -1 then
         __TS__ArraySplice(propertyList, index, 1)
@@ -356,9 +301,11 @@ function MPropertySystem.prototype.UnregisterSingleDynamicProperty(self, modifie
         end
         storage.runtimeCache:delete(propertyId)
         if config.syncToClient then
-            self:MarkDirty(config.scope, targetKey, propertyId)
+            self:MarkDirty(config.scope, key, propertyId)
         end
+        return true
     end
+    return false
 end
 function MPropertySystem.prototype.GetDynamicPropertyValue(self, scope, key, propertyId, params)
     local config = self:GetConfig(propertyId)
@@ -405,27 +352,14 @@ function MPropertySystem.prototype.CalculateDynamicPropertyValue(self, scope, ke
     if not propertyList or #propertyList == 0 then
         return config.defaultValue or 0
     end
-    do
-        local i = #propertyList - 1
-        while i >= 0 do
-            if not self:IsModifierValid(propertyList[i + 1].modifier) then
-                __TS__ArraySplice(propertyList, i, 1)
-            end
-            i = i - 1
-        end
-    end
-    if #propertyList == 0 then
-        storage.dynamic:delete(propertyId)
-        return config.defaultValue or 0
-    end
     local result = self:GetAggregationInitialValue(config.aggregation, config.defaultValue or 0)
     for ____, data in ipairs(propertyList) do
         do
             local function ____catch(____error)
-                self:print((("Error in callback for " .. propertyId) .. ": ") .. tostring(____error))
+                self:print((((("Error in callback for " .. propertyId) .. " (sourceId: ") .. data.sourceId) .. "): ") .. tostring(____error))
             end
             local ____try, ____hasReturned = pcall(function()
-                local value = data.callback(params)
+                local value = data:callback(params)
                 if value ~= nil then
                     result = self:AggregateValues(config.aggregation, result, value, config.customAggregator)
                 end
@@ -565,12 +499,9 @@ function MPropertySystem.prototype.ListenPropertyChange(self, scope, key, proper
         end
     )
 end
-function MPropertySystem.prototype.CleanupModifierProperties(self, modifier, key)
-    if not modifier then
-        return
-    end
-    self:RemoveStaticProperty(modifier, nil, key)
-    self:UnregisterDynamicProperty(modifier, nil, key)
+function MPropertySystem.prototype.CleanupSourceProperties(self, scope, key, sourceId)
+    self:RemoveStaticProperty(scope, key, sourceId)
+    self:UnregisterDynamicProperty(scope, key, sourceId)
 end
 function MPropertySystem.prototype.CleanupUnitProperties(self, unit)
     if not unit then
@@ -616,43 +547,7 @@ function MPropertySystem.prototype.CleanupInvalidModifiers(self)
     return cleanedCount
 end
 function MPropertySystem.prototype.CleanupStorageInvalidModifiers(self, storage)
-    local cleanedCount = 0
-    for ____, ____value in __TS__Iterator(storage.static) do
-        local propertyId = ____value[1]
-        local propertyList = ____value[2]
-        do
-            local i = #propertyList - 1
-            while i >= 0 do
-                if not self:IsModifierValid(propertyList[i + 1].modifier) then
-                    __TS__ArraySplice(propertyList, i, 1)
-                    cleanedCount = cleanedCount + 1
-                end
-                i = i - 1
-            end
-        end
-        if #propertyList == 0 then
-            storage.static:delete(propertyId)
-            storage.staticCache:delete(propertyId)
-        end
-    end
-    for ____, ____value in __TS__Iterator(storage.dynamic) do
-        local propertyId = ____value[1]
-        local propertyList = ____value[2]
-        do
-            local i = #propertyList - 1
-            while i >= 0 do
-                if not self:IsModifierValid(propertyList[i + 1].modifier) then
-                    __TS__ArraySplice(propertyList, i, 1)
-                    cleanedCount = cleanedCount + 1
-                end
-                i = i - 1
-            end
-        end
-        if #propertyList == 0 then
-            storage.dynamic:delete(propertyId)
-        end
-    end
-    return cleanedCount
+    return 0
 end
 function MPropertySystem.prototype.CleanupEmptyStorages(self)
     local cleanedCount = 0
@@ -786,65 +681,53 @@ function MPropertySystem.prototype.ValidateProperty(self, propertyId)
     end
     return true
 end
-function MPropertySystem.prototype.IsModifierValid(self, modifier)
-    if not modifier then
-        return false
+function MPropertySystem.prototype.GetEntityContext(self, entity)
+    if not entity or not IsValid(entity) then
+        return nil
     end
-    if not IsValid(modifier) then
-        return false
+    if entity.IsPlayer and entity:IsPlayer() then
+        local playerID = entity:GetPlayerID()
+        return {PropertyScope.PLAYER, playerID}
     end
-    if modifier._bDestroyed == true then
-        return false
+    if entity.IsBaseNPC and entity:IsBaseNPC() then
+        return {
+            PropertyScope.UNIT,
+            entity:GetEntityIndex()
+        }
     end
-    return true
-end
-function MPropertySystem.prototype.ResolveKey(self, modifier, scope, key)
-    if key ~= nil then
-        return key
-    end
-    local parent = modifier:GetParent()
-    if scope == PropertyScope.PLAYER then
-        local playerID = parent:GetPlayerOwnerID()
-        if playerID == -1 then
-            self:print("Error: Unit has no player owner")
-            return nil
-        end
-        return playerID
-    else
-        return parent:GetEntityIndex()
-    end
+    return nil
 end
 function MPropertySystem.prototype.AggregateValues(self, strategy, current, value, customAggregator)
     repeat
-        local ____switch185 = strategy
-        local ____cond185 = ____switch185 == AggregationStrategy.SUM
-        if ____cond185 then
+        local ____switch154 = strategy
+        local ____cond154 = ____switch154 == AggregationStrategy.SUM
+        if ____cond154 then
             return current + value
         end
-        ____cond185 = ____cond185 or ____switch185 == AggregationStrategy.MULTIPLY
-        if ____cond185 then
+        ____cond154 = ____cond154 or ____switch154 == AggregationStrategy.MULTIPLY
+        if ____cond154 then
             return current * value
         end
-        ____cond185 = ____cond185 or ____switch185 == AggregationStrategy.MAX
-        if ____cond185 then
+        ____cond154 = ____cond154 or ____switch154 == AggregationStrategy.MAX
+        if ____cond154 then
             return math.max(current, value)
         end
-        ____cond185 = ____cond185 or ____switch185 == AggregationStrategy.MIN
-        if ____cond185 then
+        ____cond154 = ____cond154 or ____switch154 == AggregationStrategy.MIN
+        if ____cond154 then
             return math.min(current, value)
         end
-        ____cond185 = ____cond185 or ____switch185 == AggregationStrategy.FIRST
-        if ____cond185 then
+        ____cond154 = ____cond154 or ____switch154 == AggregationStrategy.FIRST
+        if ____cond154 then
             return current ~= 0 and current or value
         end
-        ____cond185 = ____cond185 or ____switch185 == AggregationStrategy.LAST
-        if ____cond185 then
+        ____cond154 = ____cond154 or ____switch154 == AggregationStrategy.LAST
+        if ____cond154 then
             return value
         end
-        ____cond185 = ____cond185 or ____switch185 == AggregationStrategy.CUSTOM
-        if ____cond185 then
+        ____cond154 = ____cond154 or ____switch154 == AggregationStrategy.CUSTOM
+        if ____cond154 then
             if customAggregator then
-                return customAggregator(current, value)
+                return customAggregator(nil, current, value)
             end
             return current + value
         end
@@ -855,21 +738,21 @@ function MPropertySystem.prototype.AggregateValues(self, strategy, current, valu
 end
 function MPropertySystem.prototype.GetAggregationInitialValue(self, strategy, defaultValue)
     repeat
-        local ____switch188 = strategy
-        local ____cond188 = ____switch188 == AggregationStrategy.MULTIPLY
-        if ____cond188 then
+        local ____switch157 = strategy
+        local ____cond157 = ____switch157 == AggregationStrategy.MULTIPLY
+        if ____cond157 then
             return 1
         end
-        ____cond188 = ____cond188 or ____switch188 == AggregationStrategy.MAX
-        if ____cond188 then
+        ____cond157 = ____cond157 or ____switch157 == AggregationStrategy.MAX
+        if ____cond157 then
             return -math.huge
         end
-        ____cond188 = ____cond188 or ____switch188 == AggregationStrategy.MIN
-        if ____cond188 then
+        ____cond157 = ____cond157 or ____switch157 == AggregationStrategy.MIN
+        if ____cond157 then
             return math.huge
         end
-        ____cond188 = ____cond188 or (____switch188 == AggregationStrategy.FIRST or ____switch188 == AggregationStrategy.LAST)
-        if ____cond188 then
+        ____cond157 = ____cond157 or (____switch157 == AggregationStrategy.FIRST or ____switch157 == AggregationStrategy.LAST)
+        if ____cond157 then
             return defaultValue
         end
         do
@@ -890,8 +773,8 @@ end
 function MPropertySystem.prototype.GetCurrentTime(self)
     return GameRules:GetGameTime()
 end
+MPropertySystem = __TS__DecorateLegacy({reloadable}, MPropertySystem)
 if PropertySystem == nil then
     PropertySystem = __TS__New(MPropertySystem)
 end
-____exports.default = PropertySystem
 return ____exports

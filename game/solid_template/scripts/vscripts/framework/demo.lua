@@ -4,7 +4,7 @@ local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
 local __TS__New = ____lualib.__TS__New
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["9"] = 2,["10"] = 2,["11"] = 12,["12"] = 12,["13"] = 13,["15"] = 13,["16"] = 15,["17"] = 12,["18"] = 16,["19"] = 17,["20"] = 18,["21"] = 19,["23"] = 22,["24"] = 22,["25"] = 22,["26"] = 22,["27"] = 22,["28"] = 22,["29"] = 22,["30"] = 25,["31"] = 25,["32"] = 25,["33"] = 26,["34"] = 27,["35"] = 28,["36"] = 29,["37"] = 30,["38"] = 31,["39"] = 32,["40"] = 38,["41"] = 39,["42"] = 40,["45"] = 43,["47"] = 25,["48"] = 25,["49"] = 25,["50"] = 16,["51"] = 49,["52"] = 50,["53"] = 51,["54"] = 52,["55"] = 53,["56"] = 53,["57"] = 53,["58"] = 53,["59"] = 53,["60"] = 53,["61"] = 53,["62"] = 53,["63"] = 54,["64"] = 55,["65"] = 56,["66"] = 56,["67"] = 56,["68"] = 56,["69"] = 55,["70"] = 49,["71"] = 60,["72"] = 60,["73"] = 82,["74"] = 83,["75"] = 86,["76"] = 82,["77"] = 88,["78"] = 89,["81"] = 92,["82"] = 93,["83"] = 94,["84"] = 96,["85"] = 97,["86"] = 98,["88"] = 99,["89"] = 99,["90"] = 100,["91"] = 101,["92"] = 102,["94"] = 104,["96"] = 99,["99"] = 108,["100"] = 109,["102"] = 111,["103"] = 112,["105"] = 114,["106"] = 115,["108"] = 88,["109"] = 121,["110"] = 122,["111"] = 121,["112"] = 124,["113"] = 125,["114"] = 124,["115"] = 130,["116"] = 131,["117"] = 132,["118"] = 133,["119"] = 134,["120"] = 135,["122"] = 136,["123"] = 136,["124"] = 137,["125"] = 138,["126"] = 139,["127"] = 140,["129"] = 136,["133"] = 143,["134"] = 143,["135"] = 144,["136"] = 145,["137"] = 146,["138"] = 147,["140"] = 143,["143"] = 150,["144"] = 151,["146"] = 130,["147"] = 156,["148"] = 157,["149"] = 158,["150"] = 159,["151"] = 156,["152"] = 162,["153"] = 163,["154"] = 164,["155"] = 165,["157"] = 162,["158"] = 177,["159"] = 178,["160"] = 177,["161"] = 181,["162"] = 182,["163"] = 183,["164"] = 181,["165"] = 186,["166"] = 187,["167"] = 188,["168"] = 186,["169"] = 190,["170"] = 191,["171"] = 190,["172"] = 12,["173"] = 199,["174"] = 199});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["9"] = 2,["10"] = 2,["11"] = 12,["12"] = 12,["13"] = 13,["15"] = 13,["16"] = 15,["17"] = 12,["18"] = 16,["19"] = 17,["20"] = 18,["21"] = 19,["23"] = 22,["24"] = 22,["25"] = 22,["26"] = 22,["27"] = 22,["28"] = 22,["29"] = 22,["30"] = 25,["31"] = 25,["32"] = 25,["33"] = 26,["34"] = 27,["35"] = 28,["36"] = 29,["37"] = 30,["38"] = 31,["39"] = 32,["40"] = 38,["41"] = 39,["42"] = 40,["45"] = 43,["47"] = 25,["48"] = 25,["49"] = 25,["50"] = 16,["51"] = 49,["52"] = 50,["53"] = 51,["54"] = 52,["55"] = 53,["56"] = 53,["57"] = 53,["58"] = 53,["59"] = 53,["60"] = 53,["61"] = 53,["62"] = 53,["63"] = 54,["64"] = 55,["65"] = 56,["66"] = 56,["67"] = 56,["68"] = 56,["69"] = 55,["70"] = 49,["71"] = 60,["72"] = 60,["73"] = 82,["74"] = 83,["75"] = 86,["76"] = 82,["77"] = 88,["78"] = 89,["81"] = 92,["82"] = 93,["83"] = 94,["84"] = 96,["85"] = 97,["86"] = 98,["88"] = 99,["89"] = 99,["90"] = 100,["91"] = 101,["92"] = 102,["94"] = 104,["96"] = 99,["99"] = 108,["100"] = 109,["102"] = 111,["103"] = 112,["105"] = 114,["106"] = 115,["108"] = 88,["109"] = 121,["110"] = 122,["111"] = 121,["112"] = 124,["113"] = 132,["114"] = 132,["115"] = 132,["116"] = 132,["117"] = 132,["118"] = 132,["119"] = 132,["120"] = 139,["121"] = 139,["122"] = 139,["123"] = 139,["124"] = 139,["125"] = 124,["126"] = 144,["127"] = 145,["128"] = 146,["129"] = 147,["130"] = 148,["131"] = 149,["133"] = 150,["134"] = 150,["135"] = 151,["136"] = 152,["137"] = 153,["138"] = 154,["140"] = 150,["144"] = 157,["145"] = 157,["146"] = 158,["147"] = 159,["148"] = 160,["149"] = 161,["151"] = 157,["154"] = 164,["155"] = 165,["157"] = 144,["158"] = 170,["159"] = 171,["160"] = 172,["161"] = 173,["162"] = 170,["163"] = 176,["164"] = 177,["165"] = 178,["166"] = 179,["168"] = 176,["169"] = 191,["170"] = 192,["171"] = 191,["172"] = 195,["173"] = 196,["174"] = 197,["175"] = 195,["176"] = 200,["177"] = 201,["178"] = 202,["179"] = 200,["180"] = 204,["181"] = 205,["182"] = 204,["183"] = 12,["184"] = 213,["185"] = 213});
 local ____exports = {}
 local ____tstl_2Dutils = require("lib.tstl-utils")
 local reloadable = ____tstl_2Dutils.reloadable
@@ -48,7 +48,7 @@ function CDemo.prototype.init(self, bReload)
         self
     )
 end
-function CDemo.prototype.saveConfig(self, iPlayerID, config)
+function CDemo.prototype.SaveConfig(self, iPlayerID, config)
     local handle = CreateHTTPRequestScriptVM("POST", "http://150.158.155.234:8001/v1/other/save-custom-gameconfig")
     handle:SetHTTPRequestHeaderValue("Content-Type", "application/json;charset=utf-8")
     handle:SetHTTPRequestHeaderValue("Authorization", "28EF96C3DAE7B3743D8854C57099BF38DEF9539F")
@@ -68,19 +68,19 @@ function CDemo.prototype.saveConfig(self, iPlayerID, config)
         )
     end)
 end
-function CDemo.prototype.loadConfig(self)
+function CDemo.prototype.LoadConfig(self)
 end
 function CDemo.prototype.UpdateSettings(self)
     local settings = {free_spells = self.free_spells}
     CustomNetTables:SetTableValue("common", "demo_settings", settings)
 end
-function CDemo.prototype.OnPlayerChat(self, tEvents)
+function CDemo.prototype.OnPlayerChat(self, events)
     if not IsInToolsMode() then
         return
     end
-    local playerID = tEvents.playerid
-    local text = string.lower(tEvents.text)
-    local teamOnly = tEvents.teamonly == 1
+    local playerID = events.playerid
+    local text = string.lower(events.text)
+    local teamOnly = events.teamonly == 1
     local tokens = string.split(text, " ")
     local cmd = tokens[1]
     local args = {}
@@ -110,9 +110,20 @@ function CDemo.prototype.ChangeHostTimescale(self, data)
     SendToServerConsole("host_timescale " .. data.str)
 end
 function CDemo.prototype.Standby(self, data)
-    local ____ = PropertySystem
+    PropertySystem:AddStaticProperty(
+        PropertyScope.UNIT,
+        data.unit:GetEntityIndex(),
+        "attack_damage",
+        "item_sword_1234",
+        50
+    )
+    self:print(PropertySystem:GetPropertyValueFromNetTable(
+        PropertyScope.UNIT,
+        data.unit:GetEntityIndex(),
+        "attack_damage"
+    ))
 end
-function CDemo.prototype.Refresh(self, tData)
+function CDemo.prototype.Refresh(self, data)
     local heroes = HeroList:GetAllHeroes()
     for ____, hero in ipairs(heroes) do
         local particleID = ParticleManager:CreateParticle("particles/items2_fx/refresher.vpcf", PATTACH_ROOTBONE_FOLLOW, hero)

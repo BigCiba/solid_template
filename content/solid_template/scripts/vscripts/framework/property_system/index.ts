@@ -1,6 +1,6 @@
 /** @noSelfInFile */
 
-import { reloadable } from "../lib/tstl-utils";
+import { reloadable } from "../../lib/tstl-utils";
 
 /**
  * 属性系统 - 整合版 CModule
@@ -13,16 +13,10 @@ import { reloadable } from "../lib/tstl-utils";
  * - 自动内存清理
  * - 完整调试工具
  * 
- * 使用方法：
- * ```typescript
- * // 在 mechanics/index.ts 中导入
- * const propertySystemModule = require('./property_system');
- * ```
  */
 
 // ==================== 类型定义 ====================
-
-
+require('property_system_types');
 
 // ==================== 主类定义 ====================
 @reloadable
@@ -105,21 +99,27 @@ class MPropertySystem extends CModule {
 
 	// ==================== 静态属性 API ====================
 
-	/** 添加静态属性 */
+	/**
+	 * 添加静态属性（不依赖 modifier）
+	 * @param scope 属性作用域
+	 * @param key 目标键（playerID 或 entityIndex）
+	 * @param propertyId 属性 ID
+	 * @param sourceId 属性来源的唯一标识（如 "item_sword", "ability_crit", "buff_aura"）
+	 * @param value 属性值
+	 * @param metadata 可选的元数据
+	 */
 	AddStaticProperty(
-		modifier: CDOTA_Modifier_Lua,
+		scope: PropertyScope,
+		key: PropertySystemKey,
 		propertyId: string,
+		sourceId: string,
 		value: number,
-		key?: PropertySystemKey
+		metadata?: Record<string, any>
 	): boolean {
 		if (!this.ValidateProperty(propertyId)) return false;
-		if (!this.IsModifierValid(modifier)) return false;
 
 		const config = this.GetConfig(propertyId)!;
-		const targetKey = this.ResolveKey(modifier, config.scope, key);
-		if (targetKey === undefined) return false;
-
-		const storage = this.GetStorage(config.scope, targetKey);
+		const storage = this.GetStorage(config.scope, key);
 		let propertyList = storage.static.get(propertyId);
 
 		if (!propertyList) {
@@ -127,48 +127,74 @@ class MPropertySystem extends CModule {
 			storage.static.set(propertyId, propertyList);
 		}
 
-		propertyList.push({
-			modifier,
-			value,
-			addedTime: this.GetCurrentTime(),
-		});
+		// 检查是否已存在相同 sourceId
+		const existingIndex = propertyList.findIndex(d => d.sourceId === sourceId);
+		if (existingIndex !== -1) {
+			// 更新现有值
+			propertyList[existingIndex].value = value;
+			propertyList[existingIndex].metadata = metadata;
+		} else {
+			// 添加新属性
+			propertyList.push({
+				sourceId,
+				value,
+				addedTime: this.GetCurrentTime(),
+				metadata,
+			});
+		}
 
-		this.RecalculateStaticProperty(config.scope, targetKey, propertyId);
+		this.RecalculateStaticProperty(config.scope, key, propertyId);
 
 		if (config.syncToClient) {
-			this.MarkDirty(config.scope, targetKey, propertyId);
+			this.MarkDirty(config.scope, key, propertyId);
 		}
 
 		PropertyData.stats.totalWrites++;
 		return true;
 	}
 
-	/** 移除静态属性 */
-	RemoveStaticProperty(modifier: CDOTA_Modifier_Lua, propertyId?: string, key?: PropertySystemKey): void {
-		if (!modifier) return;
-
+	/**
+	 * 移除静态属性
+	 * @param scope 属性作用域
+	 * @param key 目标键
+	 * @param propertyId 属性 ID（可选，不传则移除该 sourceId 的所有属性）
+	 * @param sourceId 属性来源 ID
+	 */
+	RemoveStaticProperty(
+		scope: PropertyScope,
+		key: PropertySystemKey,
+		sourceId: string,
+		propertyId?: string
+	): boolean {
 		if (propertyId) {
-			this.RemoveSingleStaticProperty(modifier, propertyId, key);
+			return this.RemoveSingleStaticProperty(scope, key, sourceId, propertyId);
 		} else {
+			// 移除该 sourceId 的所有属性
+			let removed = false;
 			for (const [pid] of PropertyData.configs) {
-				this.RemoveSingleStaticProperty(modifier, pid, key);
+				if (this.RemoveSingleStaticProperty(scope, key, sourceId, pid)) {
+					removed = true;
+				}
 			}
+			return removed;
 		}
 	}
 
-	private RemoveSingleStaticProperty(modifier: CDOTA_Modifier_Lua, propertyId: string, key?: PropertySystemKey): void {
-		if (!this.ValidateProperty(propertyId)) return;
+	private RemoveSingleStaticProperty(
+		scope: PropertyScope,
+		key: PropertySystemKey,
+		sourceId: string,
+		propertyId: string
+	): boolean {
+		if (!this.ValidateProperty(propertyId)) return false;
 
 		const config = this.GetConfig(propertyId)!;
-		const targetKey = this.ResolveKey(modifier, config.scope, key);
-		if (targetKey === undefined) return;
-
-		const storage = this.GetStorage(config.scope, targetKey);
+		const storage = this.GetStorage(config.scope, key);
 		const propertyList = storage.static.get(propertyId);
 
-		if (!propertyList) return;
+		if (!propertyList) return false;
 
-		const index = propertyList.findIndex(d => d.modifier === modifier);
+		const index = propertyList.findIndex(d => d.sourceId === sourceId);
 		if (index !== -1) {
 			propertyList.splice(index, 1);
 
@@ -176,41 +202,44 @@ class MPropertySystem extends CModule {
 				storage.static.delete(propertyId);
 				storage.staticCache.delete(propertyId);
 			} else {
-				this.RecalculateStaticProperty(config.scope, targetKey, propertyId);
+				this.RecalculateStaticProperty(config.scope, key, propertyId);
 			}
 
 			if (config.syncToClient) {
-				this.MarkDirty(config.scope, targetKey, propertyId);
+				this.MarkDirty(config.scope, key, propertyId);
 			}
+
+			return true;
 		}
+
+		return false;
 	}
 
-	/** 更新静态属性值 */
+	/**
+	 * 更新静态属性值
+	 */
 	UpdateStaticPropertyValue(
-		modifier: CDOTA_Modifier_Lua,
+		scope: PropertyScope,
+		key: PropertySystemKey,
 		propertyId: string,
-		newValue: number,
-		key?: PropertySystemKey
+		sourceId: string,
+		newValue: number
 	): boolean {
 		if (!this.ValidateProperty(propertyId)) return false;
-		if (!this.IsModifierValid(modifier)) return false;
 
 		const config = this.GetConfig(propertyId)!;
-		const targetKey = this.ResolveKey(modifier, config.scope, key);
-		if (targetKey === undefined) return false;
-
-		const storage = this.GetStorage(config.scope, targetKey);
+		const storage = this.GetStorage(config.scope, key);
 		const propertyList = storage.static.get(propertyId);
 
 		if (!propertyList) return false;
 
-		const data = propertyList.find(d => d.modifier === modifier);
+		const data = propertyList.find(d => d.sourceId === sourceId);
 		if (data) {
 			data.value = newValue;
-			this.RecalculateStaticProperty(config.scope, targetKey, propertyId);
+			this.RecalculateStaticProperty(config.scope, key, propertyId);
 
 			if (config.syncToClient) {
-				this.MarkDirty(config.scope, targetKey, propertyId);
+				this.MarkDirty(config.scope, key, propertyId);
 			}
 
 			return true;
@@ -247,20 +276,7 @@ class MPropertySystem extends CModule {
 			return;
 		}
 
-		// 清理无效修饰符
-		for (let i = propertyList.length - 1; i >= 0; i--) {
-			if (!this.IsModifierValid(propertyList[i].modifier)) {
-				propertyList.splice(i, 1);
-			}
-		}
-
-		if (propertyList.length === 0) {
-			storage.static.delete(propertyId);
-			storage.staticCache.delete(propertyId);
-			return;
-		}
-
-		// 计算总和
+		// 计算总和（静态属性不需要清理无效项）
 		let result = this.GetAggregationInitialValue(config.aggregation, config.defaultValue ?? 0);
 
 		for (const data of propertyList) {
@@ -272,22 +288,29 @@ class MPropertySystem extends CModule {
 
 	// ==================== 动态属性 API ====================
 
-	/** 注册动态属性 */
+	/**
+	 * 注册动态属性（不依赖 modifier）
+	 * @param scope 属性作用域
+	 * @param key 目标键
+	 * @param propertyId 属性 ID
+	 * @param sourceId 属性来源的唯一标识
+	 * @param callback 回调函数
+	 * @param priority 优先级（越小越先执行）
+	 * @param metadata 可选的元数据
+	 */
 	RegisterDynamicProperty(
-		modifier: CDOTA_Modifier_Lua,
+		scope: PropertyScope,
+		key: PropertySystemKey,
 		propertyId: string,
+		sourceId: string,
 		callback: DynamicPropertyCallback,
 		priority: number = 0,
-		key?: PropertySystemKey
+		metadata?: Record<string, any>
 	): boolean {
 		if (!this.ValidateProperty(propertyId)) return false;
-		if (!this.IsModifierValid(modifier)) return false;
 
 		const config = this.GetConfig(propertyId)!;
-		const targetKey = this.ResolveKey(modifier, config.scope, key);
-		if (targetKey === undefined) return false;
-
-		const storage = this.GetStorage(config.scope, targetKey);
+		const storage = this.GetStorage(config.scope, key);
 		let propertyList = storage.dynamic.get(propertyId);
 
 		if (!propertyList) {
@@ -295,16 +318,20 @@ class MPropertySystem extends CModule {
 			storage.dynamic.set(propertyId, propertyList);
 		}
 
-		const existingIndex = propertyList.findIndex(d => d.modifier === modifier);
+		const existingIndex = propertyList.findIndex(d => d.sourceId === sourceId);
 		if (existingIndex !== -1) {
+			// 更新现有的
 			propertyList[existingIndex].callback = callback;
 			propertyList[existingIndex].priority = priority;
+			propertyList[existingIndex].metadata = metadata;
 		} else {
+			// 添加新的
 			propertyList.push({
-				modifier,
+				sourceId,
 				callback,
 				priority,
 				addedTime: this.GetCurrentTime(),
+				metadata,
 			});
 		}
 
@@ -312,39 +339,55 @@ class MPropertySystem extends CModule {
 		storage.runtimeCache.delete(propertyId);
 
 		if (config.syncToClient) {
-			this.MarkDirty(config.scope, targetKey, propertyId);
+			this.MarkDirty(config.scope, key, propertyId);
 		}
 
 		PropertyData.stats.totalWrites++;
 		return true;
 	}
 
-	/** 注销动态属性 */
-	UnregisterDynamicProperty(modifier: CDOTA_Modifier_Lua, propertyId?: string, key?: PropertySystemKey): void {
-		if (!modifier) return;
-
+	/**
+	 * 注销动态属性
+	 * @param scope 属性作用域
+	 * @param key 目标键
+	 * @param sourceId 属性来源 ID
+	 * @param propertyId 属性 ID（可选）
+	 */
+	UnregisterDynamicProperty(
+		scope: PropertyScope,
+		key: PropertySystemKey,
+		sourceId: string,
+		propertyId?: string
+	): boolean {
 		if (propertyId) {
-			this.UnregisterSingleDynamicProperty(modifier, propertyId, key);
+			return this.UnregisterSingleDynamicProperty(scope, key, sourceId, propertyId);
 		} else {
+			// 移除该 sourceId 的所有动态属性
+			let removed = false;
 			for (const [pid] of PropertyData.configs) {
-				this.UnregisterSingleDynamicProperty(modifier, pid, key);
+				if (this.UnregisterSingleDynamicProperty(scope, key, sourceId, pid)) {
+					removed = true;
+				}
 			}
+			return removed;
 		}
 	}
 
-	private UnregisterSingleDynamicProperty(modifier: CDOTA_Modifier_Lua, propertyId: string, key?: PropertySystemKey): void {
-		if (!this.ValidateProperty(propertyId)) return;
+	private UnregisterSingleDynamicProperty(
+		scope: PropertyScope,
+		key: PropertySystemKey,
+		sourceId: string,
+		propertyId: string
+	): boolean {
+		if (!this.ValidateProperty(propertyId)) return false;
 
 		const config = this.GetConfig(propertyId)!;
-		const targetKey = this.ResolveKey(modifier, config.scope, key);
-		if (targetKey === undefined) return;
-
-		const storage = this.GetStorage(config.scope, targetKey);
+		const storage = this.GetStorage(config.scope, key);
 		const propertyList = storage.dynamic.get(propertyId);
 
-		if (!propertyList) return;
+		if (!propertyList) return false;
 
-		const index = propertyList.findIndex(d => d.modifier === modifier);
+		const index = propertyList.findIndex(d => d.sourceId === sourceId);
 		if (index !== -1) {
 			propertyList.splice(index, 1);
 
@@ -355,9 +398,13 @@ class MPropertySystem extends CModule {
 			storage.runtimeCache.delete(propertyId);
 
 			if (config.syncToClient) {
-				this.MarkDirty(config.scope, targetKey, propertyId);
+				this.MarkDirty(config.scope, key, propertyId);
 			}
+
+			return true;
 		}
+
+		return false;
 	}
 
 	/** 获取动态属性值（带缓存） */
@@ -409,19 +456,7 @@ class MPropertySystem extends CModule {
 			return config.defaultValue ?? 0;
 		}
 
-		// 清理无效修饰符
-		for (let i = propertyList.length - 1; i >= 0; i--) {
-			if (!this.IsModifierValid(propertyList[i].modifier)) {
-				propertyList.splice(i, 1);
-			}
-		}
-
-		if (propertyList.length === 0) {
-			storage.dynamic.delete(propertyId);
-			return config.defaultValue ?? 0;
-		}
-
-		// 计算总和
+		// 计算总和（动态属性不需要清理无效项）
 		let result = this.GetAggregationInitialValue(config.aggregation, config.defaultValue ?? 0);
 
 		for (const data of propertyList) {
@@ -431,7 +466,7 @@ class MPropertySystem extends CModule {
 					result = this.AggregateValues(config.aggregation, result, value, config.customAggregator);
 				}
 			} catch (error) {
-				this.print(`Error in callback for ${propertyId}: ${error}`);
+				this.print(`Error in callback for ${propertyId} (sourceId: ${data.sourceId}): ${error}`);
 			}
 		}
 
@@ -580,12 +615,18 @@ class MPropertySystem extends CModule {
 
 	// ==================== 清理系统 ====================
 
-	/** 清理修饰符的所有属性 */
-	CleanupModifierProperties(modifier: CDOTA_Modifier_Lua, key?: PropertySystemKey): void {
-		if (!modifier) return;
+	/**
+	 * 清理指定来源的所有属性
+	 * @param scope 属性作用域
+	 * @param key 目标键
+	 * @param sourceId 来源 ID
+	 */
+	CleanupSourceProperties(scope: PropertyScope, key: PropertySystemKey, sourceId: string): void {
+		// 清理静态属性
+		this.RemoveStaticProperty(scope, key, sourceId);
 
-		this.RemoveStaticProperty(modifier, undefined, key);
-		this.UnregisterDynamicProperty(modifier, undefined, key);
+		// 清理动态属性
+		this.UnregisterDynamicProperty(scope, key, sourceId);
 	}
 
 	/** 清理单位的所有属性 */
@@ -642,38 +683,10 @@ class MPropertySystem extends CModule {
 	}
 
 	private CleanupStorageInvalidModifiers(storage: PropertyStorage): number {
-		let cleanedCount = 0;
-
-		// 清理静态属性
-		for (const [propertyId, propertyList] of storage.static) {
-			for (let i = propertyList.length - 1; i >= 0; i--) {
-				if (!this.IsModifierValid(propertyList[i].modifier)) {
-					propertyList.splice(i, 1);
-					cleanedCount++;
-				}
-			}
-
-			if (propertyList.length === 0) {
-				storage.static.delete(propertyId);
-				storage.staticCache.delete(propertyId);
-			}
-		}
-
-		// 清理动态属性
-		for (const [propertyId, propertyList] of storage.dynamic) {
-			for (let i = propertyList.length - 1; i >= 0; i--) {
-				if (!this.IsModifierValid(propertyList[i].modifier)) {
-					propertyList.splice(i, 1);
-					cleanedCount++;
-				}
-			}
-
-			if (propertyList.length === 0) {
-				storage.dynamic.delete(propertyId);
-			}
-		}
-
-		return cleanedCount;
+		// 注意：移除 modifier 依赖后，此方法不再自动清理
+		// 属性现在通过手动调用 CleanupSourceProperties 清理
+		// 或者可以扩展为基于时间的过期机制
+		return 0;
 	}
 
 	/** 清理空存储 */
@@ -825,27 +838,27 @@ class MPropertySystem extends CModule {
 		return true;
 	}
 
-	private IsModifierValid(modifier: CDOTA_Modifier_Lua): boolean {
-		if (!modifier) return false;
-		if (!IsValid(modifier)) return false;
-		if ((modifier as any)._bDestroyed === true) return false;
-		return true;
-	}
+	/**
+	 * 获取实体的上下文信息
+	 * 辅助方法：根据实体自动推断 scope 和 key
+	 * @param entity 单位或玩家
+	 * @returns [scope, key] 或 undefined
+	 */
+	GetEntityContext(entity: CDOTA_BaseNPC | CDOTAPlayerController): [PropertyScope, PropertySystemKey] | undefined {
+		if (!entity || !IsValid(entity)) return undefined;
 
-	private ResolveKey(modifier: CDOTA_Modifier_Lua, scope: PropertyScope, key?: PropertySystemKey): PropertySystemKey | undefined {
-		if (key !== undefined) return key;
-
-		const parent = modifier.GetParent();
-		if (scope === PropertyScope.PLAYER) {
-			const playerID = parent.GetPlayerOwnerID();
-			if (playerID === -1) {
-				this.print('Error: Unit has no player owner');
-				return undefined;
-			}
-			return playerID;
-		} else {
-			return parent.GetEntityIndex();
+		// 尝试作为玩家
+		if ((entity as CDOTAPlayerController).IsPlayer && (entity as CDOTAPlayerController).IsPlayer()) {
+			const playerID = (entity as CDOTAPlayerController).GetPlayerID();
+			return [PropertyScope.PLAYER, playerID];
 		}
+
+		// 尝试作为单位
+		if ((entity as CDOTA_BaseNPC).IsBaseNPC && (entity as CDOTA_BaseNPC).IsBaseNPC()) {
+			return [PropertyScope.UNIT, (entity as CDOTA_BaseNPC).GetEntityIndex()];
+		}
+
+		return undefined;
 	}
 
 	private AggregateValues(strategy: AggregationStrategy, current: number, value: number, customAggregator?: CustomAggregator): number {

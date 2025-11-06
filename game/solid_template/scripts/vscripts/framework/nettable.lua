@@ -1,6 +1,6 @@
 local ____lualib = require("lualib_bundle")
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["4"] = 44,["5"] = 45,["6"] = 46,["8"] = 48,["9"] = 49,["10"] = 49,["11"] = 50,["13"] = 49,["14"] = 49,["15"] = 49,["16"] = 54,["17"] = 55,["18"] = 56,["19"] = 57,["21"] = 59,["22"] = 60,["24"] = 62,["25"] = 63,["26"] = 63,["27"] = 65,["28"] = 66,["31"] = 69,["32"] = 48,["33"] = 71,["34"] = 72,["35"] = 73,["37"] = 75,["38"] = 71,["39"] = 77,["40"] = 78,["41"] = 79,["42"] = 81,["43"] = 77,["44"] = 83,["45"] = 84,["46"] = 86,["47"] = 88,["50"] = 92,["51"] = 93,["52"] = 83,["54"] = 100,["55"] = 101,["56"] = 102,["58"] = 104,["59"] = 105,["60"] = 106,["61"] = 107,["62"] = 108,["64"] = 110,["65"] = 111,["66"] = 111,["67"] = 112,["68"] = 113,["69"] = 113,["70"] = 113,["72"] = 115,["74"] = 117,["75"] = 104,["76"] = 119,["77"] = 120,["78"] = 121,["79"] = 122,["81"] = 124,["83"] = 127,["84"] = 128,["85"] = 129,["86"] = 130,["88"] = 132,["89"] = 133,["90"] = 133,["91"] = 134,["92"] = 136,["93"] = 138,["94"] = 140,["95"] = 140,["96"] = 140,["99"] = 143,["101"] = 145,["102"] = 119});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["4"] = 45,["5"] = 46,["6"] = 47,["8"] = 49,["9"] = 50,["10"] = 50,["11"] = 51,["13"] = 50,["14"] = 50,["15"] = 50,["16"] = 55,["17"] = 56,["18"] = 57,["19"] = 58,["21"] = 60,["22"] = 61,["24"] = 63,["25"] = 64,["26"] = 64,["27"] = 66,["28"] = 67,["31"] = 70,["32"] = 49,["33"] = 72,["34"] = 73,["35"] = 74,["37"] = 76,["38"] = 72,["39"] = 78,["40"] = 79,["41"] = 80,["42"] = 82,["43"] = 78,["44"] = 84,["45"] = 85,["46"] = 87,["47"] = 89,["50"] = 93,["51"] = 94,["52"] = 84,["54"] = 101,["55"] = 102,["56"] = 103,["58"] = 105,["59"] = 106,["60"] = 107,["61"] = 108,["62"] = 109,["64"] = 111,["65"] = 112,["66"] = 112,["67"] = 113,["68"] = 114,["69"] = 114,["70"] = 114,["72"] = 116,["74"] = 118,["75"] = 105,["76"] = 120,["77"] = 121,["78"] = 122,["79"] = 123,["81"] = 125,["83"] = 128,["84"] = 129,["85"] = 130,["86"] = 131,["88"] = 133,["89"] = 134,["90"] = 134,["91"] = 135,["92"] = 137,["93"] = 139,["94"] = 141,["95"] = 141,["96"] = 141,["99"] = 144,["101"] = 146,["102"] = 120});
 if IsServer() then
     if CCustomNetTableManager.SetTableValue_Engine == nil then
         CCustomNetTableManager.SetTableValue_Engine = CCustomNetTableManager.SetTableValue
@@ -21,11 +21,11 @@ if IsServer() then
             if CCustomNetTableManager.TablesKeys[tableName] == nil then
                 CCustomNetTableManager.TablesKeys[tableName] = {}
             end
-            if value ~= nil and TableFindKey(nil, CCustomNetTableManager.TablesKeys[tableName], keyName) == nil then
+            if value ~= nil and TableFindKey(CCustomNetTableManager.TablesKeys[tableName], keyName) == nil then
                 local ____CCustomNetTableManager_TablesKeys_tableName_0 = CCustomNetTableManager.TablesKeys[tableName]
                 ____CCustomNetTableManager_TablesKeys_tableName_0[#____CCustomNetTableManager_TablesKeys_tableName_0 + 1] = keyName
             elseif value == nil then
-                ArrayRemove(nil, CCustomNetTableManager.TablesKeys[tableName], keyName)
+                ArrayRemove(CCustomNetTableManager.TablesKeys[tableName], keyName)
             end
         end
         return bSuccess

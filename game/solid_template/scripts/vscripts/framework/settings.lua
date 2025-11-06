@@ -4,7 +4,7 @@ local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
 local __TS__New = ____lualib.__TS__New
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["9"] = 1,["10"] = 1,["11"] = 3,["12"] = 3,["13"] = 4,["14"] = 5,["15"] = 6,["16"] = 7,["17"] = 8,["18"] = 9,["19"] = 10,["20"] = 11,["21"] = 12,["22"] = 13,["23"] = 14,["24"] = 15,["25"] = 16,["26"] = 17,["27"] = 18,["28"] = 19,["29"] = 20,["30"] = 21,["31"] = 22,["32"] = 23,["33"] = 24,["34"] = 25,["35"] = 26,["36"] = 27,["37"] = 28,["38"] = 29,["39"] = 30,["40"] = 31,["41"] = 32,["42"] = 33,["43"] = 34,["44"] = 35,["45"] = 36,["46"] = 37,["47"] = 38,["48"] = 39,["49"] = 40,["50"] = 41,["51"] = 42,["52"] = 43,["53"] = 44,["54"] = 45,["55"] = 46,["56"] = 47,["57"] = 48,["58"] = 49,["59"] = 50,["60"] = 51,["61"] = 52,["62"] = 53,["63"] = 54,["64"] = 55,["65"] = 56,["66"] = 57,["67"] = 58,["68"] = 60,["69"] = 61,["70"] = 62,["71"] = 63,["72"] = 64,["73"] = 65,["74"] = 66,["75"] = 67,["76"] = 68,["77"] = 69,["78"] = 70,["79"] = 71,["80"] = 72,["81"] = 73,["82"] = 74,["83"] = 75,["84"] = 76,["85"] = 77,["86"] = 78,["87"] = 79,["88"] = 80,["89"] = 81,["90"] = 82,["91"] = 83,["92"] = 84,["93"] = 86,["94"] = 87,["95"] = 88,["96"] = 89,["97"] = 90,["99"] = 92,["100"] = 93,["102"] = 95,["104"] = 5,["105"] = 3,["106"] = 103,["107"] = 103});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["9"] = 1,["10"] = 1,["11"] = 3,["12"] = 3,["13"] = 4,["14"] = 5,["15"] = 6,["16"] = 7,["17"] = 8,["18"] = 9,["19"] = 10,["20"] = 11,["21"] = 12,["22"] = 13,["23"] = 14,["24"] = 15,["25"] = 16,["26"] = 17,["27"] = 18,["28"] = 19,["29"] = 20,["30"] = 21,["31"] = 22,["32"] = 23,["33"] = 24,["34"] = 25,["35"] = 26,["36"] = 27,["37"] = 28,["38"] = 29,["39"] = 30,["40"] = 31,["41"] = 32,["42"] = 33,["43"] = 34,["44"] = 35,["45"] = 36,["46"] = 37,["47"] = 38,["48"] = 39,["49"] = 40,["50"] = 41,["51"] = 42,["52"] = 43,["53"] = 44,["54"] = 45,["55"] = 46,["56"] = 47,["57"] = 48,["58"] = 49,["59"] = 50,["60"] = 51,["61"] = 52,["62"] = 53,["63"] = 54,["64"] = 55,["65"] = 56,["66"] = 57,["67"] = 58,["68"] = 60,["69"] = 61,["70"] = 62,["71"] = 63,["72"] = 64,["73"] = 65,["74"] = 66,["75"] = 67,["76"] = 68,["77"] = 69,["78"] = 70,["79"] = 71,["80"] = 72,["81"] = 73,["82"] = 85,["83"] = 86,["84"] = 87,["85"] = 88,["86"] = 89,["88"] = 91,["89"] = 92,["91"] = 94,["93"] = 5,["94"] = 3,["95"] = 102,["96"] = 102});
 local ____exports = {}
 local ____tstl_2Dutils = require("lib.tstl-utils")
 local reloadable = ____tstl_2Dutils.reloadable
@@ -79,17 +79,6 @@ function MSettings.prototype.init(self, reload)
         GameMode:SetGiveFreeTPOnDeath(false)
         GameMode:SetWeatherEffectsDisabled(true)
         GameMode:SetForcedHUDSkin("default")
-        GameMode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_DAMAGE, 0)
-        GameMode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_HP, 0)
-        GameMode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_HP_REGEN, 0)
-        GameMode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_AGILITY_DAMAGE, 0)
-        GameMode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_AGILITY_ARMOR, 0)
-        GameMode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_AGILITY_ATTACK_SPEED, 0)
-        GameMode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_DAMAGE, 0)
-        GameMode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_MANA, 0)
-        GameMode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_MANA_REGEN, 0)
-        GameMode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_MAGIC_RESIST, 0)
-        GameMode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_ALL_DAMAGE, 0)
         GameMode:SetGoldSoundDisabled(true)
         if IsInToolsMode() then
             GameRules:LockCustomGameSetupTeamAssignment(false)

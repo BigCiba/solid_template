@@ -15,7 +15,7 @@ ____exports.registerEOMAbility = function(____, param)
         else
             name = ability.name
         end
-        local env = getFileScope(nil)
+        local env = getFileScope()
         env[name] = {}
         toDotaClassInstance(nil, env[name], ability)
         local originalSpawn = env[name].Spawn

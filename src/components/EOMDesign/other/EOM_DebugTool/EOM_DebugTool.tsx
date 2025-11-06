@@ -21,7 +21,13 @@ interface EOM_DebugToolAttribute extends PanelAttributes {
 	tabList?: string[];
 }
 
-const [player_key_values, setKeyValue] = createSignal<any>({});
+const [player_key_values, setKeyValue] = createSignal<any>({
+	alt_tool: {
+		type: "demo_setting",
+		key: "alt_tool",
+		value: true
+	}
+});
 const playerConfig = createMemo(() => {
 	const result: Record<string, any> = {};
 	for (const key in player_key_values()) {
@@ -62,8 +68,8 @@ export const EOM_DebugTool: ParentComponent<EOM_DebugToolAttribute> = (props) =>
 			}
 		}
 	};
-	// const timer = setInterval(Update, Game.GetGameFrameTime());
-	// onCleanup(() => clearInterval(timer));
+	const timer = setInterval(Update, Game.GetGameFrameTime());
+	onCleanup(() => clearInterval(timer));
 	return (
 		<Panel id="EOM_DebugTool" hittest={false} >
 			{props.containerElement}
@@ -477,7 +483,7 @@ export const DemoButton: ParentComponent<{
 	str?: string,
 	text: string,
 	onactivate?: () => void,
-	color?: "RedButton" | "GreenButton" | "QuitButton";
+	color?: "RedButton" | "GreenButton" | "YellowButton" | "BlueButton" | "OrangeButton" | "QuitButton" | string;
 }> = (props) => {
 	const onactivate = props.onactivate ?? (() => FireEvent(props.eventName, props.str));
 	return <TextButton id={props.eventName} class={classNames("DemoButton", "HotKeyValid", "FireEvent", props.color)} text={props.text} onactivate={onactivate} />;

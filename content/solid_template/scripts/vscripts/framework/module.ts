@@ -29,7 +29,10 @@ class CModule {
 		Modules.forEach(m => m.init(false));
 	}
 	static reload() {
-		Modules.forEach(m => m.init(true));
+		Modules.forEach(m => {
+			m.init(true);
+			print(`[${m.constructor.name}]: reload completed`);
+		});
 	}
 	print(...args: any[]) {
 		print(`[${this.constructor.name}]: `, ...args);

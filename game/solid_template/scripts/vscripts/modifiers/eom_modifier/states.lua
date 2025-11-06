@@ -11,7 +11,7 @@ EOMModifierState[EOMModifierState.CUSTOM_HEALTH_BAR] = "CUSTOM_HEALTH_BAR"
 EOMModifierState.AI_DISABLED = 67
 EOMModifierState[EOMModifierState.AI_DISABLED] = "AI_DISABLED"
 function RegisterModifierState(hModifier)
-    if not IsValid(nil, hModifier) then
+    if not IsValid(hModifier) then
         return false
     end
     if type(hModifier.ECheckState) ~= "function" then
@@ -34,7 +34,7 @@ function RegisterModifierState(hModifier)
     return true
 end
 function UnregisterModifierState(hModifier)
-    if not IsValid(nil, hModifier) then
+    if not IsValid(hModifier) then
         return false
     end
     local parent = hModifier:GetParent()
@@ -42,13 +42,13 @@ function UnregisterModifierState(hModifier)
         return false
     end
     local aStateModifers = parent.aStateModifers
-    if (ArrayRemove(nil, aStateModifers, hModifier)) ~= nil then
+    if (ArrayRemove(aStateModifers, hModifier)) ~= nil then
         return true
     end
     return false
 end
 function HasState(parent, iState)
-    if not IsValid(nil, parent) then
+    if not IsValid(parent) then
         return false
     end
     if parent.aStateModifers == nil then
@@ -57,7 +57,7 @@ function HasState(parent, iState)
     local aStateModifers = parent.aStateModifers
     for i = #aStateModifers, 1, -1 do
         local hModifier = aStateModifers[i]
-        if IsValid(nil, hModifier) and type(hModifier.ECheckState) == "function" then
+        if IsValid(hModifier) and type(hModifier.ECheckState) == "function" then
             local tFlags = hModifier.ECheckState(hModifier)
             if type(tFlags) == "table" and type(tFlags[iState]) == "boolean" then
                 return tFlags[iState]

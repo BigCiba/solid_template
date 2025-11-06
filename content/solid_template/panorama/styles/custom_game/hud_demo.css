@@ -1347,6 +1347,72 @@ ToggleButton Label {
   background-color: gradient(linear, 0% 0%, 70% 0%, from(#3cc486), to(#259c67));
   border: 1px solid #3feb9d;
 }
+.DemoTextEntry.BlueButton {
+  background-color: #3A5C7E;
+  border: 1px solid #4a7fa3;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.DemoTextEntry.BlueButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#4ea1ff), to(#2a78d1));
+  border: 1px solid #6ec3ff;
+}
+.DemoTextEntry.YellowButton {
+  background-color: #7D6A3A;
+  border: 1px solid #a3944e;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.DemoTextEntry.YellowButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#ffdd57), to(#d1aa2a));
+  border: 1px solid #ffea6e;
+}
+.DemoTextEntry.OrangeButton {
+  background-color: #7D4A2E;
+  border: 1px solid #a36b4e;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.DemoTextEntry.OrangeButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#ff9f57), to(#d16a2a));
+  border: 1px solid #ffb76e;
+}
+.DemoTextEntry.PurpleButton {
+  background-color: #5E3A7D;
+  border: 1px solid #7f4ea3;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.DemoTextEntry.PurpleButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#b657ff), to(#8a2ad1));
+  border: 1px solid #d16eff;
+}
+.DemoTextEntry.PinkButton {
+  background-color: #7D3A5E;
+  border: 1px solid #a34e7f;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.DemoTextEntry.PinkButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#ff57b6), to(#d12a8a));
+  border: 1px solid #ff6ed1;
+}
+.DemoTextEntry.CyanButton {
+  background-color: #3A7D7D;
+  border: 1px solid #4ea3a3;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.DemoTextEntry.CyanButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#57fff1), to(#2ad1b6));
+  border: 1px solid #6effd1;
+}
 .DemoTextEntry.RedButton {
   background-color: #6D4A4E;
   border: 1px solid #9b6369;
@@ -1451,6 +1517,72 @@ ToggleButton Label {
 .DemoButton.GreenButton:hover {
   background-color: gradient(linear, 0% 0%, 70% 0%, from(#3cc486), to(#259c67));
   border: 1px solid #3feb9d;
+}
+.DemoButton.BlueButton {
+  background-color: #3A5C7E;
+  border: 1px solid #4a7fa3;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.DemoButton.BlueButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#4ea1ff), to(#2a78d1));
+  border: 1px solid #6ec3ff;
+}
+.DemoButton.YellowButton {
+  background-color: #7D6A3A;
+  border: 1px solid #a3944e;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.DemoButton.YellowButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#ffdd57), to(#d1aa2a));
+  border: 1px solid #ffea6e;
+}
+.DemoButton.OrangeButton {
+  background-color: #7D4A2E;
+  border: 1px solid #a36b4e;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.DemoButton.OrangeButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#ff9f57), to(#d16a2a));
+  border: 1px solid #ffb76e;
+}
+.DemoButton.PurpleButton {
+  background-color: #5E3A7D;
+  border: 1px solid #7f4ea3;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.DemoButton.PurpleButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#b657ff), to(#8a2ad1));
+  border: 1px solid #d16eff;
+}
+.DemoButton.PinkButton {
+  background-color: #7D3A5E;
+  border: 1px solid #a34e7f;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.DemoButton.PinkButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#ff57b6), to(#d12a8a));
+  border: 1px solid #ff6ed1;
+}
+.DemoButton.CyanButton {
+  background-color: #3A7D7D;
+  border: 1px solid #4ea3a3;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.DemoButton.CyanButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#57fff1), to(#2ad1b6));
+  border: 1px solid #6effd1;
 }
 .DemoButton.RedButton {
   background-color: #6D4A4E;
@@ -1743,6 +1875,72 @@ ToggleButton Label {
 .EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.GreenButton:hover {
   background-color: gradient(linear, 0% 0%, 70% 0%, from(#3cc486), to(#259c67));
   border: 1px solid #3feb9d;
+}
+.EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.BlueButton {
+  background-color: #3A5C7E;
+  border: 1px solid #4a7fa3;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.BlueButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#4ea1ff), to(#2a78d1));
+  border: 1px solid #6ec3ff;
+}
+.EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.YellowButton {
+  background-color: #7D6A3A;
+  border: 1px solid #a3944e;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.YellowButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#ffdd57), to(#d1aa2a));
+  border: 1px solid #ffea6e;
+}
+.EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.OrangeButton {
+  background-color: #7D4A2E;
+  border: 1px solid #a36b4e;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.OrangeButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#ff9f57), to(#d16a2a));
+  border: 1px solid #ffb76e;
+}
+.EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.PurpleButton {
+  background-color: #5E3A7D;
+  border: 1px solid #7f4ea3;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.PurpleButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#b657ff), to(#8a2ad1));
+  border: 1px solid #d16eff;
+}
+.EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.PinkButton {
+  background-color: #7D3A5E;
+  border: 1px solid #a34e7f;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.PinkButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#ff57b6), to(#d12a8a));
+  border: 1px solid #ff6ed1;
+}
+.EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.CyanButton {
+  background-color: #3A7D7D;
+  border: 1px solid #4ea3a3;
+  transition-property: background-color, border;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+.EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.CyanButton:hover {
+  background-color: gradient(linear, 0% 0%, 70% 0%, from(#57fff1), to(#2ad1b6));
+  border: 1px solid #6effd1;
 }
 .EOM_DebugTool_TextPicker .EOM_DebugTool_TextPickerItem.RedButton {
   background-color: #6D4A4E;

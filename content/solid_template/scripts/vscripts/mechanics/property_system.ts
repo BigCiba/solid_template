@@ -1,0 +1,927 @@
+/** @noSelfInFile */
+
+import { reloadable } from "../lib/tstl-utils";
+
+/**
+ * 属性系统 - 整合版 CModule
+ * 
+ * 完整的属性管理系统，支持：
+ * - 双作用域（玩家/单位级别）
+ * - 双类型（静态/动态属性）
+ * - 自动网表同步
+ * - 多层缓存优化
+ * - 自动内存清理
+ * - 完整调试工具
+ * 
+ * 使用方法：
+ * ```typescript
+ * // 在 mechanics/index.ts 中导入
+ * const propertySystemModule = require('./property_system');
+ * ```
+ */
+
+// ==================== 类型定义 ====================
+
+
+
+// ==================== 主类定义 ====================
+@reloadable
+class MPropertySystem extends CModule {
+	// 网表同步配置
+	private readonly NETTABLE_NAME = 'property_system';
+	private readonly SYNC_INTERVAL = 0.1;
+	private readonly MAX_SYNC_PER_BATCH = 50;
+
+	// 自动清理配置
+	private autoCleanupInterval = 30;
+
+	init(reload: boolean): void {
+		if (!reload) {
+			this.InitializeCore();
+
+			if (IsServer()) {
+				this.InitializeNetTableSync();
+				this.StartAutoCleanup();
+				this.RegisterDebugCommands();
+			}
+
+			this.print('Property System initialized');
+		} else {
+			this.print('Property System reloaded');
+		}
+	}
+
+	initPriority(): number {
+		return 10; // 较高优先级，在大多数系统之前初始化
+	}
+
+	reset(): void {
+		this.ResetSystem();
+	}
+
+	// ==================== 核心初始化 ====================
+
+	private InitializeCore(): void {
+		if (!PropertyData) {
+			PropertyData = {
+				configs: new Map(),
+				playerStorage: new Map(),
+				unitStorage: new Map(),
+				dirtyKeys: new Set(),
+				lastSyncTime: 0,
+				stats: {
+					totalReads: 0,
+					cacheHits: 0,
+					totalWrites: 0,
+					syncCount: 0,
+				},
+			};
+		}
+	}
+
+	// ==================== 属性配置 ====================
+
+	/** 注册单个属性配置 */
+	RegisterProperty(config: PropertyConfig): void {
+		const finalConfig: PropertyConfig = {
+			...config,
+			defaultValue: config.defaultValue ?? 0,
+			syncToClient: config.syncToClient ?? true,
+			syncPriority: config.syncPriority ?? 100,
+			enableCache: config.enableCache ?? true,
+			cacheDuration: config.cacheDuration ?? 0,
+		};
+
+		PropertyData.configs.set(config.id, finalConfig);
+		this.print(`Registered: ${config.id} (${PropertyScope[config.scope]})`);
+	}
+
+	/** 批量注册属性配置 */
+	RegisterProperties(configs: PropertyConfig[]): void {
+		for (const config of configs) {
+			this.RegisterProperty(config);
+		}
+	}
+
+	// ==================== 静态属性 API ====================
+
+	/** 添加静态属性 */
+	AddStaticProperty(
+		modifier: CDOTA_Modifier_Lua,
+		propertyId: string,
+		value: number,
+		key?: PropertySystemKey
+	): boolean {
+		if (!this.ValidateProperty(propertyId)) return false;
+		if (!this.IsModifierValid(modifier)) return false;
+
+		const config = this.GetConfig(propertyId)!;
+		const targetKey = this.ResolveKey(modifier, config.scope, key);
+		if (targetKey === undefined) return false;
+
+		const storage = this.GetStorage(config.scope, targetKey);
+		let propertyList = storage.static.get(propertyId);
+
+		if (!propertyList) {
+			propertyList = [];
+			storage.static.set(propertyId, propertyList);
+		}
+
+		propertyList.push({
+			modifier,
+			value,
+			addedTime: this.GetCurrentTime(),
+		});
+
+		this.RecalculateStaticProperty(config.scope, targetKey, propertyId);
+
+		if (config.syncToClient) {
+			this.MarkDirty(config.scope, targetKey, propertyId);
+		}
+
+		PropertyData.stats.totalWrites++;
+		return true;
+	}
+
+	/** 移除静态属性 */
+	RemoveStaticProperty(modifier: CDOTA_Modifier_Lua, propertyId?: string, key?: PropertySystemKey): void {
+		if (!modifier) return;
+
+		if (propertyId) {
+			this.RemoveSingleStaticProperty(modifier, propertyId, key);
+		} else {
+			for (const [pid] of PropertyData.configs) {
+				this.RemoveSingleStaticProperty(modifier, pid, key);
+			}
+		}
+	}
+
+	private RemoveSingleStaticProperty(modifier: CDOTA_Modifier_Lua, propertyId: string, key?: PropertySystemKey): void {
+		if (!this.ValidateProperty(propertyId)) return;
+
+		const config = this.GetConfig(propertyId)!;
+		const targetKey = this.ResolveKey(modifier, config.scope, key);
+		if (targetKey === undefined) return;
+
+		const storage = this.GetStorage(config.scope, targetKey);
+		const propertyList = storage.static.get(propertyId);
+
+		if (!propertyList) return;
+
+		const index = propertyList.findIndex(d => d.modifier === modifier);
+		if (index !== -1) {
+			propertyList.splice(index, 1);
+
+			if (propertyList.length === 0) {
+				storage.static.delete(propertyId);
+				storage.staticCache.delete(propertyId);
+			} else {
+				this.RecalculateStaticProperty(config.scope, targetKey, propertyId);
+			}
+
+			if (config.syncToClient) {
+				this.MarkDirty(config.scope, targetKey, propertyId);
+			}
+		}
+	}
+
+	/** 更新静态属性值 */
+	UpdateStaticPropertyValue(
+		modifier: CDOTA_Modifier_Lua,
+		propertyId: string,
+		newValue: number,
+		key?: PropertySystemKey
+	): boolean {
+		if (!this.ValidateProperty(propertyId)) return false;
+		if (!this.IsModifierValid(modifier)) return false;
+
+		const config = this.GetConfig(propertyId)!;
+		const targetKey = this.ResolveKey(modifier, config.scope, key);
+		if (targetKey === undefined) return false;
+
+		const storage = this.GetStorage(config.scope, targetKey);
+		const propertyList = storage.static.get(propertyId);
+
+		if (!propertyList) return false;
+
+		const data = propertyList.find(d => d.modifier === modifier);
+		if (data) {
+			data.value = newValue;
+			this.RecalculateStaticProperty(config.scope, targetKey, propertyId);
+
+			if (config.syncToClient) {
+				this.MarkDirty(config.scope, targetKey, propertyId);
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/** 获取静态属性值 */
+	GetStaticPropertyValue(scope: PropertyScope, key: PropertySystemKey, propertyId: string): number {
+		const config = this.GetConfig(propertyId);
+		if (!config) return 0;
+
+		const storage = this.GetStorage(scope, key);
+		const cachedValue = storage.staticCache.get(propertyId);
+
+		PropertyData.stats.totalReads++;
+		if (cachedValue !== undefined) {
+			PropertyData.stats.cacheHits++;
+		}
+
+		return cachedValue ?? config.defaultValue ?? 0;
+	}
+
+	private RecalculateStaticProperty(scope: PropertyScope, key: PropertySystemKey, propertyId: string): void {
+		const config = this.GetConfig(propertyId);
+		if (!config) return;
+
+		const storage = this.GetStorage(scope, key);
+		const propertyList = storage.static.get(propertyId);
+
+		if (!propertyList || propertyList.length === 0) {
+			storage.staticCache.delete(propertyId);
+			return;
+		}
+
+		// 清理无效修饰符
+		for (let i = propertyList.length - 1; i >= 0; i--) {
+			if (!this.IsModifierValid(propertyList[i].modifier)) {
+				propertyList.splice(i, 1);
+			}
+		}
+
+		if (propertyList.length === 0) {
+			storage.static.delete(propertyId);
+			storage.staticCache.delete(propertyId);
+			return;
+		}
+
+		// 计算总和
+		let result = this.GetAggregationInitialValue(config.aggregation, config.defaultValue ?? 0);
+
+		for (const data of propertyList) {
+			result = this.AggregateValues(config.aggregation, result, data.value, config.customAggregator);
+		}
+
+		storage.staticCache.set(propertyId, result);
+	}
+
+	// ==================== 动态属性 API ====================
+
+	/** 注册动态属性 */
+	RegisterDynamicProperty(
+		modifier: CDOTA_Modifier_Lua,
+		propertyId: string,
+		callback: DynamicPropertyCallback,
+		priority: number = 0,
+		key?: PropertySystemKey
+	): boolean {
+		if (!this.ValidateProperty(propertyId)) return false;
+		if (!this.IsModifierValid(modifier)) return false;
+
+		const config = this.GetConfig(propertyId)!;
+		const targetKey = this.ResolveKey(modifier, config.scope, key);
+		if (targetKey === undefined) return false;
+
+		const storage = this.GetStorage(config.scope, targetKey);
+		let propertyList = storage.dynamic.get(propertyId);
+
+		if (!propertyList) {
+			propertyList = [];
+			storage.dynamic.set(propertyId, propertyList);
+		}
+
+		const existingIndex = propertyList.findIndex(d => d.modifier === modifier);
+		if (existingIndex !== -1) {
+			propertyList[existingIndex].callback = callback;
+			propertyList[existingIndex].priority = priority;
+		} else {
+			propertyList.push({
+				modifier,
+				callback,
+				priority,
+				addedTime: this.GetCurrentTime(),
+			});
+		}
+
+		propertyList.sort((a, b) => a.priority - b.priority);
+		storage.runtimeCache.delete(propertyId);
+
+		if (config.syncToClient) {
+			this.MarkDirty(config.scope, targetKey, propertyId);
+		}
+
+		PropertyData.stats.totalWrites++;
+		return true;
+	}
+
+	/** 注销动态属性 */
+	UnregisterDynamicProperty(modifier: CDOTA_Modifier_Lua, propertyId?: string, key?: PropertySystemKey): void {
+		if (!modifier) return;
+
+		if (propertyId) {
+			this.UnregisterSingleDynamicProperty(modifier, propertyId, key);
+		} else {
+			for (const [pid] of PropertyData.configs) {
+				this.UnregisterSingleDynamicProperty(modifier, pid, key);
+			}
+		}
+	}
+
+	private UnregisterSingleDynamicProperty(modifier: CDOTA_Modifier_Lua, propertyId: string, key?: PropertySystemKey): void {
+		if (!this.ValidateProperty(propertyId)) return;
+
+		const config = this.GetConfig(propertyId)!;
+		const targetKey = this.ResolveKey(modifier, config.scope, key);
+		if (targetKey === undefined) return;
+
+		const storage = this.GetStorage(config.scope, targetKey);
+		const propertyList = storage.dynamic.get(propertyId);
+
+		if (!propertyList) return;
+
+		const index = propertyList.findIndex(d => d.modifier === modifier);
+		if (index !== -1) {
+			propertyList.splice(index, 1);
+
+			if (propertyList.length === 0) {
+				storage.dynamic.delete(propertyId);
+			}
+
+			storage.runtimeCache.delete(propertyId);
+
+			if (config.syncToClient) {
+				this.MarkDirty(config.scope, targetKey, propertyId);
+			}
+		}
+	}
+
+	/** 获取动态属性值（带缓存） */
+	GetDynamicPropertyValue(scope: PropertyScope, key: PropertySystemKey, propertyId: string, params?: any): number {
+		const config = this.GetConfig(propertyId);
+		if (!config) return 0;
+
+		const storage = this.GetStorage(scope, key);
+
+		// 检查缓存
+		if (config.enableCache) {
+			const cached = storage.runtimeCache.get(propertyId);
+			const currentFrame = this.GetCurrentFrame();
+
+			if (cached) {
+				const frameAge = currentFrame - cached.frame;
+				if (frameAge <= (config.cacheDuration ?? 0)) {
+					PropertyData.stats.totalReads++;
+					PropertyData.stats.cacheHits++;
+					return cached.value;
+				}
+			}
+		}
+
+		// 计算新值
+		const value = this.CalculateDynamicPropertyValue(scope, key, propertyId, params);
+
+		// 更新缓存
+		if (config.enableCache) {
+			storage.runtimeCache.set(propertyId, {
+				value,
+				frame: this.GetCurrentFrame(),
+				time: this.GetCurrentTime(),
+			});
+		}
+
+		PropertyData.stats.totalReads++;
+		return value;
+	}
+
+	private CalculateDynamicPropertyValue(scope: PropertyScope, key: PropertySystemKey, propertyId: string, params?: any): number {
+		const config = this.GetConfig(propertyId);
+		if (!config) return 0;
+
+		const storage = this.GetStorage(scope, key);
+		const propertyList = storage.dynamic.get(propertyId);
+
+		if (!propertyList || propertyList.length === 0) {
+			return config.defaultValue ?? 0;
+		}
+
+		// 清理无效修饰符
+		for (let i = propertyList.length - 1; i >= 0; i--) {
+			if (!this.IsModifierValid(propertyList[i].modifier)) {
+				propertyList.splice(i, 1);
+			}
+		}
+
+		if (propertyList.length === 0) {
+			storage.dynamic.delete(propertyId);
+			return config.defaultValue ?? 0;
+		}
+
+		// 计算总和
+		let result = this.GetAggregationInitialValue(config.aggregation, config.defaultValue ?? 0);
+
+		for (const data of propertyList) {
+			try {
+				const value = data.callback(params);
+				if (value !== undefined) {
+					result = this.AggregateValues(config.aggregation, result, value, config.customAggregator);
+				}
+			} catch (error) {
+				this.print(`Error in callback for ${propertyId}: ${error}`);
+			}
+		}
+
+		return result;
+	}
+
+	/** 清除动态属性缓存 */
+	ClearDynamicPropertyCache(scope: PropertyScope, key: PropertySystemKey, propertyId?: string): void {
+		const storage = this.GetStorage(scope, key);
+
+		if (propertyId) {
+			storage.runtimeCache.delete(propertyId);
+		} else {
+			storage.runtimeCache.clear();
+		}
+	}
+
+	// ==================== 通用属性值获取 ====================
+
+	/** 获取属性值（静态 + 动态） */
+	GetPropertyValue(scope: PropertyScope, key: PropertySystemKey, propertyId: string, params?: any): number {
+		const staticValue = this.GetStaticPropertyValue(scope, key, propertyId);
+		const dynamicValue = this.GetDynamicPropertyValue(scope, key, propertyId, params);
+
+		// 简化处理：累加
+		// 实际项目中可能需要更复杂的合并逻辑
+		return staticValue + dynamicValue;
+	}
+
+	// ==================== 网表同步 ====================
+
+	private InitializeNetTableSync(): void {
+		CustomNetTables.SetTableValue(this.NETTABLE_NAME, 'init', {
+			version: 1,
+			time: this.GetCurrentTime(),
+		});
+
+		Timer.GameTimer(this.SYNC_INTERVAL, () => {
+			this.SyncDirtyProperties();
+			return this.SYNC_INTERVAL;
+		});
+
+		this.print('NetTable sync initialized');
+	}
+
+	private SyncDirtyProperties(): void {
+		if (PropertyData.dirtyKeys.size === 0) return;
+
+		const dirtyArray = Array.from(PropertyData.dirtyKeys);
+
+		// 按优先级排序
+		dirtyArray.sort((a, b) => {
+			const [, , propIdA] = a.split('_');
+			const [, , propIdB] = b.split('_');
+
+			const configA = this.GetConfig(propIdA);
+			const configB = this.GetConfig(propIdB);
+
+			const priorityA = configA?.syncPriority ?? 100;
+			const priorityB = configB?.syncPriority ?? 100;
+
+			return priorityA - priorityB;
+		});
+
+		// 分批同步
+		const batchCount = Math.ceil(dirtyArray.length / this.MAX_SYNC_PER_BATCH);
+
+		for (let i = 0; i < batchCount; i++) {
+			const batch = dirtyArray.slice(i * this.MAX_SYNC_PER_BATCH, (i + 1) * this.MAX_SYNC_PER_BATCH);
+			this.SyncPropertyBatch(batch);
+		}
+
+		PropertyData.dirtyKeys.clear();
+		PropertyData.lastSyncTime = this.GetCurrentTime();
+		PropertyData.stats.syncCount++;
+	}
+
+	private SyncPropertyBatch(dirtyKeys: string[]): void {
+		const updates: Record<string, any> = {};
+
+		for (const dirtyKey of dirtyKeys) {
+			const [scopeStr, keyStr, propertyId] = dirtyKey.split('_');
+			const scope = parseInt(scopeStr) as PropertyScope;
+			const key = parseInt(keyStr) as PropertySystemKey;
+
+			const value = this.GetPropertyValue(scope, key, propertyId);
+			updates[dirtyKey] = value;
+		}
+
+		CustomNetTables.SetTableValue(this.NETTABLE_NAME, 'properties', updates);
+	}
+
+	/** 强制同步指定属性 */
+	ForceSyncProperty(scope: PropertyScope, key: PropertySystemKey, propertyId: string): void {
+		if (!IsServer()) return;
+
+		const config = this.GetConfig(propertyId);
+		if (!config || !config.syncToClient) return;
+
+		const dirtyKey = this.GetDirtyKey(scope, key, propertyId);
+		const value = this.GetPropertyValue(scope, key, propertyId);
+
+		const update: Record<string, any> = {};
+		update[dirtyKey] = value;
+
+		CustomNetTables.SetTableValue(this.NETTABLE_NAME, 'properties', update);
+	}
+
+	/** 客户端：从网表获取属性值 */
+	GetPropertyValueFromNetTable(scope: PropertyScope, key: PropertySystemKey, propertyId: string): number | undefined {
+		if (IsServer()) return undefined;
+
+		const dirtyKey = this.GetDirtyKey(scope, key, propertyId);
+		const data = CustomNetTables.GetTableValue(this.NETTABLE_NAME, 'properties');
+
+		if (data && data[dirtyKey] !== undefined) {
+			return data[dirtyKey] as number;
+		}
+
+		return undefined;
+	}
+
+	/** 客户端：监听属性变化（使用定时器轮询） */
+	ListenPropertyChange(
+		scope: PropertyScope,
+		key: PropertySystemKey,
+		propertyId: string,
+		callback: (oldValue: number | undefined, newValue: number | undefined) => void
+	): void {
+		if (IsServer()) {
+			this.print('Warning: ListenPropertyChange should only be called on client');
+			return;
+		}
+
+		let lastValue = this.GetPropertyValueFromNetTable(scope, key, propertyId);
+
+		Timer.GameTimer(0.1, () => {
+			const newValue = this.GetPropertyValueFromNetTable(scope, key, propertyId);
+			if (newValue !== lastValue) {
+				callback(lastValue, newValue);
+				lastValue = newValue;
+			}
+			return 0.1;
+		});
+	}
+
+	// ==================== 清理系统 ====================
+
+	/** 清理修饰符的所有属性 */
+	CleanupModifierProperties(modifier: CDOTA_Modifier_Lua, key?: PropertySystemKey): void {
+		if (!modifier) return;
+
+		this.RemoveStaticProperty(modifier, undefined, key);
+		this.UnregisterDynamicProperty(modifier, undefined, key);
+	}
+
+	/** 清理单位的所有属性 */
+	CleanupUnitProperties(unit: CDOTA_BaseNPC): void {
+		if (!unit) return;
+
+		const entIndex = unit.GetEntityIndex();
+		this.CleanupStorage(PropertyScope.UNIT, entIndex);
+
+		const playerID = unit.GetPlayerOwnerID();
+		if (playerID !== -1) {
+			this.ClearDynamicPropertyCache(PropertyScope.PLAYER, playerID);
+		}
+	}
+
+	/** 清理玩家的所有属性 */
+	CleanupPlayerProperties(playerID: PlayerID): void {
+		if (playerID < 0) return;
+		this.CleanupStorage(PropertyScope.PLAYER, playerID);
+	}
+
+	private CleanupStorage(scope: PropertyScope, key: PropertySystemKey): void {
+		const storageMap = scope === PropertyScope.PLAYER
+			? PropertyData.playerStorage
+			: PropertyData.unitStorage;
+
+		const storage = storageMap.get(key as any);
+		if (storage) {
+			storage.static.clear();
+			storage.dynamic.clear();
+			storage.staticCache.clear();
+			storage.runtimeCache.clear();
+			storageMap.delete(key as any);
+		}
+	}
+
+	/** 清理所有无效的修饰符引用 */
+	CleanupInvalidModifiers(): number {
+		let cleanedCount = 0;
+
+		for (const [, storage] of PropertyData.playerStorage) {
+			cleanedCount += this.CleanupStorageInvalidModifiers(storage);
+		}
+
+		for (const [, storage] of PropertyData.unitStorage) {
+			cleanedCount += this.CleanupStorageInvalidModifiers(storage);
+		}
+
+		if (cleanedCount > 0) {
+			this.print(`Cleaned up ${cleanedCount} invalid modifiers`);
+		}
+
+		return cleanedCount;
+	}
+
+	private CleanupStorageInvalidModifiers(storage: PropertyStorage): number {
+		let cleanedCount = 0;
+
+		// 清理静态属性
+		for (const [propertyId, propertyList] of storage.static) {
+			for (let i = propertyList.length - 1; i >= 0; i--) {
+				if (!this.IsModifierValid(propertyList[i].modifier)) {
+					propertyList.splice(i, 1);
+					cleanedCount++;
+				}
+			}
+
+			if (propertyList.length === 0) {
+				storage.static.delete(propertyId);
+				storage.staticCache.delete(propertyId);
+			}
+		}
+
+		// 清理动态属性
+		for (const [propertyId, propertyList] of storage.dynamic) {
+			for (let i = propertyList.length - 1; i >= 0; i--) {
+				if (!this.IsModifierValid(propertyList[i].modifier)) {
+					propertyList.splice(i, 1);
+					cleanedCount++;
+				}
+			}
+
+			if (propertyList.length === 0) {
+				storage.dynamic.delete(propertyId);
+			}
+		}
+
+		return cleanedCount;
+	}
+
+	/** 清理空存储 */
+	CleanupEmptyStorages(): number {
+		let cleanedCount = 0;
+
+		for (const [key, storage] of PropertyData.playerStorage) {
+			if (this.IsStorageEmpty(storage)) {
+				PropertyData.playerStorage.delete(key);
+				cleanedCount++;
+			}
+		}
+
+		for (const [key, storage] of PropertyData.unitStorage) {
+			if (this.IsStorageEmpty(storage)) {
+				PropertyData.unitStorage.delete(key);
+				cleanedCount++;
+			}
+		}
+
+		return cleanedCount;
+	}
+
+	private IsStorageEmpty(storage: PropertyStorage): boolean {
+		return storage.static.size === 0 &&
+			storage.dynamic.size === 0 &&
+			storage.staticCache.size === 0 &&
+			storage.runtimeCache.size === 0;
+	}
+
+	/** 启动自动清理 */
+	private StartAutoCleanup(): void {
+		Timer.GameTimer(this.autoCleanupInterval, () => {
+			this.CleanupInvalidModifiers();
+			this.CleanupEmptyStorages();
+			return this.autoCleanupInterval;
+		});
+
+		this.print(`Auto cleanup started (${this.autoCleanupInterval}s)`);
+	}
+
+	/** 重置系统 */
+	private ResetSystem(): void {
+		PropertyData.playerStorage.clear();
+		PropertyData.unitStorage.clear();
+		PropertyData.dirtyKeys.clear();
+		PropertyData.stats = {
+			totalReads: 0,
+			cacheHits: 0,
+			totalWrites: 0,
+			syncCount: 0,
+		};
+	}
+
+	// ==================== 调试命令 ====================
+
+	private RegisterDebugCommands(): void {
+		// 打印系统状态
+		Convars.RegisterCommand('property_status', () => {
+			this.PrintSystemStatus();
+		}, 'Print property system status', 0);
+
+		// 打印性能统计
+		Convars.RegisterCommand('property_stats', () => {
+			this.PrintPerformanceStats();
+		}, 'Print performance statistics', 0);
+
+		// 重置统计
+		Convars.RegisterCommand('property_reset_stats', () => {
+			PropertyData.stats = {
+				totalReads: 0,
+				cacheHits: 0,
+				totalWrites: 0,
+				syncCount: 0,
+			};
+			this.print('Stats reset');
+		}, 'Reset performance statistics', 0);
+
+		// 列出所有属性
+		Convars.RegisterCommand('property_list', () => {
+			this.print('=== Registered Properties ===');
+			for (const [id, config] of PropertyData.configs) {
+				this.print(`${id}: scope=${PropertyScope[config.scope]}, type=${PropertyValueType[config.valueType]}`);
+			}
+		}, 'List all registered properties', 0);
+
+		// 强制清理
+		Convars.RegisterCommand('property_cleanup', () => {
+			const count = this.CleanupInvalidModifiers();
+			const storageCount = this.CleanupEmptyStorages();
+			this.print(`Cleaned: ${count} modifiers, ${storageCount} storages`);
+		}, 'Force cleanup invalid modifiers', 0);
+
+		this.print('Debug commands registered');
+	}
+
+	private PrintSystemStatus(): void {
+		this.print('=== Property System Status ===');
+		this.print(`Registered Properties: ${PropertyData.configs.size}`);
+		this.print(`Player Storages: ${PropertyData.playerStorage.size}`);
+		this.print(`Unit Storages: ${PropertyData.unitStorage.size}`);
+		this.print(`Dirty Keys: ${PropertyData.dirtyKeys.size}`);
+		this.print(`Last Sync: ${PropertyData.lastSyncTime.toFixed(2)}s`);
+	}
+
+	private PrintPerformanceStats(): void {
+		const stats = PropertyData.stats;
+		const hitRate = stats.totalReads > 0
+			? (stats.cacheHits / stats.totalReads * 100).toFixed(2)
+			: '0.00';
+
+		this.print('=== Performance Stats ===');
+		this.print(`Total Reads: ${stats.totalReads}`);
+		this.print(`Cache Hits: ${stats.cacheHits} (${hitRate}%)`);
+		this.print(`Total Writes: ${stats.totalWrites}`);
+		this.print(`Sync Count: ${stats.syncCount}`);
+	}
+
+	// ==================== 工具函数 ====================
+
+	private GetStorage(scope: PropertyScope, key: PropertySystemKey): PropertyStorage {
+		const storageMap = scope === PropertyScope.PLAYER
+			? PropertyData.playerStorage
+			: PropertyData.unitStorage;
+
+		let storage = storageMap.get(key as any);
+		if (!storage) {
+			storage = {
+				static: new Map(),
+				dynamic: new Map(),
+				staticCache: new Map(),
+				runtimeCache: new Map(),
+			};
+			storageMap.set(key as any, storage);
+		}
+
+		return storage;
+	}
+
+	private GetConfig(propertyId: string): PropertyConfig | undefined {
+		return PropertyData.configs.get(propertyId);
+	}
+
+	private ValidateProperty(propertyId: string): boolean {
+		if (!PropertyData.configs.has(propertyId)) {
+			this.print(`Error: Property ${propertyId} not registered`);
+			return false;
+		}
+		return true;
+	}
+
+	private IsModifierValid(modifier: CDOTA_Modifier_Lua): boolean {
+		if (!modifier) return false;
+		if (!IsValid(modifier)) return false;
+		if ((modifier as any)._bDestroyed === true) return false;
+		return true;
+	}
+
+	private ResolveKey(modifier: CDOTA_Modifier_Lua, scope: PropertyScope, key?: PropertySystemKey): PropertySystemKey | undefined {
+		if (key !== undefined) return key;
+
+		const parent = modifier.GetParent();
+		if (scope === PropertyScope.PLAYER) {
+			const playerID = parent.GetPlayerOwnerID();
+			if (playerID === -1) {
+				this.print('Error: Unit has no player owner');
+				return undefined;
+			}
+			return playerID;
+		} else {
+			return parent.GetEntityIndex();
+		}
+	}
+
+	private AggregateValues(strategy: AggregationStrategy, current: number, value: number, customAggregator?: CustomAggregator): number {
+		switch (strategy) {
+			case AggregationStrategy.SUM:
+				return current + value;
+			case AggregationStrategy.MULTIPLY:
+				return current * value;
+			case AggregationStrategy.MAX:
+				return Math.max(current, value);
+			case AggregationStrategy.MIN:
+				return Math.min(current, value);
+			case AggregationStrategy.FIRST:
+				return current !== 0 ? current : value;
+			case AggregationStrategy.LAST:
+				return value;
+			case AggregationStrategy.CUSTOM:
+				if (customAggregator) {
+					return customAggregator(current, value);
+				}
+				return current + value;
+			default:
+				return current + value;
+		}
+	}
+
+	private GetAggregationInitialValue(strategy: AggregationStrategy, defaultValue: number): number {
+		switch (strategy) {
+			case AggregationStrategy.MULTIPLY:
+				return 1;
+			case AggregationStrategy.MAX:
+				return Number.NEGATIVE_INFINITY;
+			case AggregationStrategy.MIN:
+				return Number.POSITIVE_INFINITY;
+			case AggregationStrategy.FIRST:
+			case AggregationStrategy.LAST:
+				return defaultValue;
+			default:
+				return defaultValue;
+		}
+	}
+
+	private GetDirtyKey(scope: PropertyScope, key: PropertySystemKey, propertyId: string): string {
+		return `${scope}_${key}_${propertyId}`;
+	}
+
+	private MarkDirty(scope: PropertyScope, key: PropertySystemKey, propertyId: string): void {
+		const dirtyKey = this.GetDirtyKey(scope, key, propertyId);
+		PropertyData.dirtyKeys.add(dirtyKey);
+	}
+
+	private GetCurrentFrame(): number {
+		return GameRules.GetDOTATime(false, false) as number;
+	}
+
+	private GetCurrentTime(): number {
+		return GameRules.GetGameTime();
+	}
+}
+
+// ==================== 导出 ====================
+
+declare global {
+	var PropertySystem: MPropertySystem;
+	var PropertyData: {
+		configs: Map<any, any>,
+		playerStorage: Map<any, any>,
+		unitStorage: Map<any, any>,
+		dirtyKeys: Set<string>;
+		lastSyncTime: number,
+		stats: {
+			totalReads: number,
+			cacheHits: number,
+			totalWrites: number,
+			syncCount: number,
+		},
+	};
+}
+PropertySystem ??= new MPropertySystem();

@@ -14,15 +14,6 @@ declare interface CustomNetTableDeclarations {
 			frozen?: boolean,
 		};
 		demo_settings: {
-			free_spells: boolean,
-			has_fog: boolean,
-			is_frozen: boolean,
-			is_pause: boolean,
-			is_devoured: boolean,
-			is_awakened: boolean,
-			ding: boolean,
-			no_archive: boolean,
-			tool_setting: any,
 			[x: string]: any;
 		};
 		client_ability: {
@@ -47,13 +38,7 @@ declare interface CustomNetTableDeclarations {
 	request_2: Record<string, { result: string, nowStep: number, maxStep: number; }>;
 	request_3: Record<string, { result: string, nowStep: number, maxStep: number; }>;
 	service: Table;
-	property_system: {
-		init: {
-			version: number;
-			time: number;
-		};
-		properties: Record<string, any>;
-	};
+	property_system: Table;
 }
 declare interface PlayerDataType {
 	info: {

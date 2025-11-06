@@ -561,7 +561,13 @@ const EOM_KeyBinder = props => {
   })();
 };
 
-const [player_key_values, setKeyValue] = libs.createSignal({});
+const [player_key_values, setKeyValue] = libs.createSignal({
+  alt_tool: {
+    type: "demo_setting",
+    key: "alt_tool",
+    value: true
+  }
+});
 const playerConfig = libs.createMemo(() => {
   const result = {};
   for (const key in player_key_values()) {
@@ -578,6 +584,19 @@ const EOM_DebugTool = props => {
   const [direction, setDirection] = libs.createSignal("left");
   const [tabIndex, setTabIndex] = libs.createSignal(0);
   const [demoSetting, _setDemoSetting] = libs.createSignal(CustomNetTables.GetTableValue("common", "demo_settings"));
+  const Update = () => {
+    if (!manualShowPanel()) {
+      if (minimized() == GameUI.IsAltDown() && playerConfig()["alt_tool"]) {
+        setMinimized(!GameUI.IsAltDown());
+      }
+    } else {
+      if (GameUI.IsAltDown() && playerConfig()["alt_tool"]) {
+        setManualShowPanel(false);
+      }
+    }
+  };
+  const timer = setInterval(Update, Game.GetGameFrameTime());
+  libs.onCleanup(() => clearInterval(timer));
   libs.createEffect(() => {
     const id = CustomNetTables.SubscribeNetTableListener("common", function (_, k, v) {
       if (k === "demo_settings") {
@@ -3209,7 +3228,7 @@ function Demo() {
         get containerElement() {
           return [libs.createComponent(EOM_DebugTool_AbilityPicker, {
             title: "添加技能",
-            eventName: "AddAbilityButtonPressed",
+            eventName: "AddAbility",
             get itemNames() {
               return abilityList();
             },
@@ -3219,7 +3238,7 @@ function Demo() {
             filterFunc: abilityFilter
           }), libs.createComponent(EOM_DebugTool_ItemPicker, {
             title: "添加物品",
-            eventName: "AddItemButtonPressed",
+            eventName: "AddItem",
             get itemNames() {
               return itemList();
             },
@@ -3229,7 +3248,7 @@ function Demo() {
             filterFunc: itemFilter
           }), libs.createComponent(EOM_DebugTool_TextPicker, {
             title: "创建友方单位",
-            eventName: "CreateAllyButtonPressed",
+            eventName: "CreateAlly",
             get itemNames() {
               return unitList();
             },
@@ -3239,7 +3258,7 @@ function Demo() {
             filterFunc: unitFilter
           }), libs.createComponent(EOM_DebugTool_TextPicker, {
             title: "创建敌方单位",
-            eventName: "CreateEnemyButtonPressed",
+            eventName: "CreateEnemy",
             get itemNames() {
               return unitList();
             },
@@ -3249,7 +3268,7 @@ function Demo() {
             filterFunc: unitFilter
           }), libs.createComponent(EOM_DebugTool_TextPicker, {
             title: "更换英雄",
-            eventName: "ChangeHeroButtonPressed",
+            eventName: "ChangeHero",
             get itemNames() {
               return commonHeroList();
             }
@@ -3261,40 +3280,10 @@ function Demo() {
             title: "游戏",
             get children() {
               return [libs.createComponent(DemoTextEntry, {
-                eventName: "SetDifficulty",
-                text: "设置难度",
-                defaultValue: "1"
-              }), libs.createComponent(DemoTextEntry, {
-                eventName: "SetPlayerCount",
-                text: "设置玩家数量",
-                defaultValue: "1"
-              }), libs.createComponent(DemoTextEntry, {
                 eventName: "ChangeHostTimescale",
                 text: "主机速度"
-              }), libs.createComponent(DemoToggle, {
-                eventName: "ToggleStatePauseButtonPressed",
-                text: "暂停出怪",
-                get selected() {
-                  return demoSetting()?.is_pause == 1;
-                }
               }), libs.createComponent(DemoButton, {
-                eventName: "ClearRoundUnits",
-                text: "清除怪物"
-              }), libs.createComponent(DemoTextEntry, {
-                eventName: "StartRound",
-                text: "开始回合",
-                defaultValue: "1"
-              }), libs.createComponent(DemoButton, {
-                eventName: "NextRoundState",
-                text: "回合下一阶段"
-              }), libs.createComponent(DemoToggle, {
-                eventName: "NoArchivePressed",
-                text: "无存档模式",
-                get selected() {
-                  return demoSetting()?.no_archive == 1;
-                }
-              }), libs.createComponent(DemoButton, {
-                eventName: "StandbyButtonPressed",
+                eventName: "Standby",
                 text: "测试按钮"
               })];
             }
@@ -3303,10 +3292,10 @@ function Demo() {
             title: "技能和物品",
             get children() {
               return [libs.createComponent(DemoSelectionButton, {
-                eventName: "AddAbilityButtonPressed",
+                eventName: "AddAbility",
                 text: "添加技能"
               }), libs.createComponent(DemoSelectionButton, {
-                eventName: "AddItemButtonPressed",
+                eventName: "AddItem",
                 text: "添加装备"
               }), libs.createComponent(DemoSelectionButton, {
                 eventName: "AddAbilityUpgrade",
@@ -3321,31 +3310,19 @@ function Demo() {
             title: "英雄",
             get children() {
               return [libs.createComponent(DemoButton, {
-                eventName: "RefreshButtonPressed",
+                eventName: "Refresh",
                 text: "刷新状态"
               }), libs.createComponent(DemoToggle, {
-                eventName: "FreeSpellsButtonPressed",
+                eventName: "FreeSpells",
                 text: "无限技能",
                 get selected() {
                   return demoSetting()?.free_spells == 1;
                 }
-              }), libs.createComponent(DemoToggle, {
-                eventName: "DebugDevouredPressed",
-                text: "吞噬状态",
-                get selected() {
-                  return demoSetting()?.is_devoured == 1;
-                }
-              }), libs.createComponent(DemoToggle, {
-                eventName: "DebugDwakenedPressed",
-                text: "无敌模式",
-                get selected() {
-                  return demoSetting()?.is_awakened == 1;
-                }
               }), libs.createComponent(DemoTextEntry, {
-                eventName: "LevelUpButtonPressed",
+                eventName: "LevelUp",
                 text: "升级"
               }), libs.createComponent(DemoSelectionButton, {
-                eventName: "ChangeHeroButtonPressed",
+                eventName: "ChangeHero",
                 text: "更换英雄"
               })];
             }
@@ -3354,19 +3331,19 @@ function Demo() {
             title: "单位",
             get children() {
               return [libs.createComponent(DemoButton, {
-                eventName: "DummyTargetButtonPressed",
+                eventName: "DummyTarget",
                 text: "创建木桩"
               }), libs.createComponent(DemoButton, {
-                eventName: "RemoveSpawnedUnitsButtonPressed",
+                eventName: "RemoveSpawnedUnits",
                 text: "移除目标"
               }), libs.createComponent(DemoSelectionButton, {
-                eventName: "CreateAllyButtonPressed",
+                eventName: "CreateAlly",
                 text: "创建友方单位"
               }), libs.createComponent(DemoSelectionButton, {
-                eventName: "CreateEnemyButtonPressed",
+                eventName: "CreateEnemy",
                 text: "创建敌方单位"
               }), libs.createComponent(DemoButton, {
-                eventName: "ControlUnitButtonPressed",
+                eventName: "ControlUnit",
                 text: "切换控制权"
               }), libs.createComponent(DemoSelectionButton, {
                 eventName: "EOM_UnitInfo",
@@ -3386,15 +3363,19 @@ function Demo() {
             title: "其他",
             get children() {
               return [libs.createComponent(DemoButton, {
-                eventName: "CompileTooltip",
-                text: "编译Popups",
-                onactivate: () => CompileTooltip()
-              }), [], libs.createComponent(DemoButton, {
-                eventName: "ReloadScriptButtonPressed",
+                eventName: "ReloadKeyValue",
+                color: "CyanButton",
+                text: "重载KV"
+              }), libs.createComponent(DemoButton, {
+                eventName: "ReloadScript",
                 color: "GreenButton",
                 text: "重载脚本"
               }), libs.createComponent(DemoButton, {
-                eventName: "RestartButtonPressed",
+                eventName: "CompileTooltip",
+                text: "编译Popups",
+                onactivate: () => CompileTooltip()
+              }), libs.createComponent(DemoButton, {
+                eventName: "Restart",
                 color: "RedButton",
                 text: "重开游戏"
               })];

@@ -177,47 +177,38 @@ function Demo() {
 		<Show when={true}>
 			<EOM_DebugTool direction="left" tabList={["常用", "后端"]} containerElement={
 				<>
-					<EOM_DebugTool_AbilityPicker title="添加技能" eventName="AddAbilityButtonPressed" itemNames={abilityList()} toggleList={getAbilityToggleList()} filterFunc={abilityFilter} />
-					<EOM_DebugTool_ItemPicker title="添加物品" eventName="AddItemButtonPressed" itemNames={itemList()} toggleList={getItemToggleList()} filterFunc={itemFilter} />
-					<EOM_DebugTool_TextPicker title="创建友方单位" eventName="CreateAllyButtonPressed" itemNames={unitList()} toggleList={getUnitToggleList()} filterFunc={unitFilter} />
-					<EOM_DebugTool_TextPicker title="创建敌方单位" eventName="CreateEnemyButtonPressed" itemNames={unitList()} toggleList={getUnitToggleList()} filterFunc={unitFilter} />
-					<EOM_DebugTool_TextPicker title="更换英雄" eventName="ChangeHeroButtonPressed" itemNames={commonHeroList()} />
+					<EOM_DebugTool_AbilityPicker title="添加技能" eventName="AddAbility" itemNames={abilityList()} toggleList={getAbilityToggleList()} filterFunc={abilityFilter} />
+					<EOM_DebugTool_ItemPicker title="添加物品" eventName="AddItem" itemNames={itemList()} toggleList={getItemToggleList()} filterFunc={itemFilter} />
+					<EOM_DebugTool_TextPicker title="创建友方单位" eventName="CreateAlly" itemNames={unitList()} toggleList={getUnitToggleList()} filterFunc={unitFilter} />
+					<EOM_DebugTool_TextPicker title="创建敌方单位" eventName="CreateEnemy" itemNames={unitList()} toggleList={getUnitToggleList()} filterFunc={unitFilter} />
+					<EOM_DebugTool_TextPicker title="更换英雄" eventName="ChangeHero" itemNames={commonHeroList()} />
 					{/* <EOM_DebugTool_TextPicker title="添加技能升级" eventName="AddAbilityUpgrade" itemNames={abilityUpgradeList()} toggleList={getAbilityUpgradeToggleList()} filterFunc={abilityUpgradeFilter} /> */}
 					<EOM_UnitInfo />
 				</>
 			}>
 				{/* 常用 */}
 				<EOM_DebugTool_Category tabIndex={0} title="游戏" >
-					<DemoTextEntry eventName="SetDifficulty" text="设置难度" defaultValue={"1"} />
-					<DemoTextEntry eventName="SetPlayerCount" text="设置玩家数量" defaultValue={"1"} />
 					<DemoTextEntry eventName="ChangeHostTimescale" text="主机速度" />
-					<DemoToggle eventName="ToggleStatePauseButtonPressed" text="暂停出怪" selected={demoSetting()?.is_pause == 1} />
-					<DemoButton eventName="ClearRoundUnits" text="清除怪物" />
-					<DemoTextEntry eventName="StartRound" text="开始回合" defaultValue={"1"} />
-					<DemoButton eventName="NextRoundState" text="回合下一阶段" />
-					<DemoToggle eventName="NoArchivePressed" text="无存档模式" selected={demoSetting()?.no_archive == 1} />
-					<DemoButton eventName="StandbyButtonPressed" text="测试按钮" />
+					<DemoButton eventName="Standby" text="测试按钮" />
 				</EOM_DebugTool_Category>
 				<EOM_DebugTool_Category tabIndex={0} title="技能和物品" >
-					<DemoSelectionButton eventName="AddAbilityButtonPressed" text="添加技能" />
-					<DemoSelectionButton eventName="AddItemButtonPressed" text="添加装备" />
+					<DemoSelectionButton eventName="AddAbility" text="添加技能" />
+					<DemoSelectionButton eventName="AddItem" text="添加装备" />
 					<DemoSelectionButton eventName="AddAbilityUpgrade" text="添加技能升级" />
 					<DemoButton eventName="RemoveGroundItemsPressed" text="删除地上物品" />
 				</EOM_DebugTool_Category>
 				<EOM_DebugTool_Category tabIndex={0} title="英雄" >
-					<DemoButton eventName="RefreshButtonPressed" text="刷新状态" />
-					<DemoToggle eventName="FreeSpellsButtonPressed" text="无限技能" selected={demoSetting()?.free_spells == 1} />
-					<DemoToggle eventName="DebugDevouredPressed" text="吞噬状态" selected={demoSetting()?.is_devoured == 1} />
-					<DemoToggle eventName="DebugDwakenedPressed" text="无敌模式" selected={demoSetting()?.is_awakened == 1} />
-					<DemoTextEntry eventName="LevelUpButtonPressed" text="升级" />
-					<DemoSelectionButton eventName="ChangeHeroButtonPressed" text="更换英雄" />
+					<DemoButton eventName="Refresh" text="刷新状态" />
+					<DemoToggle eventName="FreeSpells" text="无限技能" selected={demoSetting()?.free_spells == 1} />
+					<DemoTextEntry eventName="LevelUp" text="升级" />
+					<DemoSelectionButton eventName="ChangeHero" text="更换英雄" />
 				</EOM_DebugTool_Category>
 				<EOM_DebugTool_Category tabIndex={0} title="单位" >
-					<DemoButton eventName="DummyTargetButtonPressed" text="创建木桩" />
-					<DemoButton eventName="RemoveSpawnedUnitsButtonPressed" text="移除目标" />
-					<DemoSelectionButton eventName="CreateAllyButtonPressed" text="创建友方单位" />
-					<DemoSelectionButton eventName="CreateEnemyButtonPressed" text="创建敌方单位" />
-					<DemoButton eventName="ControlUnitButtonPressed" text="切换控制权" />
+					<DemoButton eventName="DummyTarget" text="创建木桩" />
+					<DemoButton eventName="RemoveSpawnedUnits" text="移除目标" />
+					<DemoSelectionButton eventName="CreateAlly" text="创建友方单位" />
+					<DemoSelectionButton eventName="CreateEnemy" text="创建敌方单位" />
+					<DemoButton eventName="ControlUnit" text="切换控制权" />
 					<DemoSelectionButton eventName="EOM_UnitInfo" text="单位信息面板" />
 				</EOM_DebugTool_Category>
 
@@ -229,11 +220,10 @@ function Demo() {
 
 
 				<EOM_DebugTool_Category title="其他" >
-					{/* <DemoButton eventName="RefreshServicePressed" text="更新后端数据" />/ */}
+					<DemoButton eventName="ReloadKeyValue" color="CyanButton" text="重载KV" />
+					<DemoButton eventName="ReloadScript" color="GreenButton" text="重载脚本" />
 					<DemoButton eventName="CompileTooltip" text="编译Popups" onactivate={() => CompileTooltip()} />
-					<></>
-					<DemoButton eventName="ReloadScriptButtonPressed" color="GreenButton" text="重载脚本" />
-					<DemoButton eventName="RestartButtonPressed" color="RedButton" text="重开游戏" />
+					<DemoButton eventName="Restart" color="RedButton" text="重开游戏" />
 				</EOM_DebugTool_Category>
 			</EOM_DebugTool>
 		</Show>

@@ -17,6 +17,11 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 var CustomUIConfig = GameUI.CustomUIConfig();
 var KeyValues = GameUI.CustomUIConfig();
 var STEAM_WEB_KEY = "D34B40626FBA6E482A7653E4FB8A80CB";
+GameEvents.SendCustomEventToServer = function (pEventName, eventData) {
+    if (!(Players.GetLocalPlayer() == -1 || Players.IsSpectator(Players.GetLocalPlayer()) || Players.IsLocalPlayerLiveSpectating())) {
+        GameEvents.SendCustomGameEventToServer(pEventName, eventData);
+    }
+};
 function print() {
     var args = [];
     for (var _i = 0; _i < arguments.length; _i++) {

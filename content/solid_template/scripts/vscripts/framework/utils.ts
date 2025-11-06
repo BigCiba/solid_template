@@ -1,3 +1,4 @@
+/** @noSelfInFile */
 // 重写 print 函数，在专用服务器上禁用输出
 declare var print_Engine: typeof print;
 {

@@ -6,11 +6,11 @@ DOTABaseAbility.IsAbility = function(self)
     return true
 end
 DOTABaseAbility.SaveData = function(self, key, value)
-    if not IsValid(nil, self) then
+    if not IsValid(self) then
         return
     end
     local caster = self:GetCaster()
-    if not IsValid(nil, caster) then
+    if not IsValid(caster) then
         return
     end
     caster:SaveData(
@@ -31,14 +31,14 @@ if IsServer() then
     CDOTABaseAbility.IsAbilityReady = function(self)
         local hCaster = self:GetCaster()
         local iBehavior = self:GetBehaviorInt()
-        if not IsValid(nil, hCaster) then
+        if not IsValid(hCaster) then
             return false
         end
         if not (hCaster:IsAlive() or bit.band(iBehavior, DOTA_ABILITY_BEHAVIOR_UNRESTRICTED) == DOTA_ABILITY_BEHAVIOR_UNRESTRICTED) then
             return false
         end
         local hAbility = hCaster:GetCurrentActiveAbility()
-        if IsValid(nil, hAbility) and hAbility:IsInAbilityPhase() then
+        if IsValid(hAbility) and hAbility:IsInAbilityPhase() then
             return false
         end
         if self:GetLevel() <= 0 then
@@ -83,7 +83,7 @@ if IsServer() then
         return true
     end
     CDOTABaseAbility.CanProcsCast = function(self)
-        if not IsValid(nil, self) then
+        if not IsValid(self) then
             return false
         end
         if not self:IsAbility() then

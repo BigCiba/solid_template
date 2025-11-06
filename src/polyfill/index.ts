@@ -2,6 +2,12 @@ let CustomUIConfig = GameUI.CustomUIConfig();
 let KeyValues = GameUI.CustomUIConfig();
 let STEAM_WEB_KEY = "D34B40626FBA6E482A7653E4FB8A80CB";
 
+GameEvents.SendCustomEventToServer = (pEventName, eventData) => {
+	if (!(Players.GetLocalPlayer() == -1 || Players.IsSpectator(Players.GetLocalPlayer()) || Players.IsLocalPlayerLiveSpectating())) {
+		GameEvents.SendCustomGameEventToServer(pEventName, eventData);
+	}
+};
+
 function print(...args: any[]) {
 	if (!Game.IsInToolsMode()) {
 		return;

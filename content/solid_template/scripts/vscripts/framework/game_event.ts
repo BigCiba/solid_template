@@ -1,3 +1,5 @@
+/** @noSelfInFile */
+
 declare var GameEventListenerIDs: EventListenerID[];
 declare var CustomUIEventListenerIDs: CustomGameEventListenerID[];
 

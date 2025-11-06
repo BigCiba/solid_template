@@ -56,7 +56,7 @@ ____exports.registerEOMModifier = function(____, param)
         else
             name = modifier.name
         end
-        local env, source = getFileScope(nil)
+        local env, source = getFileScope()
         local fileName = string.gsub(source, ".*scripts[\\/]vscripts[\\/]", "")
         env[name] = {}
         toDotaClassInstance(nil, env[name], modifier)
@@ -338,7 +338,7 @@ function EOMModifier.prototype.OnDestroy(self)
     end
     UnregisterModifierState(self)
     if IsServer() then
-        if calculateGenericBonuses and IsValid(nil, self.parent) then
+        if calculateGenericBonuses and IsValid(self.parent) then
             local ____table_parent_IsHero_result_16
             if self.parent:IsHero() then
                 ____table_parent_IsHero_result_16 = self.parent:CalculateStatBonus(true)

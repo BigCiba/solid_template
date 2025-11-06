@@ -10,5 +10,6 @@ require("event");
 require("nettable");
 
 if (IsServer()) {
+	require("demo");
 	require("settings");
 }

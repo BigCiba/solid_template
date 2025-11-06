@@ -61,7 +61,7 @@ ____exports.registerAbility = function(____, name) return function(____, ability
     else
         name = ability.name
     end
-    local env = getFileScope(nil)
+    local env = getFileScope()
     env[name] = {}
     ____exports.toDotaClassInstance(nil, env[name], ability)
     local originalSpawn = env[name].Spawn
@@ -78,7 +78,7 @@ ____exports.registerModifier = function(____, name) return function(____, modifi
     else
         name = modifier.name
     end
-    local env, source = getFileScope(nil)
+    local env, source = getFileScope()
     local fileName = string.gsub(source, ".*scripts[\\/]vscripts[\\/]", "")
     env[name] = {}
     ____exports.toDotaClassInstance(nil, env[name], modifier)
@@ -109,7 +109,7 @@ end end
 --- Use to expose top-level functions in entity scripts.
 -- Usage: registerEntityFunction("OnStartTouch", (trigger: TriggerStartTouchEvent) => { <your code here> });
 function ____exports.registerEntityFunction(self, name, f)
-    local env = getFileScope(nil)
+    local env = getFileScope()
     env[name] = function(...)
         f(nil, ...)
     end

@@ -160,8 +160,8 @@ EOMModifierEventsFunctionName = {
     [EOMModifierEvents.MODIFIER_EVENT_ON_COUNTER] = "OnCounter"
 }
 function AddModifierEvents(hModifier, iModifierEvent, hSource, hTarget)
-    if IsValid(nil, hTarget) or IsValid(nil, hSource) then
-        if IsValid(nil, hSource) then
+    if IsValid(hTarget) or IsValid(hSource) then
+        if IsValid(hSource) then
             if type(hSource.tSourceModifierEvents) == "nil" then
                 hSource.tSourceModifierEvents = {}
             end
@@ -171,7 +171,7 @@ function AddModifierEvents(hModifier, iModifierEvent, hSource, hTarget)
             local ____hSource_tSourceModifierEvents_iModifierEvent_0 = hSource.tSourceModifierEvents[iModifierEvent]
             ____hSource_tSourceModifierEvents_iModifierEvent_0[#____hSource_tSourceModifierEvents_iModifierEvent_0 + 1] = hModifier
         end
-        if IsValid(nil, hTarget) then
+        if IsValid(hTarget) then
             if type(hTarget.tTargetModifierEvents) == "nil" then
                 hTarget.tTargetModifierEvents = {}
             end
@@ -193,24 +193,24 @@ function AddModifierEvents(hModifier, iModifierEvent, hSource, hTarget)
     end
 end
 function RemoveModifierEvents(hModifier, iModifierEvent, hSource, hTarget)
-    if IsValid(nil, hTarget) or IsValid(nil, hSource) then
-        if IsValid(nil, hSource) then
+    if IsValid(hTarget) or IsValid(hSource) then
+        if IsValid(hSource) then
             if type(hSource.tSourceModifierEvents) == "nil" then
                 hSource.tSourceModifierEvents = {}
             end
             if type(hSource.tSourceModifierEvents[iModifierEvent]) == "nil" then
                 hSource.tSourceModifierEvents[iModifierEvent] = {}
             end
-            ArrayRemove(nil, hSource.tSourceModifierEvents[iModifierEvent], hModifier)
+            ArrayRemove(hSource.tSourceModifierEvents[iModifierEvent], hModifier)
         end
-        if IsValid(nil, hTarget) then
+        if IsValid(hTarget) then
             if type(hTarget.tTargetModifierEvents) == "nil" then
                 hTarget.tTargetModifierEvents = {}
             end
             if type(hTarget.tTargetModifierEvents[iModifierEvent]) == "nil" then
                 hTarget.tTargetModifierEvents[iModifierEvent] = {}
             end
-            ArrayRemove(nil, hTarget.tTargetModifierEvents[iModifierEvent], hModifier)
+            ArrayRemove(hTarget.tTargetModifierEvents[iModifierEvent], hModifier)
         end
     else
         if _G.tModifierEvents == nil then
@@ -219,21 +219,21 @@ function RemoveModifierEvents(hModifier, iModifierEvent, hSource, hTarget)
         if type(tModifierEvents[iModifierEvent]) == "nil" then
             tModifierEvents[iModifierEvent] = {}
         end
-        ArrayRemove(nil, tModifierEvents[iModifierEvent], hModifier)
+        ArrayRemove(tModifierEvents[iModifierEvent], hModifier)
     end
 end
 function FireModifierEvent(iModifierEvent, params, hSource, hTarget)
     local sFunctionName = EOMModifierEventsFunctionName[iModifierEvent]
-    if IsValid(nil, hSource) then
+    if IsValid(hSource) then
         local ____opt_3 = hSource.tSourceModifierEvents
         local aModifiers = ____opt_3 and ____opt_3[iModifierEvent]
         if aModifiers then
             for i = #aModifiers - 1, 0, -1 do
                 local hModifier = aModifiers[i + 1]
-                if not IsValid(nil, hSource) then
+                if not IsValid(hSource) then
                     break
                 end
-                if IsValid(nil, hModifier) and type(hModifier[sFunctionName]) == "function" then
+                if IsValid(hModifier) and type(hModifier[sFunctionName]) == "function" then
                     hModifier[sFunctionName](hModifier, params)
                 else
                     table.remove(aModifiers, i + 1)
@@ -241,16 +241,16 @@ function FireModifierEvent(iModifierEvent, params, hSource, hTarget)
             end
         end
     end
-    if IsValid(nil, hTarget) then
+    if IsValid(hTarget) then
         local ____opt_5 = hTarget.tTargetModifierEvents
         local aModifiers = ____opt_5 and ____opt_5[iModifierEvent]
         if aModifiers then
             for i = #aModifiers - 1, 0, -1 do
                 local hModifier = aModifiers[i + 1]
-                if not IsValid(nil, hTarget) then
+                if not IsValid(hTarget) then
                     break
                 end
-                if IsValid(nil, hModifier) and type(hModifier[sFunctionName]) == "function" then
+                if IsValid(hModifier) and type(hModifier[sFunctionName]) == "function" then
                     hModifier[sFunctionName](hModifier, params)
                 else
                     table.remove(aModifiers, i + 1)
@@ -262,7 +262,7 @@ function FireModifierEvent(iModifierEvent, params, hSource, hTarget)
     if aModifiers then
         for i = #aModifiers - 1, 0, -1 do
             local hModifier = aModifiers[i + 1]
-            if IsValid(nil, hModifier) and type(hModifier[sFunctionName]) == "function" then
+            if IsValid(hModifier) and type(hModifier[sFunctionName]) == "function" then
                 hModifier[sFunctionName](hModifier, params)
             else
                 table.remove(aModifiers, i + 1)

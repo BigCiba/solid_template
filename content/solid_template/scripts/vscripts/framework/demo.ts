@@ -123,20 +123,52 @@ class CDemo extends CModule {
 	}
 	Standby(data: DemoEvents) {
 		// 注册属性
-		// PropertySystem.RegisterProperty({
-		// 	id: 'attack_damage',
-		// 	scope: PropertyScope.UNIT,
-		// 	valueType: PropertyValueType.NUMBER,
-		// 	aggregation: AggregationStrategy.SUM,
-		// });
+		PropertySystem.RegisterProperty({
+			id: 'attack_damage',
+			scope: PropertyScope.UNIT,
+			valueType: PropertyValueType.NUMBER,
+			aggregation: AggregationStrategy.SUM,
+		});
+
+		const entIndex = data.unit!.GetEntityIndex();
+
+		// 添加属性
 		PropertySystem.AddStaticProperty(
 			PropertyScope.UNIT,
-			data.unit!.GetEntityIndex(),
+			entIndex,
 			"attack_damage",
-			"item_sword_1234",  // sourceId
+			"item_sword_12345",  // sourceId
 			50
 		);
-		this.print(PropertySystem.GetPropertyValueFromNetTable(PropertyScope.UNIT, data.unit!.GetEntityIndex(), "attack_damage"));
+
+		// 读取属性值
+		const value = PropertySystem.GetPropertyValue(PropertyScope.UNIT, entIndex, "attack_damage");
+		this.print(`Property Value: ${value}`);
+
+		// 强制同步到网表
+		PropertySystem.ForceSyncProperty(PropertyScope.UNIT, entIndex, "attack_damage");
+
+		// 服务器端：直接检查 PropertyData
+		this.print("Server PropertyData.dirtyKeys:");
+		PrintTable(PropertyData.dirtyKeys);
+
+		// 延迟读取网表（服务器端也可以读取）
+		Timer.GameTimer(0.3, () => {
+			this.print("Reading NetTable after 0.3s...");
+			const netTableData = CustomNetTables.GetTableValue("property_system", 'properties');
+			this.print(`NetTable type: ${type(netTableData)}`);
+			this.print("Server-side NetTable Data:");
+			if (netTableData) {
+				let count = 0;
+				for (const [key, val] of pairs(netTableData)) {
+					this.print(`  ${String(key)} = ${val}`);
+					count++;
+				}
+				this.print(`Total keys: ${count}`);
+			} else {
+				this.print("  NetTable is nil!");
+			}
+		});
 	}
 
 	//----------------------英雄----------------------

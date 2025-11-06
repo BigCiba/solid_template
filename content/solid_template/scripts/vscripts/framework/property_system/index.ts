@@ -147,6 +147,7 @@ class MPropertySystem extends CModule {
 
 		if (config.syncToClient) {
 			this.MarkDirty(config.scope, key, propertyId);
+			this.print(`[AddStaticProperty] Marked dirty: ${propertyId}, dirtyKeys size: ${PropertyData.dirtyKeys.size}`);
 		}
 
 		PropertyData.stats.totalWrites++;
@@ -515,12 +516,15 @@ class MPropertySystem extends CModule {
 	private SyncDirtyProperties(): void {
 		if (PropertyData.dirtyKeys.size === 0) return;
 
+		this.print(`[SyncDirtyProperties] Syncing ${PropertyData.dirtyKeys.size} dirty properties`);
+
 		const dirtyArray = Array.from(PropertyData.dirtyKeys);
 
 		// 按优先级排序
 		dirtyArray.sort((a, b) => {
-			const [, , propIdA] = a.split('_');
-			const [, , propIdB] = b.split('_');
+			// 使用 | 分隔符解析
+			const [, , propIdA] = a.split('|');
+			const [, , propIdB] = b.split('|');
 
 			const configA = this.GetConfig(propIdA);
 			const configB = this.GetConfig(propIdB);
@@ -545,18 +549,32 @@ class MPropertySystem extends CModule {
 	}
 
 	private SyncPropertyBatch(dirtyKeys: string[]): void {
-		const updates: Record<string, any> = {};
+		// 获取现有的网表数据
+		const existingData = CustomNetTables.GetTableValue(this.NETTABLE_NAME, 'properties');
+		this.print(`[SyncPropertyBatch] Existing data type: ${type(existingData)}, value: ${existingData}`);
+
+		const updates: Record<string, any> = existingData ? { ...existingData } : {};
 
 		for (const dirtyKey of dirtyKeys) {
-			const [scopeStr, keyStr, propertyId] = dirtyKey.split('_');
+			// 使用 | 分隔符解析
+			const [scopeStr, keyStr, propertyId] = dirtyKey.split('|');
 			const scope = parseInt(scopeStr) as PropertyScope;
 			const key = parseInt(keyStr) as PropertySystemKey;
 
 			const value = this.GetPropertyValue(scope, key, propertyId);
 			updates[dirtyKey] = value;
+			this.print(`[SyncPropertyBatch] ${dirtyKey} = ${value}`);
 		}
 
+		this.print(`[SyncPropertyBatch] About to sync updates:`, updates);
 		CustomNetTables.SetTableValue(this.NETTABLE_NAME, 'properties', updates);
+
+		// 立即读取验证
+		const verification = CustomNetTables.GetTableValue(this.NETTABLE_NAME, 'properties');
+		this.print(`[SyncPropertyBatch] Verification read: ${type(verification)}`);
+		if (verification) {
+			this.print(`[SyncPropertyBatch] Verified ${Object.keys(verification).length} keys`);
+		}
 	}
 
 	/** 强制同步指定属性 */
@@ -569,10 +587,19 @@ class MPropertySystem extends CModule {
 		const dirtyKey = this.GetDirtyKey(scope, key, propertyId);
 		const value = this.GetPropertyValue(scope, key, propertyId);
 
-		const update: Record<string, any> = {};
+		// 获取现有的网表数据并合并
+		const existingData = CustomNetTables.GetTableValue(this.NETTABLE_NAME, 'properties');
+		this.print(`[ForceSyncProperty] Existing data type: ${type(existingData)}`);
+
+		const update: Record<string, any> = existingData ? { ...existingData } : {};
 		update[dirtyKey] = value;
 
+		this.print(`[ForceSyncProperty] About to sync:`, update);
 		CustomNetTables.SetTableValue(this.NETTABLE_NAME, 'properties', update);
+
+		// 立即验证
+		const verification = CustomNetTables.GetTableValue(this.NETTABLE_NAME, 'properties');
+		this.print(`[ForceSyncProperty] Verification: ${type(verification)}, keys: ${verification ? Object.keys(verification).length : 0}`);
 	}
 
 	/** 客户端：从网表获取属性值 */
@@ -902,7 +929,8 @@ class MPropertySystem extends CModule {
 	}
 
 	private GetDirtyKey(scope: PropertyScope, key: PropertySystemKey, propertyId: string): string {
-		return `${scope}_${key}_${propertyId}`;
+		// 使用 | 作为分隔符，避免与 propertyId 中的 _ 冲突
+		return `${scope}|${key}|${propertyId}`;
 	}
 
 	private MarkDirty(scope: PropertyScope, key: PropertySystemKey, propertyId: string): void {

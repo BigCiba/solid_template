@@ -23,8 +23,8 @@ require('property_system_types');
 class MPropertySystem extends CModule {
 	// 网表同步配置
 	private readonly NETTABLE_NAME = 'property_system';
-	private readonly SYNC_INTERVAL = 0.1;
-	private readonly MAX_SYNC_PER_BATCH = 50;
+	private readonly SYNC_INTERVAL = 0.2;
+	private readonly MAX_NETTABLE_SIZE = 14000; // 留余量，实际限制是 16KB
 
 	// 自动清理配置
 	private autoCleanupInterval = 30;
@@ -510,27 +510,36 @@ class MPropertySystem extends CModule {
 
 		const dirtyArray = Array.from(PropertyData.dirtyKeys);
 
-		// 按优先级排序
-		dirtyArray.sort((a, b) => {
-			// 使用 | 分隔符解析
-			const [, , propIdA] = a.split('|');
-			const [, , propIdB] = b.split('|');
+		// 按 scope+key 分组（每个单位/玩家一个网表 key）
+		const groupedByEntity = new Map<string, string[]>();
 
-			const configA = this.GetConfig(propIdA);
-			const configB = this.GetConfig(propIdB);
+		for (const dirtyKey of dirtyArray) {
+			const [scopeStr, keyStr] = dirtyKey.split('|');
+			const entityKey = `${scopeStr}_${keyStr}`; // 例如：UNIT_0, PLAYER_1
 
-			const priorityA = configA?.syncPriority ?? 100;
-			const priorityB = configB?.syncPriority ?? 100;
+			if (!groupedByEntity.has(entityKey)) {
+				groupedByEntity.set(entityKey, []);
+			}
+			groupedByEntity.get(entityKey)!.push(dirtyKey);
+		}
 
-			return priorityA - priorityB;
-		});
+		// 按优先级排序各组
+		for (const [entityKey, keys] of groupedByEntity) {
+			keys.sort((a, b) => {
+				const [, , propIdA] = a.split('|');
+				const [, , propIdB] = b.split('|');
 
-		// 分批同步
-		const batchCount = Math.ceil(dirtyArray.length / this.MAX_SYNC_PER_BATCH);
+				const configA = this.GetConfig(propIdA);
+				const configB = this.GetConfig(propIdB);
 
-		for (let i = 0; i < batchCount; i++) {
-			const batch = dirtyArray.slice(i * this.MAX_SYNC_PER_BATCH, (i + 1) * this.MAX_SYNC_PER_BATCH);
-			this.SyncPropertyBatch(batch);
+				const priorityA = configA?.syncPriority ?? 100;
+				const priorityB = configB?.syncPriority ?? 100;
+
+				return priorityA - priorityB;
+			});
+
+			// 按单位/玩家同步（每个单位一个独立的网表 key）
+			this.SyncEntityBatch(entityKey, keys);
 		}
 
 		PropertyData.dirtyKeys.clear();
@@ -538,51 +547,102 @@ class MPropertySystem extends CModule {
 		PropertyData.stats.syncCount++;
 	}
 
-	private SyncPropertyBatch(dirtyKeys: string[]): void {
-		// 获取现有的网表数据
-		const existingData = CustomNetTables.GetTableValue(this.NETTABLE_NAME, 'properties');
-		const updates: Record<string, any> = existingData ? { ...existingData } : {};
+	/**
+	 * 同步单个实体的属性（按网表文档建议：每个单位一个 key）
+	 * 避免大对象反复整块重发，控制单次更新体积
+	 */
+	private SyncEntityBatch(entityKey: string, dirtyKeys: string[]): void {
+		const updates: Record<string, number> = {};
+		let estimatedSize = 50; // 基础开销估算
 
 		for (const dirtyKey of dirtyKeys) {
-			// 使用 | 分隔符解析
 			const [scopeStr, keyStr, propertyId] = dirtyKey.split('|');
 			const scope = parseInt(scopeStr) as PropertyScope;
 			const key = parseInt(keyStr) as PropertySystemKey;
 
 			const value = this.GetPropertyValue(scope, key, propertyId);
-			updates[dirtyKey] = value;
+			updates[propertyId] = value;
+
+			// 粗略估算大小（key + value）
+			estimatedSize += propertyId.length + 10; // 10 字节用于数字和格式化
 		}
 
-		CustomNetTables.SetTableValue(this.NETTABLE_NAME, 'properties', updates);
+		// 体积检查
+		if (estimatedSize > this.MAX_NETTABLE_SIZE) {
+			this.print(`Warning: NetTable update for ${entityKey} may exceed size limit (${estimatedSize} bytes)`);
+		}
+
+		// 使用实体专属的 key（例如：unit_0, player_1）
+		CustomNetTables.SetTableValue(this.NETTABLE_NAME, entityKey, updates);
 	}
 
-	/** 强制同步指定属性 */
+	/** 强制同步指定属性（立即执行） */
 	ForceSyncProperty(scope: PropertyScope, key: PropertySystemKey, propertyId: string): void {
 		if (!IsServer()) return;
 
 		const config = this.GetConfig(propertyId);
 		if (!config || !config.syncToClient) return;
 
-		const dirtyKey = this.GetDirtyKey(scope, key, propertyId);
+		const entityKey = `${scope}_${key}`;
 		const value = this.GetPropertyValue(scope, key, propertyId);
 
-		// 获取现有的网表数据并合并
-		const existingData = CustomNetTables.GetTableValue(this.NETTABLE_NAME, 'properties');
-		const update: Record<string, any> = existingData ? { ...existingData } : {};
-		update[dirtyKey] = value;
+		// 获取该实体的现有数据并合并
+		const existingData = CustomNetTables.GetTableValue(this.NETTABLE_NAME, entityKey);
+		const update: Record<string, number> = existingData ? { ...existingData } : {};
+		update[propertyId] = value;
 
-		CustomNetTables.SetTableValue(this.NETTABLE_NAME, 'properties', update);
+		CustomNetTables.SetTableValue(this.NETTABLE_NAME, entityKey, update);
+
+		// 从脏标记中移除（因为已经同步）
+		const dirtyKey = this.GetDirtyKey(scope, key, propertyId);
+		PropertyData.dirtyKeys.delete(dirtyKey);
 	}
 
-	/** 客户端：从网表获取属性值 */
+	/** 强制同步实体的所有属性（立即执行） */
+	ForceSyncEntity(scope: PropertyScope, key: PropertySystemKey): void {
+		if (!IsServer()) return;
+
+		const storage = this.GetStorage(scope, key);
+		const entityKey = `${scope}_${key}`;
+		const updates: Record<string, number> = {};
+
+		// 收集所有需要同步的属性
+		for (const [propertyId] of storage.static) {
+			const config = this.GetConfig(propertyId);
+			if (config && config.syncToClient) {
+				const value = this.GetPropertyValue(scope, key, propertyId);
+				updates[propertyId] = value;
+
+				// 从脏标记中移除
+				const dirtyKey = this.GetDirtyKey(scope, key, propertyId);
+				PropertyData.dirtyKeys.delete(dirtyKey);
+			}
+		}
+
+		for (const [propertyId] of storage.dynamic) {
+			const config = this.GetConfig(propertyId);
+			if (config && config.syncToClient) {
+				const value = this.GetPropertyValue(scope, key, propertyId);
+				updates[propertyId] = value;
+
+				// 从脏标记中移除
+				const dirtyKey = this.GetDirtyKey(scope, key, propertyId);
+				PropertyData.dirtyKeys.delete(dirtyKey);
+			}
+		}
+
+		if (Object.keys(updates).length > 0) {
+			CustomNetTables.SetTableValue(this.NETTABLE_NAME, entityKey, updates);
+		}
+	}
+
+	/** 从网表获取属性值（服务器和客户端都可用） */
 	GetPropertyValueFromNetTable(scope: PropertyScope, key: PropertySystemKey, propertyId: string): number | undefined {
-		if (IsServer()) return undefined;
+		const entityKey = `${scope}_${key}`;
+		const data = CustomNetTables.GetTableValue(this.NETTABLE_NAME, entityKey);
 
-		const dirtyKey = this.GetDirtyKey(scope, key, propertyId);
-		const data = CustomNetTables.GetTableValue(this.NETTABLE_NAME, 'properties');
-
-		if (data && data[dirtyKey] !== undefined) {
-			return data[dirtyKey] as number;
+		if (data && data[propertyId] !== undefined) {
+			return data[propertyId] as number;
 		}
 
 		return undefined;
@@ -739,6 +799,59 @@ class MPropertySystem extends CModule {
 		};
 	}
 
+	// ==================== 网表体积管理 ====================
+
+	/** 估算实体的网表体积 */
+	EstimateEntityNetTableSize(scope: PropertyScope, key: PropertySystemKey): number {
+		const storage = this.GetStorage(scope, key);
+		let size = 50; // 基础开销
+
+		// 估算静态属性
+		for (const [propertyId] of storage.static) {
+			size += propertyId.length + 10;
+		}
+
+		// 估算动态属性
+		for (const [propertyId] of storage.dynamic) {
+			size += propertyId.length + 10;
+		}
+
+		return size;
+	}
+
+	/** 获取网表体积统计 */
+	GetNetTableSizeStats(): { total: number; entities: Map<string, number>; warnings: string[]; } {
+		const entities = new Map<string, number>();
+		const warnings: string[] = [];
+		let total = 0;
+
+		// 统计玩家
+		for (const [playerID] of PropertyData.playerStorage) {
+			const size = this.EstimateEntityNetTableSize(PropertyScope.PLAYER, playerID);
+			const key = `PLAYER_${playerID}`;
+			entities.set(key, size);
+			total += size;
+
+			if (size > this.MAX_NETTABLE_SIZE) {
+				warnings.push(`${key} exceeds size limit: ${size} bytes`);
+			}
+		}
+
+		// 统计单位
+		for (const [entIndex] of PropertyData.unitStorage) {
+			const size = this.EstimateEntityNetTableSize(PropertyScope.UNIT, entIndex);
+			const key = `UNIT_${entIndex}`;
+			entities.set(key, size);
+			total += size;
+
+			if (size > this.MAX_NETTABLE_SIZE) {
+				warnings.push(`${key} exceeds size limit: ${size} bytes`);
+			}
+		}
+
+		return { total, entities, warnings };
+	}
+
 	// ==================== 调试命令 ====================
 
 	private RegisterDebugCommands(): void {
@@ -777,6 +890,28 @@ class MPropertySystem extends CModule {
 			const storageCount = this.CleanupEmptyStorages();
 			this.print(`Cleaned: ${count} modifiers, ${storageCount} storages`);
 		}, 'Force cleanup invalid modifiers', 0);
+
+		// 网表体积统计
+		Convars.RegisterCommand('property_nettable_size', () => {
+			const stats = this.GetNetTableSizeStats();
+			this.print('=== NetTable Size Stats ===');
+			this.print(`Total: ${stats.total} bytes`);
+			this.print(`Entities: ${stats.entities.size}`);
+
+			if (stats.warnings.length > 0) {
+				this.print('⚠️ WARNINGS:');
+				for (const warning of stats.warnings) {
+					this.print(`  ${warning}`);
+				}
+			}
+
+			// 显示最大的实体
+			const sorted = Array.from(stats.entities.entries()).sort((a, b) => b[1] - a[1]);
+			this.print('\nTop 10 largest entities:');
+			for (let i = 0; i < Math.min(10, sorted.length); i++) {
+				this.print(`  ${sorted[i][0]}: ${sorted[i][1]} bytes`);
+			}
+		}, 'Show NetTable size statistics', 0);
 
 		this.print('Debug commands registered');
 	}
@@ -915,6 +1050,20 @@ class MPropertySystem extends CModule {
 
 	private GetCurrentTime(): number {
 		return GameRules.GetGameTime();
+	}
+
+	/**
+	 * 强制同步所有未同步的属性（用于测试/调试）
+	 */
+	ForceSyncAllDirty(): void {
+		if (!IsServer()) return;
+
+		const dirtyCount = PropertyData.dirtyKeys.size;
+		if (dirtyCount === 0) return;
+
+		this.print(`[ForceSyncAllDirty] Syncing ${dirtyCount} dirty properties...`);
+		this.SyncDirtyProperties();
+		this.print(`[ForceSyncAllDirty] Sync completed, remaining: ${PropertyData.dirtyKeys.size}`);
 	}
 }
 

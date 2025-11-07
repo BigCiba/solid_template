@@ -122,42 +122,8 @@ class CDemo extends CModule {
 		SendToServerConsole("host_timescale " + data.str);
 	}
 	Standby(data: DemoEvents) {
-		// 注册属性
-		PropertySystem.RegisterProperty({
-			id: 'test_health_pct',
-			scope: PropertyScope.UNIT,
-			valueType: PropertyValueType.NUMBER,
-			aggregation: AggregationStrategy.SUM,
-		});
 
-		const entIndex = data.unit!.GetEntityIndex();
-		this.print(`Entity Index: ${entIndex}`);
-
-		// 添加属性
-		PropertySystem.AddStaticProperty(
-			entIndex,
-			"test_health_pct",
-			"item_sword_1234",
-			50
-		);
-
-		// 读取属性值（从内存）
-		const value = PropertySystem.GetPropertyValue(PropertyScope.UNIT, entIndex, "test_health_pct");
-		this.print(`Property Value (from memory): ${value}`);
-
-		// 测试网表同步 - 同步前
-		this.print(`NetTable Value (before sync): ${PropertySystem.GetPropertyValueFromNetTable(PropertyScope.UNIT, entIndex, "test_health_pct")}`);
-
-		// 强制立即同步
-		PropertySystem.ForceSyncProperty(PropertyScope.UNIT, entIndex, "test_health_pct");
-
-		// 测试网表同步 - 同步后
-		const netTableValue = PropertySystem.GetPropertyValueFromNetTable(PropertyScope.UNIT, entIndex, "test_health_pct");
-		this.print(`NetTable Value (after sync): ${netTableValue}`);
-
-		// 验证网表原始数据
-		const rawData = CustomNetTables.GetTableValue("property_system", `${PropertyScope.UNIT}_${entIndex}`);
-		this.print(`Raw NetTable Data:`, rawData);
+		Msg("afasfasaf");
 	}
 
 	//----------------------英雄----------------------

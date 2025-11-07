@@ -88,21 +88,3 @@ declare interface DollarStatic {
 declare interface ContextMenuScriptPanel extends Panel {
 	GetContentsPanel<T extends PanelBase>(): T;
 }
-
-declare interface UICanvas extends Panel {
-	/**
-	 * 清空canvas，然后用color覆盖整个Canvas
-	 * @param color rgba #FFFFFFFF
-	 */
-	ClearJS(color: string): void;
-
-	/**
-	 * 画一条折线
-	 * @param iPoint 折线一共有几个点
-	 * @param arrPoints 折线的坐标，格式为[x1, y1, x2, y2, x3, y3 ...]
-	 * @param iWidth 线的宽度
-	 * @param iMode 1 有抗锯齿
-	 * @param sColor 折线的颜色
-	 */
-	DrawSoftLinePointsJS(iPoint: number, arrPoints: number[], iWidth: number, iMode: 0 | 1, sColor: string): void;
-}

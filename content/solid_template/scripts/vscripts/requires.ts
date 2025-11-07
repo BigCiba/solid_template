@@ -12,12 +12,12 @@ require("override");
 // require("request");
 // require("abilities");
 // require("modifiers");
-// if (IsServer()) {
-// 	require("filter");
-// 	require("service");
-// 	require("game");
-// 	require("mechanics");
-// } else {
-// 	require("mechanics");
-// 	require("service/service_client");
-// }
+if (IsServer()) {
+	// 	require("filter");
+	// 	require("service");
+	// 	require("mechanics");
+	require("game");
+} else {
+	// 	require("mechanics");
+	// 	require("service/service_client");
+}

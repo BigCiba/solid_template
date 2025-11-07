@@ -1,8 +1,23 @@
 # PropertySystem 迁移指南
 
+## 版本历史
+
+- **v3 (当前)**: 移除 scope 参数，系统自动从 PropertyConfig 获取
+- **v2**: 移除 modifier 依赖，改用 sourceId
+- **v1 (已废弃)**: 基于 CDOTA_Modifier_Lua
+
 ## 重大变更概述
 
 PropertySystem 已重构，**移除了与 CDOTA_Modifier_Lua 的强关联**。属性现在使用字符串 `sourceId` 标识，可以独立添加和删除，不再依赖 modifier 实例。
+
+**最新更新 (v3)：** 为简化 API，所有方法的 `scope` 参数已移除。系统会自动从 `PropertyConfig` 中获取正确的 scope，无需在每次调用时手动传入。这使得 API 更加简洁，减少了重复代码和出错机会。
+
+### 为什么移除 scope 参数？
+
+1. **避免冗余**：`scope` 在 `PropertyConfig` 中已定义，传入参数是多余的
+2. **减少错误**：传入错误的 scope 会导致难以调试的问题
+3. **简化调用**：减少参数数量，代码更清晰
+4. **单一真相源**：scope 只在一个地方定义（PropertyConfig）
 
 ---
 
@@ -12,7 +27,7 @@ PropertySystem 已重构，**移除了与 CDOTA_Modifier_Lua 的强关联**。�
 
 #### AddStaticProperty (添加静态属性)
 
-**旧 API:**
+**旧 API (v1):**
 ```typescript
 PropertySystem.AddStaticProperty(
   modifier: CDOTA_Modifier_Lua,
@@ -22,12 +37,23 @@ PropertySystem.AddStaticProperty(
 )
 ```
 
-**新 API:**
+**中间版本 (v2 - 已废弃):**
 ```typescript
 PropertySystem.AddStaticProperty(
-  scope: PropertyScope,           // 'UNIT' 或 'PLAYER'
-  key: PropertySystemKey,         // 实体索引或玩家ID
+  scope: PropertyScope,           // ❌ 已移除
+  key: PropertySystemKey,
   propertyId: string,
+  sourceId: string,
+  value: number,
+  metadata?: Record<string, any>
+)
+```
+
+**当前 API (v3):**
+```typescript
+PropertySystem.AddStaticProperty(
+  key: PropertySystemKey,         // 实体索引或玩家ID
+  propertyId: string,             // 属性ID（scope 从配置中自动获取）
   sourceId: string,               // 唯一标识来源（如 "item_sword_123"）
   value: number,
   metadata?: Record<string, any>  // 可选：附加元数据
@@ -36,12 +62,20 @@ PropertySystem.AddStaticProperty(
 
 **迁移示例:**
 ```typescript
-// ❌ 旧方式
+// ❌ 旧方式 (v1)
 PropertySystem.AddStaticProperty(modifier, "attack_damage", 50);
 
-// ✅ 新方式
+// ⚠️ 中间版本 (v2) - 不再使用
 PropertySystem.AddStaticProperty(
-  PropertyScope.UNIT,
+  PropertyScope.UNIT,  // ❌ 多余参数
+  unit.GetEntityIndex(),
+  "attack_damage",
+  "item_sword_123",
+  50
+);
+
+// ✅ 当前方式 (v3)
+PropertySystem.AddStaticProperty(
   unit.GetEntityIndex(),
   "attack_damage",
   "item_sword_123",  // sourceId 唯一标识这个属性来源
@@ -51,7 +85,7 @@ PropertySystem.AddStaticProperty(
 
 #### RemoveStaticProperty (删除静态属性)
 
-**旧 API:**
+**旧 API (v1):**
 ```typescript
 PropertySystem.RemoveStaticProperty(
   modifier: CDOTA_Modifier_Lua,
@@ -60,10 +94,9 @@ PropertySystem.RemoveStaticProperty(
 )
 ```
 
-**新 API:**
+**当前 API (v3):**
 ```typescript
 PropertySystem.RemoveStaticProperty(
-  scope: PropertyScope,
   key: PropertySystemKey,
   sourceId: string,
   propertyId?: string  // 可选：删除特定属性，否则删除该 sourceId 的所有属性
@@ -77,7 +110,6 @@ PropertySystem.RemoveStaticProperty(modifier, "attack_damage");
 
 // ✅ 新方式：删除特定属性
 PropertySystem.RemoveStaticProperty(
-  PropertyScope.UNIT,
   unit.GetEntityIndex(),
   "item_sword_123",
   "attack_damage"
@@ -85,7 +117,6 @@ PropertySystem.RemoveStaticProperty(
 
 // ✅ 新方式：删除该来源的所有属性
 PropertySystem.RemoveStaticProperty(
-  PropertyScope.UNIT,
   unit.GetEntityIndex(),
   "item_sword_123"
 );
@@ -93,7 +124,7 @@ PropertySystem.RemoveStaticProperty(
 
 #### UpdateStaticPropertyValue (更新静态属性值)
 
-**旧 API:**
+**旧 API (v1):**
 ```typescript
 PropertySystem.UpdateStaticPropertyValue(
   modifier: CDOTA_Modifier_Lua,
@@ -103,10 +134,9 @@ PropertySystem.UpdateStaticPropertyValue(
 )
 ```
 
-**新 API:**
+**当前 API (v3):**
 ```typescript
 PropertySystem.UpdateStaticPropertyValue(
-  scope: PropertyScope,
   key: PropertySystemKey,
   propertyId: string,
   sourceId: string,
@@ -121,7 +151,6 @@ PropertySystem.UpdateStaticPropertyValue(modifier, "attack_damage", 75);
 
 // ✅ 新方式
 PropertySystem.UpdateStaticPropertyValue(
-  PropertyScope.UNIT,
   unit.GetEntityIndex(),
   "attack_damage",
   "item_sword_123",
@@ -135,7 +164,7 @@ PropertySystem.UpdateStaticPropertyValue(
 
 #### RegisterDynamicProperty (注册动态属性)
 
-**旧 API:**
+**旧 API (v1):**
 ```typescript
 PropertySystem.RegisterDynamicProperty(
   modifier: CDOTA_Modifier_Lua,
@@ -146,10 +175,9 @@ PropertySystem.RegisterDynamicProperty(
 )
 ```
 
-**新 API:**
+**当前 API (v3):**
 ```typescript
 PropertySystem.RegisterDynamicProperty(
-  scope: PropertyScope,
   key: PropertySystemKey,
   propertyId: string,
   sourceId: string,
@@ -171,7 +199,6 @@ PropertySystem.RegisterDynamicProperty(
 
 // ✅ 新方式
 PropertySystem.RegisterDynamicProperty(
-  PropertyScope.UNIT,
   unit.GetEntityIndex(),
   "attack_damage",
   "ability_berserker",
@@ -182,7 +209,7 @@ PropertySystem.RegisterDynamicProperty(
 
 #### UnregisterDynamicProperty (注销动态属性)
 
-**旧 API:**
+**旧 API (v1):**
 ```typescript
 PropertySystem.UnregisterDynamicProperty(
   modifier: CDOTA_Modifier_Lua,
@@ -191,10 +218,9 @@ PropertySystem.UnregisterDynamicProperty(
 )
 ```
 
-**新 API:**
+**当前 API (v3):**
 ```typescript
 PropertySystem.UnregisterDynamicProperty(
-  scope: PropertyScope,
   key: PropertySystemKey,
   sourceId: string,
   propertyId?: string
@@ -208,7 +234,6 @@ PropertySystem.UnregisterDynamicProperty(modifier, "attack_damage");
 
 // ✅ 新方式
 PropertySystem.UnregisterDynamicProperty(
-  PropertyScope.UNIT,
   unit.GetEntityIndex(),
   "ability_berserker",
   "attack_damage"
@@ -221,7 +246,7 @@ PropertySystem.UnregisterDynamicProperty(
 
 #### CleanupSourceProperties (清理来源属性)
 
-**旧 API:**
+**旧 API (v1):**
 ```typescript
 PropertySystem.CleanupModifierProperties(
   modifier: CDOTA_Modifier_Lua,
@@ -229,10 +254,9 @@ PropertySystem.CleanupModifierProperties(
 )
 ```
 
-**新 API:**
+**当前 API (v3):**
 ```typescript
 PropertySystem.CleanupSourceProperties(
-  scope: PropertyScope,
   key: PropertySystemKey,
   sourceId: string
 )
@@ -245,7 +269,6 @@ PropertySystem.CleanupModifierProperties(modifier);
 
 // ✅ 新方式（在物品/技能移除时）
 PropertySystem.CleanupSourceProperties(
-  PropertyScope.UNIT,
   unit.GetEntityIndex(),
   "item_sword_123"
 );
@@ -265,14 +288,22 @@ const context = PropertySystem.GetEntityContext(unit);
 if (context) {
   const [scope, key] = context;
   
+  // scope 仅用于验证，实际调用时已不需要传入
   PropertySystem.AddStaticProperty(
-    scope,
     key,
     "attack_damage",
     "item_sword_123",
     50
   );
 }
+
+// 推荐：直接使用 key，更简洁
+PropertySystem.AddStaticProperty(
+  unit.GetEntityIndex(),
+  "attack_damage",
+  "item_sword_123",
+  50
+);
 ```
 
 ### 模式 2：Modifier 便捷包装
@@ -289,11 +320,12 @@ function AddPropertyFromModifier(
   const parent = modifier.GetParent();
   const sourceId = `mod_${modifier.GetName()}_${modifier.GetSerialNumber()}`;
   
-  const context = PropertySystem.GetEntityContext(parent);
-  if (!context) return false;
-  
-  const [scope, key] = context;
-  return PropertySystem.AddStaticProperty(scope, key, propertyId, sourceId, value);
+  return PropertySystem.AddStaticProperty(
+    parent.GetEntityIndex(),
+    propertyId,
+    sourceId,
+    value
+  );
 }
 
 function RemovePropertyFromModifier(
@@ -303,11 +335,11 @@ function RemovePropertyFromModifier(
   const parent = modifier.GetParent();
   const sourceId = `mod_${modifier.GetName()}_${modifier.GetSerialNumber()}`;
   
-  const context = PropertySystem.GetEntityContext(parent);
-  if (!context) return false;
-  
-  const [scope, key] = context;
-  return PropertySystem.RemoveStaticProperty(scope, key, sourceId, propertyId);
+  return PropertySystem.RemoveStaticProperty(
+    parent.GetEntityIndex(),
+    sourceId,
+    propertyId
+  );
 }
 ```
 

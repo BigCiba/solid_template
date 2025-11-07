@@ -134,10 +134,9 @@ class CDemo extends CModule {
 
 		// 添加属性
 		PropertySystem.AddStaticProperty(
-			PropertyScope.UNIT,
 			entIndex,
 			"attack_damage",
-			"item_sword_12345",  // sourceId
+			"item_sword_1234",
 			50
 		);
 
@@ -145,28 +144,14 @@ class CDemo extends CModule {
 		const value = PropertySystem.GetPropertyValue(PropertyScope.UNIT, entIndex, "attack_damage");
 		this.print(`Property Value: ${value}`);
 
-		// 强制同步到网表
-		PropertySystem.ForceSyncProperty(PropertyScope.UNIT, entIndex, "attack_damage");
-
-		// 服务器端：直接检查 PropertyData
-		this.print("Server PropertyData.dirtyKeys:");
-		PrintTable(PropertyData.dirtyKeys);
-
-		// 延迟读取网表（服务器端也可以读取）
+		// 测试网表同步
 		Timer.GameTimer(0.3, () => {
-			this.print("Reading NetTable after 0.3s...");
 			const netTableData = CustomNetTables.GetTableValue("property_system", 'properties');
-			this.print(`NetTable type: ${type(netTableData)}`);
-			this.print("Server-side NetTable Data:");
 			if (netTableData) {
-				let count = 0;
+				this.print("NetTable synced successfully!");
 				for (const [key, val] of pairs(netTableData)) {
 					this.print(`  ${String(key)} = ${val}`);
-					count++;
 				}
-				this.print(`Total keys: ${count}`);
-			} else {
-				this.print("  NetTable is nil!");
 			}
 		});
 	}

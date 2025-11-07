@@ -101,7 +101,6 @@ class MPropertySystem extends CModule {
 
 	/**
 	 * 添加静态属性（不依赖 modifier）
-	 * @param scope 属性作用域
 	 * @param key 目标键（playerID 或 entityIndex）
 	 * @param propertyId 属性 ID
 	 * @param sourceId 属性来源的唯一标识（如 "item_sword", "ability_crit", "buff_aura"）
@@ -109,7 +108,6 @@ class MPropertySystem extends CModule {
 	 * @param metadata 可选的元数据
 	 */
 	AddStaticProperty(
-		scope: PropertyScope,
 		key: PropertySystemKey,
 		propertyId: string,
 		sourceId: string,
@@ -147,7 +145,6 @@ class MPropertySystem extends CModule {
 
 		if (config.syncToClient) {
 			this.MarkDirty(config.scope, key, propertyId);
-			this.print(`[AddStaticProperty] Marked dirty: ${propertyId}, dirtyKeys size: ${PropertyData.dirtyKeys.size}`);
 		}
 
 		PropertyData.stats.totalWrites++;
@@ -156,24 +153,22 @@ class MPropertySystem extends CModule {
 
 	/**
 	 * 移除静态属性
-	 * @param scope 属性作用域
 	 * @param key 目标键
-	 * @param propertyId 属性 ID（可选，不传则移除该 sourceId 的所有属性）
 	 * @param sourceId 属性来源 ID
+	 * @param propertyId 属性 ID（可选，不传则移除该 sourceId 的所有属性）
 	 */
 	RemoveStaticProperty(
-		scope: PropertyScope,
 		key: PropertySystemKey,
 		sourceId: string,
 		propertyId?: string
 	): boolean {
 		if (propertyId) {
-			return this.RemoveSingleStaticProperty(scope, key, sourceId, propertyId);
+			return this.RemoveSingleStaticProperty(key, sourceId, propertyId);
 		} else {
 			// 移除该 sourceId 的所有属性
 			let removed = false;
 			for (const [pid] of PropertyData.configs) {
-				if (this.RemoveSingleStaticProperty(scope, key, sourceId, pid)) {
+				if (this.RemoveSingleStaticProperty(key, sourceId, pid)) {
 					removed = true;
 				}
 			}
@@ -182,7 +177,6 @@ class MPropertySystem extends CModule {
 	}
 
 	private RemoveSingleStaticProperty(
-		scope: PropertyScope,
 		key: PropertySystemKey,
 		sourceId: string,
 		propertyId: string
@@ -218,9 +212,12 @@ class MPropertySystem extends CModule {
 
 	/**
 	 * 更新静态属性值
+	 * @param key 目标键
+	 * @param propertyId 属性 ID
+	 * @param sourceId 属性来源 ID
+	 * @param newValue 新值
 	 */
 	UpdateStaticPropertyValue(
-		scope: PropertyScope,
 		key: PropertySystemKey,
 		propertyId: string,
 		sourceId: string,
@@ -291,7 +288,6 @@ class MPropertySystem extends CModule {
 
 	/**
 	 * 注册动态属性（不依赖 modifier）
-	 * @param scope 属性作用域
 	 * @param key 目标键
 	 * @param propertyId 属性 ID
 	 * @param sourceId 属性来源的唯一标识
@@ -300,7 +296,6 @@ class MPropertySystem extends CModule {
 	 * @param metadata 可选的元数据
 	 */
 	RegisterDynamicProperty(
-		scope: PropertyScope,
 		key: PropertySystemKey,
 		propertyId: string,
 		sourceId: string,
@@ -349,24 +344,22 @@ class MPropertySystem extends CModule {
 
 	/**
 	 * 注销动态属性
-	 * @param scope 属性作用域
 	 * @param key 目标键
 	 * @param sourceId 属性来源 ID
 	 * @param propertyId 属性 ID（可选）
 	 */
 	UnregisterDynamicProperty(
-		scope: PropertyScope,
 		key: PropertySystemKey,
 		sourceId: string,
 		propertyId?: string
 	): boolean {
 		if (propertyId) {
-			return this.UnregisterSingleDynamicProperty(scope, key, sourceId, propertyId);
+			return this.UnregisterSingleDynamicProperty(key, sourceId, propertyId);
 		} else {
 			// 移除该 sourceId 的所有动态属性
 			let removed = false;
 			for (const [pid] of PropertyData.configs) {
-				if (this.UnregisterSingleDynamicProperty(scope, key, sourceId, pid)) {
+				if (this.UnregisterSingleDynamicProperty(key, sourceId, pid)) {
 					removed = true;
 				}
 			}
@@ -375,7 +368,6 @@ class MPropertySystem extends CModule {
 	}
 
 	private UnregisterSingleDynamicProperty(
-		scope: PropertyScope,
 		key: PropertySystemKey,
 		sourceId: string,
 		propertyId: string
@@ -516,8 +508,6 @@ class MPropertySystem extends CModule {
 	private SyncDirtyProperties(): void {
 		if (PropertyData.dirtyKeys.size === 0) return;
 
-		this.print(`[SyncDirtyProperties] Syncing ${PropertyData.dirtyKeys.size} dirty properties`);
-
 		const dirtyArray = Array.from(PropertyData.dirtyKeys);
 
 		// 按优先级排序
@@ -551,8 +541,6 @@ class MPropertySystem extends CModule {
 	private SyncPropertyBatch(dirtyKeys: string[]): void {
 		// 获取现有的网表数据
 		const existingData = CustomNetTables.GetTableValue(this.NETTABLE_NAME, 'properties');
-		this.print(`[SyncPropertyBatch] Existing data type: ${type(existingData)}, value: ${existingData}`);
-
 		const updates: Record<string, any> = existingData ? { ...existingData } : {};
 
 		for (const dirtyKey of dirtyKeys) {
@@ -563,18 +551,9 @@ class MPropertySystem extends CModule {
 
 			const value = this.GetPropertyValue(scope, key, propertyId);
 			updates[dirtyKey] = value;
-			this.print(`[SyncPropertyBatch] ${dirtyKey} = ${value}`);
 		}
 
-		this.print(`[SyncPropertyBatch] About to sync updates:`, updates);
 		CustomNetTables.SetTableValue(this.NETTABLE_NAME, 'properties', updates);
-
-		// 立即读取验证
-		const verification = CustomNetTables.GetTableValue(this.NETTABLE_NAME, 'properties');
-		this.print(`[SyncPropertyBatch] Verification read: ${type(verification)}`);
-		if (verification) {
-			this.print(`[SyncPropertyBatch] Verified ${Object.keys(verification).length} keys`);
-		}
 	}
 
 	/** 强制同步指定属性 */
@@ -589,17 +568,10 @@ class MPropertySystem extends CModule {
 
 		// 获取现有的网表数据并合并
 		const existingData = CustomNetTables.GetTableValue(this.NETTABLE_NAME, 'properties');
-		this.print(`[ForceSyncProperty] Existing data type: ${type(existingData)}`);
-
 		const update: Record<string, any> = existingData ? { ...existingData } : {};
 		update[dirtyKey] = value;
 
-		this.print(`[ForceSyncProperty] About to sync:`, update);
 		CustomNetTables.SetTableValue(this.NETTABLE_NAME, 'properties', update);
-
-		// 立即验证
-		const verification = CustomNetTables.GetTableValue(this.NETTABLE_NAME, 'properties');
-		this.print(`[ForceSyncProperty] Verification: ${type(verification)}, keys: ${verification ? Object.keys(verification).length : 0}`);
 	}
 
 	/** 客户端：从网表获取属性值 */
@@ -644,16 +616,15 @@ class MPropertySystem extends CModule {
 
 	/**
 	 * 清理指定来源的所有属性
-	 * @param scope 属性作用域
 	 * @param key 目标键
 	 * @param sourceId 来源 ID
 	 */
-	CleanupSourceProperties(scope: PropertyScope, key: PropertySystemKey, sourceId: string): void {
+	CleanupSourceProperties(key: PropertySystemKey, sourceId: string): void {
 		// 清理静态属性
-		this.RemoveStaticProperty(scope, key, sourceId);
+		this.RemoveStaticProperty(key, sourceId);
 
 		// 清理动态属性
-		this.UnregisterDynamicProperty(scope, key, sourceId);
+		this.UnregisterDynamicProperty(key, sourceId);
 	}
 
 	/** 清理单位的所有属性 */

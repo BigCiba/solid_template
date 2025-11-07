@@ -18,5 +18,6 @@
 		"request_1",
 		"request_2",
 		"request_3",
+		"property_system",
 	]
 }

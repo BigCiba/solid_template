@@ -15,19 +15,21 @@ PropertySystem 已成功重构，**完全移除了与 CDOTA_Modifier_Lua 的强�
 
 ### 2. API 签名变更
 
-所有API从依赖 modifier 改为显式传递 scope/key/sourceId：
+所有API从依赖 modifier 改为显式传递 key/sourceId（scope 从配置中自动获取）：
 
 **静态属性:**
-- `AddStaticProperty(scope, key, propertyId, sourceId, value, metadata?)`
-- `RemoveStaticProperty(scope, key, sourceId, propertyId?)`
-- `UpdateStaticPropertyValue(scope, key, propertyId, sourceId, newValue)`
+- `AddStaticProperty(key, propertyId, sourceId, value, metadata?)`
+- `RemoveStaticProperty(key, sourceId, propertyId?)`
+- `UpdateStaticPropertyValue(key, propertyId, sourceId, newValue)`
 
 **动态属性:**
-- `RegisterDynamicProperty(scope, key, propertyId, sourceId, callback, priority?, metadata?)`
-- `UnregisterDynamicProperty(scope, key, sourceId, propertyId?)`
+- `RegisterDynamicProperty(key, propertyId, sourceId, callback, priority?, metadata?)`
+- `UnregisterDynamicProperty(key, sourceId, propertyId?)`
 
 **清理:**
-- `CleanupModifierProperties` → `CleanupSourceProperties(scope, key, sourceId)`
+- `CleanupModifierProperties` → `CleanupSourceProperties(key, sourceId)`
+
+**注意:** `scope` 参数已从所有方法中移除，因为它已在 `PropertyConfig` 中定义。系统会自动从配置中获取正确的 scope。
 
 ### 3. 移除的功能
 
@@ -55,7 +57,6 @@ PropertySystem 已成功重构，**完全移除了与 CDOTA_Modifier_Lua 的强�
 ```typescript
 // 添加属性
 PropertySystem.AddStaticProperty(
-  PropertyScope.UNIT,
   unit.GetEntityIndex(),
   "attack_damage",
   "item_sword_123",  // sourceId
@@ -64,7 +65,6 @@ PropertySystem.AddStaticProperty(
 
 // 删除属性
 PropertySystem.CleanupSourceProperties(
-  PropertyScope.UNIT,
   unit.GetEntityIndex(),
   "item_sword_123"
 );
@@ -76,8 +76,17 @@ PropertySystem.CleanupSourceProperties(
 const context = PropertySystem.GetEntityContext(unit);
 if (context) {
   const [scope, key] = context;
-  PropertySystem.AddStaticProperty(scope, key, "attack_damage", "item_sword", 50);
+  // scope 仅用于验证，实际调用时不需要传入
+  PropertySystem.AddStaticProperty(key, "attack_damage", "item_sword", 50);
 }
+
+// 或者直接使用（推荐）
+PropertySystem.AddStaticProperty(
+  unit.GetEntityIndex(),
+  "attack_damage",
+  "item_sword",
+  50
+);
 ```
 
 ## 迁移指南

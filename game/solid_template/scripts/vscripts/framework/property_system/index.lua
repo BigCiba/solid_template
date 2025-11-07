@@ -14,11 +14,10 @@ local __TS__ArrayFrom = ____lualib.__TS__ArrayFrom
 local __TS__StringSplit = ____lualib.__TS__StringSplit
 local __TS__ArraySlice = ____lualib.__TS__ArraySlice
 local __TS__ParseInt = ____lualib.__TS__ParseInt
-local __TS__ObjectKeys = ____lualib.__TS__ObjectKeys
 local __TS__NumberToFixed = ____lualib.__TS__NumberToFixed
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["23"] = 3,["24"] = 3,["25"] = 19,["26"] = 22,["27"] = 22,["28"] = 23,["30"] = 23,["31"] = 25,["32"] = 26,["33"] = 27,["34"] = 30,["35"] = 22,["36"] = 32,["37"] = 33,["38"] = 34,["39"] = 36,["40"] = 37,["41"] = 38,["42"] = 39,["44"] = 42,["46"] = 44,["48"] = 32,["49"] = 48,["50"] = 49,["51"] = 48,["52"] = 52,["53"] = 53,["54"] = 52,["55"] = 58,["56"] = 59,["57"] = 60,["58"] = 60,["59"] = 60,["60"] = 60,["61"] = 60,["62"] = 60,["63"] = 60,["64"] = 60,["66"] = 58,["67"] = 79,["68"] = 81,["69"] = 82,["70"] = 83,["71"] = 83,["72"] = 83,["74"] = 84,["75"] = 85,["76"] = 85,["77"] = 85,["79"] = 80,["80"] = 80,["81"] = 80,["82"] = 80,["83"] = 80,["84"] = 80,["85"] = 80,["86"] = 89,["87"] = 90,["88"] = 79,["89"] = 94,["90"] = 95,["91"] = 96,["93"] = 94,["94"] = 111,["95"] = 119,["96"] = 119,["98"] = 121,["99"] = 122,["100"] = 123,["101"] = 125,["102"] = 126,["103"] = 127,["105"] = 131,["106"] = 131,["107"] = 131,["108"] = 131,["109"] = 132,["110"] = 134,["111"] = 135,["113"] = 138,["114"] = 138,["115"] = 138,["116"] = 138,["117"] = 138,["118"] = 138,["120"] = 146,["121"] = 148,["122"] = 149,["123"] = 150,["125"] = 153,["126"] = 153,["127"] = 154,["128"] = 111,["129"] = 164,["130"] = 170,["131"] = 171,["133"] = 174,["134"] = 175,["135"] = 175,["136"] = 176,["137"] = 177,["140"] = 180,["142"] = 164,["143"] = 184,["144"] = 190,["145"] = 190,["147"] = 192,["148"] = 193,["149"] = 194,["150"] = 196,["151"] = 196,["153"] = 198,["154"] = 198,["155"] = 198,["156"] = 198,["157"] = 199,["158"] = 200,["159"] = 202,["160"] = 203,["161"] = 204,["163"] = 206,["165"] = 209,["166"] = 210,["168"] = 213,["170"] = 216,["171"] = 184,["172"] = 222,["173"] = 229,["174"] = 229,["176"] = 231,["177"] = 232,["178"] = 233,["179"] = 235,["180"] = 235,["182"] = 237,["183"] = 237,["184"] = 237,["185"] = 237,["186"] = 238,["187"] = 239,["188"] = 240,["189"] = 242,["190"] = 243,["192"] = 246,["194"] = 249,["195"] = 222,["196"] = 253,["197"] = 254,["198"] = 255,["199"] = 255,["201"] = 257,["202"] = 258,["203"] = 260,["204"] = 260,["205"] = 261,["206"] = 262,["207"] = 262,["209"] = 265,["210"] = 253,["211"] = 268,["212"] = 269,["213"] = 270,["216"] = 272,["217"] = 273,["218"] = 275,["219"] = 276,["222"] = 281,["223"] = 283,["224"] = 284,["226"] = 287,["227"] = 268,["228"] = 302,["229"] = 308,["230"] = 308,["232"] = 311,["233"] = 311,["235"] = 313,["236"] = 314,["237"] = 315,["238"] = 317,["239"] = 318,["240"] = 319,["242"] = 322,["243"] = 322,["244"] = 322,["245"] = 322,["246"] = 323,["247"] = 325,["248"] = 326,["249"] = 327,["251"] = 330,["252"] = 330,["253"] = 330,["254"] = 330,["255"] = 330,["256"] = 330,["257"] = 330,["259"] = 339,["260"] = 339,["261"] = 339,["262"] = 339,["263"] = 340,["264"] = 342,["265"] = 343,["267"] = 346,["268"] = 346,["269"] = 347,["270"] = 302,["271"] = 357,["272"] = 363,["273"] = 364,["275"] = 367,["276"] = 368,["277"] = 368,["278"] = 369,["279"] = 370,["282"] = 373,["284"] = 357,["285"] = 377,["286"] = 383,["287"] = 383,["289"] = 385,["290"] = 386,["291"] = 387,["292"] = 389,["293"] = 389,["295"] = 391,["296"] = 391,["297"] = 391,["298"] = 391,["299"] = 392,["300"] = 393,["301"] = 395,["302"] = 396,["304"] = 399,["305"] = 401,["306"] = 402,["308"] = 405,["310"] = 408,["311"] = 377,["312"] = 412,["313"] = 413,["314"] = 414,["315"] = 414,["317"] = 416,["318"] = 419,["319"] = 420,["320"] = 421,["321"] = 423,["322"] = 424,["323"] = 425,["324"] = 426,["325"] = 426,["326"] = 427,["327"] = 427,["328"] = 428,["332"] = 434,["333"] = 437,["334"] = 438,["335"] = 438,["336"] = 438,["337"] = 438,["338"] = 438,["339"] = 438,["340"] = 438,["341"] = 438,["343"] = 445,["344"] = 445,["345"] = 446,["346"] = 412,["347"] = 449,["348"] = 450,["349"] = 451,["350"] = 451,["352"] = 453,["353"] = 454,["354"] = 456,["355"] = 457,["357"] = 461,["358"] = 463,["361"] = 470,["364"] = 465,["365"] = 466,["366"] = 467,["374"] = 474,["375"] = 449,["376"] = 478,["377"] = 479,["378"] = 481,["379"] = 482,["381"] = 484,["383"] = 478,["384"] = 491,["385"] = 492,["386"] = 493,["387"] = 497,["388"] = 491,["389"] = 502,["390"] = 503,["391"] = 503,["392"] = 503,["393"] = 503,["394"] = 503,["395"] = 503,["396"] = 503,["397"] = 503,["398"] = 508,["399"] = 508,["400"] = 508,["401"] = 509,["402"] = 510,["403"] = 508,["404"] = 508,["405"] = 513,["406"] = 502,["407"] = 516,["408"] = 517,["411"] = 519,["412"] = 521,["413"] = 524,["414"] = 524,["415"] = 524,["416"] = 526,["417"] = 526,["418"] = 526,["419"] = 526,["420"] = 526,["421"] = 527,["422"] = 527,["423"] = 527,["424"] = 527,["425"] = 527,["426"] = 529,["427"] = 530,["428"] = 532,["429"] = 533,["430"] = 535,["431"] = 524,["432"] = 524,["433"] = 539,["435"] = 541,["436"] = 541,["437"] = 542,["438"] = 543,["439"] = 541,["442"] = 546,["443"] = 547,["444"] = 548,["445"] = 548,["446"] = 516,["447"] = 551,["448"] = 553,["449"] = 554,["450"] = 556,["451"] = 556,["452"] = 556,["454"] = 556,["456"] = 556,["457"] = 558,["458"] = 560,["459"] = 560,["460"] = 560,["461"] = 560,["462"] = 560,["463"] = 561,["464"] = 562,["465"] = 564,["466"] = 565,["467"] = 566,["469"] = 569,["470"] = 570,["471"] = 573,["472"] = 574,["473"] = 575,["474"] = 576,["476"] = 551,["477"] = 581,["478"] = 582,["481"] = 584,["482"] = 585,["485"] = 587,["486"] = 588,["487"] = 591,["488"] = 592,["489"] = 594,["490"] = 594,["491"] = 594,["493"] = 594,["495"] = 594,["496"] = 595,["497"] = 597,["498"] = 598,["499"] = 601,["500"] = 602,["501"] = 581,["502"] = 606,["503"] = 607,["504"] = 607,["506"] = 609,["507"] = 610,["508"] = 612,["509"] = 613,["511"] = 616,["512"] = 606,["513"] = 620,["514"] = 626,["515"] = 627,["518"] = 631,["519"] = 633,["520"] = 633,["521"] = 633,["522"] = 634,["523"] = 635,["524"] = 636,["525"] = 637,["527"] = 639,["528"] = 633,["529"] = 633,["530"] = 620,["531"] = 651,["532"] = 653,["533"] = 656,["534"] = 651,["535"] = 660,["536"] = 661,["539"] = 663,["540"] = 664,["541"] = 666,["542"] = 667,["543"] = 668,["545"] = 660,["546"] = 673,["547"] = 674,["550"] = 675,["551"] = 673,["552"] = 678,["553"] = 679,["554"] = 683,["555"] = 684,["556"] = 685,["557"] = 686,["558"] = 687,["559"] = 688,["560"] = 689,["562"] = 678,["563"] = 694,["564"] = 695,["565"] = 697,["566"] = 697,["567"] = 698,["569"] = 701,["570"] = 701,["571"] = 702,["573"] = 705,["574"] = 706,["576"] = 709,["577"] = 694,["578"] = 712,["579"] = 716,["580"] = 712,["581"] = 720,["582"] = 721,["583"] = 723,["584"] = 723,["585"] = 723,["586"] = 724,["587"] = 725,["588"] = 726,["591"] = 730,["592"] = 730,["593"] = 730,["594"] = 731,["595"] = 732,["596"] = 733,["599"] = 737,["600"] = 720,["601"] = 740,["602"] = 741,["603"] = 740,["604"] = 748,["605"] = 749,["606"] = 749,["607"] = 749,["608"] = 750,["609"] = 751,["610"] = 752,["611"] = 749,["612"] = 749,["613"] = 755,["614"] = 748,["615"] = 759,["616"] = 760,["617"] = 761,["618"] = 762,["619"] = 763,["620"] = 759,["621"] = 773,["622"] = 775,["623"] = 775,["624"] = 775,["625"] = 776,["626"] = 775,["627"] = 775,["628"] = 775,["629"] = 775,["630"] = 780,["631"] = 780,["632"] = 780,["633"] = 781,["634"] = 780,["635"] = 780,["636"] = 780,["637"] = 780,["638"] = 785,["639"] = 785,["640"] = 785,["641"] = 786,["642"] = 792,["643"] = 785,["644"] = 785,["645"] = 785,["646"] = 785,["647"] = 796,["648"] = 796,["649"] = 796,["650"] = 797,["651"] = 798,["652"] = 798,["653"] = 798,["654"] = 799,["656"] = 796,["657"] = 796,["658"] = 796,["659"] = 796,["660"] = 804,["661"] = 804,["662"] = 804,["663"] = 805,["664"] = 806,["665"] = 807,["666"] = 804,["667"] = 804,["668"] = 804,["669"] = 804,["670"] = 810,["671"] = 773,["672"] = 813,["673"] = 814,["674"] = 815,["675"] = 816,["676"] = 817,["677"] = 818,["678"] = 819,["679"] = 813,["680"] = 822,["681"] = 823,["682"] = 824,["683"] = 828,["684"] = 829,["685"] = 830,["686"] = 831,["687"] = 832,["688"] = 822,["689"] = 837,["690"] = 838,["691"] = 842,["692"] = 843,["693"] = 844,["694"] = 844,["695"] = 844,["696"] = 844,["697"] = 844,["698"] = 844,["699"] = 850,["701"] = 853,["702"] = 837,["703"] = 856,["704"] = 857,["705"] = 856,["706"] = 860,["707"] = 861,["708"] = 862,["709"] = 863,["711"] = 865,["712"] = 860,["713"] = 874,["714"] = 875,["715"] = 875,["717"] = 878,["718"] = 879,["719"] = 880,["721"] = 884,["722"] = 885,["723"] = 885,["724"] = 885,["725"] = 885,["727"] = 888,["728"] = 874,["729"] = 891,["731"] = 892,["732"] = 893,["734"] = 894,["736"] = 895,["738"] = 896,["740"] = 897,["742"] = 898,["744"] = 899,["746"] = 900,["748"] = 901,["750"] = 902,["752"] = 903,["754"] = 904,["756"] = 905,["758"] = 906,["759"] = 907,["761"] = 909,["764"] = 911,["767"] = 891,["768"] = 915,["770"] = 916,["771"] = 917,["773"] = 918,["775"] = 919,["777"] = 920,["779"] = 921,["781"] = 922,["783"] = 923,["785"] = 925,["788"] = 927,["791"] = 915,["792"] = 931,["793"] = 933,["794"] = 931,["795"] = 936,["796"] = 937,["797"] = 938,["798"] = 936,["799"] = 941,["800"] = 942,["801"] = 941,["802"] = 945,["803"] = 946,["804"] = 945,["805"] = 22,["806"] = 968,["807"] = 968});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["22"] = 3,["23"] = 3,["24"] = 19,["25"] = 22,["26"] = 22,["27"] = 23,["29"] = 23,["30"] = 25,["31"] = 26,["32"] = 27,["33"] = 30,["34"] = 22,["35"] = 32,["36"] = 33,["37"] = 34,["38"] = 36,["39"] = 37,["40"] = 38,["41"] = 39,["43"] = 42,["45"] = 44,["47"] = 32,["48"] = 48,["49"] = 49,["50"] = 48,["51"] = 52,["52"] = 53,["53"] = 52,["54"] = 58,["55"] = 59,["56"] = 60,["57"] = 60,["58"] = 60,["59"] = 60,["60"] = 60,["61"] = 60,["62"] = 60,["63"] = 60,["65"] = 58,["66"] = 79,["67"] = 81,["68"] = 82,["69"] = 83,["70"] = 83,["71"] = 83,["73"] = 84,["74"] = 85,["75"] = 85,["76"] = 85,["78"] = 80,["79"] = 80,["80"] = 80,["81"] = 80,["82"] = 80,["83"] = 80,["84"] = 80,["85"] = 89,["86"] = 90,["87"] = 79,["88"] = 94,["89"] = 95,["90"] = 96,["92"] = 94,["93"] = 110,["94"] = 117,["95"] = 117,["97"] = 119,["98"] = 120,["99"] = 121,["100"] = 123,["101"] = 124,["102"] = 125,["104"] = 129,["105"] = 129,["106"] = 129,["107"] = 129,["108"] = 130,["109"] = 132,["110"] = 133,["112"] = 136,["113"] = 136,["114"] = 136,["115"] = 136,["116"] = 136,["117"] = 136,["119"] = 144,["120"] = 146,["121"] = 147,["123"] = 150,["124"] = 150,["125"] = 151,["126"] = 110,["127"] = 160,["128"] = 165,["129"] = 166,["131"] = 169,["132"] = 170,["133"] = 170,["134"] = 171,["135"] = 172,["138"] = 175,["140"] = 160,["141"] = 179,["142"] = 184,["143"] = 184,["145"] = 186,["146"] = 187,["147"] = 188,["148"] = 190,["149"] = 190,["151"] = 192,["152"] = 192,["153"] = 192,["154"] = 192,["155"] = 193,["156"] = 194,["157"] = 196,["158"] = 197,["159"] = 198,["161"] = 200,["163"] = 203,["164"] = 204,["166"] = 207,["168"] = 210,["169"] = 179,["170"] = 220,["171"] = 226,["172"] = 226,["174"] = 228,["175"] = 229,["176"] = 230,["177"] = 232,["178"] = 232,["180"] = 234,["181"] = 234,["182"] = 234,["183"] = 234,["184"] = 235,["185"] = 236,["186"] = 237,["187"] = 239,["188"] = 240,["190"] = 243,["192"] = 246,["193"] = 220,["194"] = 250,["195"] = 251,["196"] = 252,["197"] = 252,["199"] = 254,["200"] = 255,["201"] = 257,["202"] = 257,["203"] = 258,["204"] = 259,["205"] = 259,["207"] = 262,["208"] = 250,["209"] = 265,["210"] = 266,["211"] = 267,["214"] = 269,["215"] = 270,["216"] = 272,["217"] = 273,["220"] = 278,["221"] = 280,["222"] = 281,["224"] = 284,["225"] = 265,["226"] = 298,["227"] = 303,["228"] = 303,["230"] = 306,["231"] = 306,["233"] = 308,["234"] = 309,["235"] = 310,["236"] = 312,["237"] = 313,["238"] = 314,["240"] = 317,["241"] = 317,["242"] = 317,["243"] = 317,["244"] = 318,["245"] = 320,["246"] = 321,["247"] = 322,["249"] = 325,["250"] = 325,["251"] = 325,["252"] = 325,["253"] = 325,["254"] = 325,["255"] = 325,["257"] = 334,["258"] = 334,["259"] = 334,["260"] = 334,["261"] = 335,["262"] = 337,["263"] = 338,["265"] = 341,["266"] = 341,["267"] = 342,["268"] = 298,["269"] = 351,["270"] = 356,["271"] = 357,["273"] = 360,["274"] = 361,["275"] = 361,["276"] = 362,["277"] = 363,["280"] = 366,["282"] = 351,["283"] = 370,["284"] = 375,["285"] = 375,["287"] = 377,["288"] = 378,["289"] = 379,["290"] = 381,["291"] = 381,["293"] = 383,["294"] = 383,["295"] = 383,["296"] = 383,["297"] = 384,["298"] = 385,["299"] = 387,["300"] = 388,["302"] = 391,["303"] = 393,["304"] = 394,["306"] = 397,["308"] = 400,["309"] = 370,["310"] = 404,["311"] = 405,["312"] = 406,["313"] = 406,["315"] = 408,["316"] = 411,["317"] = 412,["318"] = 413,["319"] = 415,["320"] = 416,["321"] = 417,["322"] = 418,["323"] = 418,["324"] = 419,["325"] = 419,["326"] = 420,["330"] = 426,["331"] = 429,["332"] = 430,["333"] = 430,["334"] = 430,["335"] = 430,["336"] = 430,["337"] = 430,["338"] = 430,["339"] = 430,["341"] = 437,["342"] = 437,["343"] = 438,["344"] = 404,["345"] = 441,["346"] = 442,["347"] = 443,["348"] = 443,["350"] = 445,["351"] = 446,["352"] = 448,["353"] = 449,["355"] = 453,["356"] = 455,["359"] = 462,["362"] = 457,["363"] = 458,["364"] = 459,["372"] = 466,["373"] = 441,["374"] = 470,["375"] = 471,["376"] = 473,["377"] = 474,["379"] = 476,["381"] = 470,["382"] = 483,["383"] = 484,["384"] = 485,["385"] = 489,["386"] = 483,["387"] = 494,["388"] = 495,["389"] = 495,["390"] = 495,["391"] = 495,["392"] = 495,["393"] = 495,["394"] = 495,["395"] = 495,["396"] = 500,["397"] = 500,["398"] = 500,["399"] = 501,["400"] = 502,["401"] = 500,["402"] = 500,["403"] = 505,["404"] = 494,["405"] = 508,["406"] = 509,["409"] = 511,["410"] = 514,["411"] = 514,["412"] = 514,["413"] = 516,["414"] = 516,["415"] = 516,["416"] = 516,["417"] = 516,["418"] = 517,["419"] = 517,["420"] = 517,["421"] = 517,["422"] = 517,["423"] = 519,["424"] = 520,["425"] = 522,["426"] = 523,["427"] = 525,["428"] = 514,["429"] = 514,["430"] = 529,["432"] = 531,["433"] = 531,["434"] = 532,["435"] = 533,["436"] = 531,["439"] = 536,["440"] = 537,["441"] = 538,["442"] = 538,["443"] = 508,["444"] = 541,["445"] = 543,["446"] = 544,["447"] = 544,["448"] = 544,["450"] = 544,["452"] = 544,["453"] = 546,["454"] = 548,["455"] = 548,["456"] = 548,["457"] = 548,["458"] = 548,["459"] = 549,["460"] = 550,["461"] = 552,["462"] = 553,["464"] = 556,["465"] = 541,["466"] = 560,["467"] = 561,["470"] = 563,["471"] = 564,["474"] = 566,["475"] = 567,["476"] = 570,["477"] = 571,["478"] = 571,["479"] = 571,["481"] = 571,["483"] = 571,["484"] = 572,["485"] = 574,["486"] = 560,["487"] = 578,["488"] = 579,["489"] = 579,["491"] = 581,["492"] = 582,["493"] = 584,["494"] = 585,["496"] = 588,["497"] = 578,["498"] = 592,["499"] = 598,["500"] = 599,["503"] = 603,["504"] = 605,["505"] = 605,["506"] = 605,["507"] = 606,["508"] = 607,["509"] = 608,["510"] = 609,["512"] = 611,["513"] = 605,["514"] = 605,["515"] = 592,["516"] = 622,["517"] = 624,["518"] = 627,["519"] = 622,["520"] = 631,["521"] = 632,["524"] = 634,["525"] = 635,["526"] = 637,["527"] = 638,["528"] = 639,["530"] = 631,["531"] = 644,["532"] = 645,["535"] = 646,["536"] = 644,["537"] = 649,["538"] = 650,["539"] = 654,["540"] = 655,["541"] = 656,["542"] = 657,["543"] = 658,["544"] = 659,["545"] = 660,["547"] = 649,["548"] = 665,["549"] = 666,["550"] = 668,["551"] = 668,["552"] = 669,["554"] = 672,["555"] = 672,["556"] = 673,["558"] = 676,["559"] = 677,["561"] = 680,["562"] = 665,["563"] = 683,["564"] = 687,["565"] = 683,["566"] = 691,["567"] = 692,["568"] = 694,["569"] = 694,["570"] = 694,["571"] = 695,["572"] = 696,["573"] = 697,["576"] = 701,["577"] = 701,["578"] = 701,["579"] = 702,["580"] = 703,["581"] = 704,["584"] = 708,["585"] = 691,["586"] = 711,["587"] = 712,["588"] = 711,["589"] = 719,["590"] = 720,["591"] = 720,["592"] = 720,["593"] = 721,["594"] = 722,["595"] = 723,["596"] = 720,["597"] = 720,["598"] = 726,["599"] = 719,["600"] = 730,["601"] = 731,["602"] = 732,["603"] = 733,["604"] = 734,["605"] = 730,["606"] = 744,["607"] = 746,["608"] = 746,["609"] = 746,["610"] = 747,["611"] = 746,["612"] = 746,["613"] = 746,["614"] = 746,["615"] = 751,["616"] = 751,["617"] = 751,["618"] = 752,["619"] = 751,["620"] = 751,["621"] = 751,["622"] = 751,["623"] = 756,["624"] = 756,["625"] = 756,["626"] = 757,["627"] = 763,["628"] = 756,["629"] = 756,["630"] = 756,["631"] = 756,["632"] = 767,["633"] = 767,["634"] = 767,["635"] = 768,["636"] = 769,["637"] = 769,["638"] = 769,["639"] = 770,["641"] = 767,["642"] = 767,["643"] = 767,["644"] = 767,["645"] = 775,["646"] = 775,["647"] = 775,["648"] = 776,["649"] = 777,["650"] = 778,["651"] = 775,["652"] = 775,["653"] = 775,["654"] = 775,["655"] = 781,["656"] = 744,["657"] = 784,["658"] = 785,["659"] = 786,["660"] = 787,["661"] = 788,["662"] = 789,["663"] = 790,["664"] = 784,["665"] = 793,["666"] = 794,["667"] = 795,["668"] = 799,["669"] = 800,["670"] = 801,["671"] = 802,["672"] = 803,["673"] = 793,["674"] = 808,["675"] = 809,["676"] = 813,["677"] = 814,["678"] = 815,["679"] = 815,["680"] = 815,["681"] = 815,["682"] = 815,["683"] = 815,["684"] = 821,["686"] = 824,["687"] = 808,["688"] = 827,["689"] = 828,["690"] = 827,["691"] = 831,["692"] = 832,["693"] = 833,["694"] = 834,["696"] = 836,["697"] = 831,["698"] = 845,["699"] = 846,["700"] = 846,["702"] = 849,["703"] = 850,["704"] = 851,["706"] = 855,["707"] = 856,["708"] = 856,["709"] = 856,["710"] = 856,["712"] = 859,["713"] = 845,["714"] = 862,["716"] = 863,["717"] = 864,["719"] = 865,["721"] = 866,["723"] = 867,["725"] = 868,["727"] = 869,["729"] = 870,["731"] = 871,["733"] = 872,["735"] = 873,["737"] = 874,["739"] = 875,["741"] = 876,["743"] = 877,["744"] = 878,["746"] = 880,["749"] = 882,["752"] = 862,["753"] = 886,["755"] = 887,["756"] = 888,["758"] = 889,["760"] = 890,["762"] = 891,["764"] = 892,["766"] = 893,["768"] = 894,["770"] = 896,["773"] = 898,["776"] = 886,["777"] = 902,["778"] = 904,["779"] = 902,["780"] = 907,["781"] = 908,["782"] = 909,["783"] = 907,["784"] = 912,["785"] = 913,["786"] = 912,["787"] = 916,["788"] = 917,["789"] = 916,["790"] = 22,["791"] = 939,["792"] = 939});
 local ____exports = {}
 local ____tstl_2Dutils = require("lib.tstl-utils")
 local reloadable = ____tstl_2Dutils.reloadable
@@ -91,7 +90,7 @@ function MPropertySystem.prototype.RegisterProperties(self, configs)
         self:RegisterProperty(config)
     end
 end
-function MPropertySystem.prototype.AddStaticProperty(self, scope, key, propertyId, sourceId, value, metadata)
+function MPropertySystem.prototype.AddStaticProperty(self, key, propertyId, sourceId, value, metadata)
     if not self:ValidateProperty(propertyId) then
         return false
     end
@@ -120,27 +119,26 @@ function MPropertySystem.prototype.AddStaticProperty(self, scope, key, propertyI
     self:RecalculateStaticProperty(config.scope, key, propertyId)
     if config.syncToClient then
         self:MarkDirty(config.scope, key, propertyId)
-        self:print((("[AddStaticProperty] Marked dirty: " .. propertyId) .. ", dirtyKeys size: ") .. tostring(PropertyData.dirtyKeys.size))
     end
     local ____PropertyData_stats_5, ____totalWrites_6 = PropertyData.stats, "totalWrites"
     ____PropertyData_stats_5[____totalWrites_6] = ____PropertyData_stats_5[____totalWrites_6] + 1
     return true
 end
-function MPropertySystem.prototype.RemoveStaticProperty(self, scope, key, sourceId, propertyId)
+function MPropertySystem.prototype.RemoveStaticProperty(self, key, sourceId, propertyId)
     if propertyId then
-        return self:RemoveSingleStaticProperty(scope, key, sourceId, propertyId)
+        return self:RemoveSingleStaticProperty(key, sourceId, propertyId)
     else
         local removed = false
         for ____, ____value in __TS__Iterator(PropertyData.configs) do
             local pid = ____value[1]
-            if self:RemoveSingleStaticProperty(scope, key, sourceId, pid) then
+            if self:RemoveSingleStaticProperty(key, sourceId, pid) then
                 removed = true
             end
         end
         return removed
     end
 end
-function MPropertySystem.prototype.RemoveSingleStaticProperty(self, scope, key, sourceId, propertyId)
+function MPropertySystem.prototype.RemoveSingleStaticProperty(self, key, sourceId, propertyId)
     if not self:ValidateProperty(propertyId) then
         return false
     end
@@ -169,7 +167,7 @@ function MPropertySystem.prototype.RemoveSingleStaticProperty(self, scope, key, 
     end
     return false
 end
-function MPropertySystem.prototype.UpdateStaticPropertyValue(self, scope, key, propertyId, sourceId, newValue)
+function MPropertySystem.prototype.UpdateStaticPropertyValue(self, key, propertyId, sourceId, newValue)
     if not self:ValidateProperty(propertyId) then
         return false
     end
@@ -225,7 +223,7 @@ function MPropertySystem.prototype.RecalculateStaticProperty(self, scope, key, p
     end
     storage.staticCache:set(propertyId, result)
 end
-function MPropertySystem.prototype.RegisterDynamicProperty(self, scope, key, propertyId, sourceId, callback, priority, metadata)
+function MPropertySystem.prototype.RegisterDynamicProperty(self, key, propertyId, sourceId, callback, priority, metadata)
     if priority == nil then
         priority = 0
     end
@@ -268,21 +266,21 @@ function MPropertySystem.prototype.RegisterDynamicProperty(self, scope, key, pro
     ____PropertyData_stats_11[____totalWrites_12] = ____PropertyData_stats_11[____totalWrites_12] + 1
     return true
 end
-function MPropertySystem.prototype.UnregisterDynamicProperty(self, scope, key, sourceId, propertyId)
+function MPropertySystem.prototype.UnregisterDynamicProperty(self, key, sourceId, propertyId)
     if propertyId then
-        return self:UnregisterSingleDynamicProperty(scope, key, sourceId, propertyId)
+        return self:UnregisterSingleDynamicProperty(key, sourceId, propertyId)
     else
         local removed = false
         for ____, ____value in __TS__Iterator(PropertyData.configs) do
             local pid = ____value[1]
-            if self:UnregisterSingleDynamicProperty(scope, key, sourceId, pid) then
+            if self:UnregisterSingleDynamicProperty(key, sourceId, pid) then
                 removed = true
             end
         end
         return removed
     end
 end
-function MPropertySystem.prototype.UnregisterSingleDynamicProperty(self, scope, key, sourceId, propertyId)
+function MPropertySystem.prototype.UnregisterSingleDynamicProperty(self, key, sourceId, propertyId)
     if not self:ValidateProperty(propertyId) then
         return false
     end
@@ -408,7 +406,6 @@ function MPropertySystem.prototype.SyncDirtyProperties(self)
     if PropertyData.dirtyKeys.size == 0 then
         return
     end
-    self:print(("[SyncDirtyProperties] Syncing " .. tostring(PropertyData.dirtyKeys.size)) .. " dirty properties")
     local dirtyArray = __TS__ArrayFrom(PropertyData.dirtyKeys)
     __TS__ArraySort(
         dirtyArray,
@@ -446,7 +443,6 @@ function MPropertySystem.prototype.SyncDirtyProperties(self)
 end
 function MPropertySystem.prototype.SyncPropertyBatch(self, dirtyKeys)
     local existingData = CustomNetTables:GetTableValue(self.NETTABLE_NAME, "properties")
-    self:print((("[SyncPropertyBatch] Existing data type: " .. type(existingData)) .. ", value: ") .. tostring(existingData))
     local ____existingData_25
     if existingData then
         ____existingData_25 = __TS__ObjectAssign({}, existingData)
@@ -464,15 +460,8 @@ function MPropertySystem.prototype.SyncPropertyBatch(self, dirtyKeys)
         local key = __TS__ParseInt(keyStr)
         local value = self:GetPropertyValue(scope, key, propertyId)
         updates[dirtyKey] = value
-        self:print((("[SyncPropertyBatch] " .. dirtyKey) .. " = ") .. tostring(value))
     end
-    self:print("[SyncPropertyBatch] About to sync updates:", updates)
     CustomNetTables:SetTableValue(self.NETTABLE_NAME, "properties", updates)
-    local verification = CustomNetTables:GetTableValue(self.NETTABLE_NAME, "properties")
-    self:print("[SyncPropertyBatch] Verification read: " .. type(verification))
-    if verification then
-        self:print(("[SyncPropertyBatch] Verified " .. tostring(#__TS__ObjectKeys(verification))) .. " keys")
-    end
 end
 function MPropertySystem.prototype.ForceSyncProperty(self, scope, key, propertyId)
     if not IsServer() then
@@ -485,7 +474,6 @@ function MPropertySystem.prototype.ForceSyncProperty(self, scope, key, propertyI
     local dirtyKey = self:GetDirtyKey(scope, key, propertyId)
     local value = self:GetPropertyValue(scope, key, propertyId)
     local existingData = CustomNetTables:GetTableValue(self.NETTABLE_NAME, "properties")
-    self:print("[ForceSyncProperty] Existing data type: " .. type(existingData))
     local ____existingData_26
     if existingData then
         ____existingData_26 = __TS__ObjectAssign({}, existingData)
@@ -494,10 +482,7 @@ function MPropertySystem.prototype.ForceSyncProperty(self, scope, key, propertyI
     end
     local update = ____existingData_26
     update[dirtyKey] = value
-    self:print("[ForceSyncProperty] About to sync:", update)
     CustomNetTables:SetTableValue(self.NETTABLE_NAME, "properties", update)
-    local verification = CustomNetTables:GetTableValue(self.NETTABLE_NAME, "properties")
-    self:print((("[ForceSyncProperty] Verification: " .. type(verification)) .. ", keys: ") .. tostring(verification and #__TS__ObjectKeys(verification) or 0))
 end
 function MPropertySystem.prototype.GetPropertyValueFromNetTable(self, scope, key, propertyId)
     if IsServer() then
@@ -528,9 +513,9 @@ function MPropertySystem.prototype.ListenPropertyChange(self, scope, key, proper
         end
     )
 end
-function MPropertySystem.prototype.CleanupSourceProperties(self, scope, key, sourceId)
-    self:RemoveStaticProperty(scope, key, sourceId)
-    self:UnregisterDynamicProperty(scope, key, sourceId)
+function MPropertySystem.prototype.CleanupSourceProperties(self, key, sourceId)
+    self:RemoveStaticProperty(key, sourceId)
+    self:UnregisterDynamicProperty(key, sourceId)
 end
 function MPropertySystem.prototype.CleanupUnitProperties(self, unit)
     if not unit then
@@ -728,33 +713,33 @@ function MPropertySystem.prototype.GetEntityContext(self, entity)
 end
 function MPropertySystem.prototype.AggregateValues(self, strategy, current, value, customAggregator)
     repeat
-        local ____switch155 = strategy
-        local ____cond155 = ____switch155 == AggregationStrategy.SUM
-        if ____cond155 then
+        local ____switch154 = strategy
+        local ____cond154 = ____switch154 == AggregationStrategy.SUM
+        if ____cond154 then
             return current + value
         end
-        ____cond155 = ____cond155 or ____switch155 == AggregationStrategy.MULTIPLY
-        if ____cond155 then
+        ____cond154 = ____cond154 or ____switch154 == AggregationStrategy.MULTIPLY
+        if ____cond154 then
             return current * value
         end
-        ____cond155 = ____cond155 or ____switch155 == AggregationStrategy.MAX
-        if ____cond155 then
+        ____cond154 = ____cond154 or ____switch154 == AggregationStrategy.MAX
+        if ____cond154 then
             return math.max(current, value)
         end
-        ____cond155 = ____cond155 or ____switch155 == AggregationStrategy.MIN
-        if ____cond155 then
+        ____cond154 = ____cond154 or ____switch154 == AggregationStrategy.MIN
+        if ____cond154 then
             return math.min(current, value)
         end
-        ____cond155 = ____cond155 or ____switch155 == AggregationStrategy.FIRST
-        if ____cond155 then
+        ____cond154 = ____cond154 or ____switch154 == AggregationStrategy.FIRST
+        if ____cond154 then
             return current ~= 0 and current or value
         end
-        ____cond155 = ____cond155 or ____switch155 == AggregationStrategy.LAST
-        if ____cond155 then
+        ____cond154 = ____cond154 or ____switch154 == AggregationStrategy.LAST
+        if ____cond154 then
             return value
         end
-        ____cond155 = ____cond155 or ____switch155 == AggregationStrategy.CUSTOM
-        if ____cond155 then
+        ____cond154 = ____cond154 or ____switch154 == AggregationStrategy.CUSTOM
+        if ____cond154 then
             if customAggregator then
                 return customAggregator(nil, current, value)
             end
@@ -767,21 +752,21 @@ function MPropertySystem.prototype.AggregateValues(self, strategy, current, valu
 end
 function MPropertySystem.prototype.GetAggregationInitialValue(self, strategy, defaultValue)
     repeat
-        local ____switch158 = strategy
-        local ____cond158 = ____switch158 == AggregationStrategy.MULTIPLY
-        if ____cond158 then
+        local ____switch157 = strategy
+        local ____cond157 = ____switch157 == AggregationStrategy.MULTIPLY
+        if ____cond157 then
             return 1
         end
-        ____cond158 = ____cond158 or ____switch158 == AggregationStrategy.MAX
-        if ____cond158 then
+        ____cond157 = ____cond157 or ____switch157 == AggregationStrategy.MAX
+        if ____cond157 then
             return -math.huge
         end
-        ____cond158 = ____cond158 or ____switch158 == AggregationStrategy.MIN
-        if ____cond158 then
+        ____cond157 = ____cond157 or ____switch157 == AggregationStrategy.MIN
+        if ____cond157 then
             return math.huge
         end
-        ____cond158 = ____cond158 or (____switch158 == AggregationStrategy.FIRST or ____switch158 == AggregationStrategy.LAST)
-        if ____cond158 then
+        ____cond157 = ____cond157 or (____switch157 == AggregationStrategy.FIRST or ____switch157 == AggregationStrategy.LAST)
+        if ____cond157 then
             return defaultValue
         end
         do

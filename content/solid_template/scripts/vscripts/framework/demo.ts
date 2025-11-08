@@ -122,8 +122,7 @@ class CDemo extends CModule {
 		SendToServerConsole("host_timescale " + data.str);
 	}
 	Standby(data: DemoEvents) {
-
-		Msg("afasfasaf");
+		Gamepad.RegisterGamepadInputs();
 	}
 
 	//----------------------英雄----------------------

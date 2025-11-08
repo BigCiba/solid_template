@@ -12,8 +12,12 @@ class MGame extends CModule {
 	private _playerCount = 1;
 	/** 游戏胜利 */
 	private _gameSuccess = false;
-	init(bReload: boolean) {
+	init(reload: boolean) {
 		GameEvent("game_rules_state_change", function (...args) { return this.OnGameRulesStateChange(...args); }, this);
+		if (!reload) {
+			if (IsServer()) {
+			}
+		}
 	}
 	GetDifficulty() {
 		return this._difficulty;

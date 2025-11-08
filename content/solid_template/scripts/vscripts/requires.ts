@@ -12,10 +12,10 @@ require("override");
 // require("request");
 // require("abilities");
 // require("modifiers");
+require("mechanics");
 if (IsServer()) {
 	// 	require("filter");
 	// 	require("service");
-	// 	require("mechanics");
 	require("game");
 } else {
 	// 	require("mechanics");

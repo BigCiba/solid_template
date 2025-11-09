@@ -5,7 +5,6 @@
  * 在这里 require 所有游戏机制模块
  */
 
-require("gamepad");
 
 if (IsServer()) {
 	// 服务器端初始化

@@ -122,7 +122,6 @@ class CDemo extends CModule {
 		SendToServerConsole("host_timescale " + data.str);
 	}
 	Standby(data: DemoEvents) {
-		Gamepad.RegisterGamepadInputs();
 	}
 
 	//----------------------英雄----------------------
@@ -186,6 +185,7 @@ class CDemo extends CModule {
 	ReloadScript(data: DemoEvents) {
 		SendToServerConsole("cl_script_reload");
 		SendToServerConsole("script_reload");
+		FireGameEvent("cl_script_reload", {});
 	}
 	RefreshServicePressed(data: DemoEvents) {
 		print("RefreshServicePressed");

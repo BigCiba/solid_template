@@ -295,6 +295,7 @@ declare interface CustomGameEventDeclarations {
 }
 
 declare interface GameEventDeclarations {
+	cl_script_reload: {};
 	pui_error_msg: { error: string; };
 	trigger_start_touch: { trigger_name: string, activator_entindex: EntityIndex, caller_entindex: EntityIndex; };
 	trigger_end_touch: { trigger_name: string, activator_entindex: EntityIndex, caller_entindex: EntityIndex; };
